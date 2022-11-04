@@ -98,6 +98,12 @@ class HomeScreenViewController: UIViewController, UITabBarDelegate, Subscriber {
         return pullToRefreshControl
     }()
     
+    private let tabBarButtons = [(L10n.Button.home, UIImage(named: "home"), #selector(showHome)),
+                                 (L10n.HomeScreen.trade, UIImage(named: "trade"), #selector(trade)),
+                                 (L10n.HomeScreen.buy, UIImage(named: "buy"), #selector(buy)),
+                                 (L10n.Button.profile, UIImage(named: "user"), #selector(profile)),
+                                 (L10n.HomeScreen.menu, UIImage(named: "more"), #selector(menu))]
+    
     // MARK: - Lifecycle
     
     init(walletAuthenticator: WalletAuthenticator, coreSystem: CoreSystem) {
@@ -234,12 +240,6 @@ class HomeScreenViewController: UIViewController, UITabBarDelegate, Subscriber {
         setupToolbar()
         updateTotalAssets()
     }
-    
-    private let tabBarButtons = [(L10n.Button.home, UIImage(named: "home"), #selector(showHome)),
-                                 (L10n.HomeScreen.trade, UIImage(named: "trade"), #selector(trade)),
-                                 (L10n.HomeScreen.buy, UIImage(named: "buy"), #selector(buy)),
-                                 (L10n.Button.profile, UIImage(named: "user"), #selector(profile)),
-                                 (L10n.HomeScreen.menu, UIImage(named: "more"), #selector(menu))]
     
     private func setupToolbar() {
         var buttons = [UITabBarItem]()

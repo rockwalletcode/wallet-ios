@@ -12,7 +12,7 @@ enum ButtonType {
     case primary
     case secondary
     case tertiary
-    case blackTransparent
+    case underlined
     case darkOpaque
     case secondaryTransparent
     case search
@@ -42,7 +42,7 @@ class BRDButton: UIControl {
     var isToggleable = false
     var title: String {
         didSet {
-            guard type == .blackTransparent else {
+            guard type == .underlined else {
                 label.text = title.uppercased()
                 return
             }
@@ -50,7 +50,7 @@ class BRDButton: UIControl {
             let underlineAttribute = [
                 NSAttributedString.Key.underlineStyle: NSUnderlineStyle.thick.rawValue
             ]
-            let underlineAttributedString = NSAttributedString(string: title.uppercased(), attributes: underlineAttribute)
+            let underlineAttributedString = NSAttributedString(string: title, attributes: underlineAttribute)
             label.attributedText = underlineAttributedString
         }
     }
@@ -210,7 +210,7 @@ class BRDButton: UIControl {
             container.layer.borderWidth = 1.0
             imageView?.tintColor = LightColors.primary
             cornerRadius = .fullRadius
-        case .blackTransparent:
+        case .underlined:
             container.backgroundColor = .clear
             label.textColor = LightColors.Contrast.two
             imageView?.tintColor = LightColors.Contrast.two

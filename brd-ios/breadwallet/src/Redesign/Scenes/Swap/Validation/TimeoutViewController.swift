@@ -20,7 +20,7 @@ class TimeoutViewController: BaseInfoViewController {
     override var descriptionText: String? { return L10n.PaymentConfirmation.paymentExpired }
     override var buttonViewModels: [ButtonViewModel] {
         return [
-            .init(title: L10n.PaymentConfirmation.tryAgain.uppercased())
+            .init(title: L10n.PaymentConfirmation.tryAgain)
         ]
     }
 

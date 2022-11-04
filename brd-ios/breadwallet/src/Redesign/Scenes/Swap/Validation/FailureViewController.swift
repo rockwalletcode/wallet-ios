@@ -84,7 +84,7 @@ class FailureViewController: BaseInfoViewController {
     override var descriptionText: String? { return failure?.description }
     override var buttonViewModels: [ButtonViewModel] {
         return [
-            .init(title: failure?.firstButtonTitle?.uppercased()),
+            .init(title: failure?.firstButtonTitle?),
             .init(title: failure?.secondButtonTitle, isUnderlined: true)
         ]
     }

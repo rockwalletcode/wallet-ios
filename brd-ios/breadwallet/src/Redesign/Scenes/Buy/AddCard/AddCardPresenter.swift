@@ -43,7 +43,7 @@ final class AddCardPresenter: NSObject, Presenter, AddCardActionResponses {
                 bankCardInputDetailsViewModel
             ],
             .confirm: [
-                ButtonViewModel(title: L10n.Button.confirm.uppercased())
+                ButtonViewModel(title: L10n.Button.confirm)
             ]
         ]
         

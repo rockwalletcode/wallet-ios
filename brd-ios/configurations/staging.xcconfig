@@ -1,0 +1,21 @@
+//
+//  staging.xcconfig
+//  breadwallet
+//
+//  Created by Rok on 07/03/2022.
+//  Copyright © 2022 Placeholder, LLC. All rights reserved.
+//
+//  See the LICENSE file at the project root for license information.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+#include ".env"
+
+API_URL=$(STAGING_URL)
+API_TOKEN=$(STAGING_TOKEN)
+IS_TEST=$(STAGING_IS_TEST)
+CHECKOUT_API_TOKEN=$(STAGING_CHECKOUT_TOKEN)
+
+APP_ICON=AppIconStg

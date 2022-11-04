@@ -1,0 +1,22 @@
+//
+//  debug.xcconfig
+//  breadwallet
+//
+//  Created by Rok on 07/03/2022.
+//  Copyright © 2022 Placeholder, LLC. All rights reserved.
+//
+//  See the LICENSE file at the project root for license information.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+#include ".env"
+
+API_URL=$(DEBUG_URL)
+API_TOKEN=$(DEBUG_TOKEN)
+IS_TEST=$(IS_TEST)
+CHECKOUT_API_TOKEN=$(DEBUG_CHECKOUT_TOKEN)
+IS_SANDBOX=true
+
+APP_ICON=AppIconDev

@@ -1,0 +1,77 @@
+{
+  "pins" : [
+    {
+      "identity" : "checkout-event-logger-ios-framework",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/checkout/checkout-event-logger-ios-framework.git",
+      "state" : {
+        "revision" : "2ef34662f1525526aeb5681c6af5f69572ab36c9",
+        "version" : "1.2.0"
+      }
+    },
+    {
+      "identity" : "cosmos",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/fabriik/cosmos.git",
+      "state" : {
+        "branch" : "mit",
+        "revision" : "20f0b6e0788b8432aa02f0e5f7193ba33c3bbaf4"
+      }
+    },
+    {
+      "identity" : "frames-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/checkout/frames-ios.git",
+      "state" : {
+        "revision" : "659b4c58b0987fc68d197e21dcb0ec90e55a4fc0",
+        "version" : "3.5.3"
+      }
+    },
+    {
+      "identity" : "iqkeyboardmanager",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/hackiftekhar/IQKeyboardManager.git",
+      "state" : {
+        "revision" : "474f849accae40fe61b5302d9b057dd48ee073ba",
+        "version" : "6.5.9"
+      }
+    },
+    {
+      "identity" : "phonenumberkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/marmelroy/PhoneNumberKit.git",
+      "state" : {
+        "revision" : "2964493a52e64812833662a7bd19def82f35973c",
+        "version" : "3.4.10"
+      }
+    },
+    {
+      "identity" : "snapkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SnapKit/SnapKit.git",
+      "state" : {
+        "revision" : "f222cbdf325885926566172f6f5f06af95473158",
+        "version" : "5.6.0"
+      }
+    },
+    {
+      "identity" : "walletkitcore",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/fabriik/WalletKitCore",
+      "state" : {
+        "branch" : "mit",
+        "revision" : "30eac340bf996544c35177b4d5e949978e47cad2"
+      }
+    },
+    {
+      "identity" : "walletkitswift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/fabriik/WalletKitSwift",
+      "state" : {
+        "branch" : "mit",
+        "revision" : "714852660707c3bb02ebebc588113707cdf8b3d5"
+      }
+    }
+  ],
+  "version" : 2
+}

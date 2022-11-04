@@ -1,0 +1,5 @@
+strings:
+  inputs: ../../breadwallet/src/Strings/en.lproj
+  outputs:
+    - templateName: structured-swift5
+      output: ../../breadwallet/src/Constants/Strings.swift

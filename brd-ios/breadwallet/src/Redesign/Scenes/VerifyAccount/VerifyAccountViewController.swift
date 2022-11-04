@@ -45,7 +45,7 @@ class VerifyAccountViewController: BaseTableViewController<KYCCoordinator,
         verifyButton.setupCustomMargins(top: .small, leading: .large, bottom: .large, trailing: .large)
         
         verifyButton.wrappedView.configure(with: Presets.Button.primary)
-        verifyButton.wrappedView.setup(with: .init(title: L10n.Button.verify.uppercased()))
+        verifyButton.wrappedView.setup(with: .init(title: L10n.Button.verify))
         
         verifyButton.wrappedView.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
         

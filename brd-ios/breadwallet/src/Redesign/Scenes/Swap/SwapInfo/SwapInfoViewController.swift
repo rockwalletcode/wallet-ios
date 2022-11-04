@@ -28,7 +28,7 @@ class SwapInfoViewController: BaseInfoViewController {
     
     override var buttonViewModels: [ButtonViewModel] {
         return [
-            .init(title: L10n.Swap.backToHome.uppercased()),
+            .init(title: L10n.Swap.backToHome),
             .init(title: L10n.Swap.details, isUnderlined: true)
         ]
     }

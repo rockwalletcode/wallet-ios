@@ -52,14 +52,14 @@ class ConfirmationViewController: UIViewController, ContentBoxPresenter {
     private lazy var cancel: FEButton = {
         let view = FEButton()
         view.configure(with: Presets.Button.secondary)
-        view.setup(with: .init(title: L10n.Button.cancel.uppercased()))
+        view.setup(with: .init(title: L10n.Button.cancel))
         return view
     }()
     
     private lazy var sendButton: FEButton = {
         let view = FEButton()
         view.configure(with: Presets.Button.primary)
-        view.setup(with: .init(title: L10n.Confirmation.send.uppercased()))
+        view.setup(with: .init(title: L10n.Confirmation.send))
         return view
     }()
     

@@ -43,7 +43,7 @@ class RegistrationViewController: BaseTableViewController<RegistrationCoordinato
         }
         
         confirmButton.wrappedView.configure(with: Presets.Button.primary)
-        confirmButton.wrappedView.setup(with: .init(title: L10n.RecoverWallet.next.uppercased(), enabled: false))
+        confirmButton.wrappedView.setup(with: .init(title: L10n.RecoverWallet.next, enabled: false))
         
         confirmButton.wrappedView.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
     }
@@ -116,7 +116,7 @@ class RegistrationViewController: BaseTableViewController<RegistrationCoordinato
 
     // MARK: - RegistrationResponseDisplay
     func displayValidate(responseDisplay: RegistrationModels.Validate.ResponseDisplay) {
-        confirmButton.wrappedView.setup(with: .init(title: L10n.RecoverWallet.next.uppercased(), enabled: responseDisplay.isValid))
+        confirmButton.wrappedView.setup(with: .init(title: L10n.RecoverWallet.next, enabled: responseDisplay.isValid))
     }
     
     func displayNext(responseDisplay: RegistrationModels.Next.ResponseDisplay) {

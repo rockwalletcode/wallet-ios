@@ -32,8 +32,8 @@ final class DocumentReviewPresenter: NSObject, Presenter, DocumentReviewActionRe
             .image: [ImageViewModel.photo(image)],
             .buttons: [
                 ScrollableButtonsViewModel(buttons: [
-                    .init(title: L10n.Account.retakePhoto.uppercased()),
-                    .init(title: L10n.Button.confirm.uppercased())
+                    .init(title: L10n.Account.retakePhoto),
+                    .init(title: L10n.Button.confirm)
                 ])
             ]
         ]

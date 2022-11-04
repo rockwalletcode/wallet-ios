@@ -56,7 +56,7 @@ final class BillingAddressPresenter: NSObject, Presenter, BillingAddressActionRe
                                value: item.address)
             ],
             .confirm: [
-                ButtonViewModel(title: L10n.Button.confirm.uppercased())
+                ButtonViewModel(title: L10n.Button.confirm)
             ]
         ]
         

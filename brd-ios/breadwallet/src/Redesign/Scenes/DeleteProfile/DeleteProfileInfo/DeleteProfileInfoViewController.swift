@@ -50,7 +50,7 @@ class DeleteProfileInfoViewController: BaseTableViewController<DeleteProfileInfo
         }
         
         confirmButton.wrappedView.configure(with: Presets.Button.primary)
-        confirmButton.wrappedView.setup(with: .init(title: L10n.Button.confirm.uppercased(), enabled: false))
+        confirmButton.wrappedView.setup(with: .init(title: L10n.Button.confirm, enabled: false))
         
         confirmButton.wrappedView.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
     }
@@ -123,7 +123,7 @@ class DeleteProfileInfoViewController: BaseTableViewController<DeleteProfileInfo
     }
     
     func displayToggleTickbox(responseDisplay: DeleteProfileInfoModels.Tickbox.ResponseDisplay) {
-        confirmButton.wrappedView.setup(with: .init(title: L10n.Button.confirm.uppercased(), enabled: responseDisplay.model.enabled))
+        confirmButton.wrappedView.setup(with: .init(title: L10n.Button.confirm, enabled: responseDisplay.model.enabled))
     }
 
     override func displayMessage(responseDisplay: MessageModels.ResponseDisplays) {

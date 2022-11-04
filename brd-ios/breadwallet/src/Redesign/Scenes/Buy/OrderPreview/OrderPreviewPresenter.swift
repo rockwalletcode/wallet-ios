@@ -99,7 +99,7 @@ final class OrderPreviewPresenter: NSObject, Presenter, OrderPreviewActionRespon
                 LabelViewModel.attributedText(termsText)
             ],
             .submit: [
-                ButtonViewModel(title: L10n.Button.confirm.uppercased(), enabled: false)
+                ButtonViewModel(title: L10n.Button.confirm, enabled: false)
             ]
         ]
         

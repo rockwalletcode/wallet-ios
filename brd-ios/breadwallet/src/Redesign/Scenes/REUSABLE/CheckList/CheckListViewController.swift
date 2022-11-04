@@ -46,7 +46,7 @@ class CheckListViewController: BaseTableViewController<BaseCoordinator,
             make.bottom.equalTo(confirmButton.snp.top)
         }
         
-        confirmButton.wrappedView.setup(with: .init(title: L10n.Button.confirm.uppercased()))
+        confirmButton.wrappedView.setup(with: .init(title: L10n.Button.confirm))
         
         confirmButton.setupCustomMargins(top: .small, leading: .large, bottom: .large, trailing: .large)
         confirmButton.wrappedView.configure(with: Presets.Button.primary)

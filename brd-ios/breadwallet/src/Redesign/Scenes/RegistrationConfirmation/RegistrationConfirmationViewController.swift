@@ -46,7 +46,7 @@ class RegistrationConfirmationViewController: BaseTableViewController<Registrati
         }
         
         confirmButton.wrappedView.configure(with: Presets.Button.primary)
-        confirmButton.wrappedView.setup(with: .init(title: L10n.Button.confirm.uppercased(), enabled: false))
+        confirmButton.wrappedView.setup(with: .init(title: L10n.Button.confirm, enabled: false))
         
         confirmButton.wrappedView.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
     }
@@ -145,7 +145,7 @@ class RegistrationConfirmationViewController: BaseTableViewController<Registrati
     // MARK: - RegistrationConfirmationResponseDisplay
     
     func displayValidate(responseDisplay: RegistrationConfirmationModels.Validate.ResponseDisplay) {
-        confirmButton.wrappedView.setup(with: .init(title: L10n.Button.confirm.uppercased(), enabled: responseDisplay.isValid))
+        confirmButton.wrappedView.setup(with: .init(title: L10n.Button.confirm, enabled: responseDisplay.isValid))
     }
     
     func displayConfirm(responseDisplay: RegistrationConfirmationModels.Confirm.ResponseDisplay) {

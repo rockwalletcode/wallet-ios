@@ -8,13 +8,32 @@
 
 import UIKit
 
-class HomeScreenViewController: UIViewController, Subscriber {
+class HomeScreenViewController: UIViewController, UITabBarDelegate, Subscriber {
     private let walletAuthenticator: WalletAuthenticator
     private let assetListTableView = AssetListTableView()
-    private let toolbar = UIToolbar()
-    private var toolbarButtons = [UIButton]()
     private let notificationHandler = NotificationHandler()
     private let coreSystem: CoreSystem
+    
+    private lazy var toolbarContainerView: UIView = {
+        let view = UIView()
+        view.clipsToBounds = true
+        view.layer.masksToBounds = true
+        view.layer.cornerRadius = CornerRadius.large.rawValue
+        view.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
+        
+        return view
+    }()
+    
+    private lazy var toolbar: UITabBar = {
+        let toolbar = UITabBar()
+        toolbar.delegate = self
+        toolbar.isTranslucent = false
+        toolbar.barTintColor = LightColors.Background.cards
+        toolbar.tintColor = LightColors.Text.two
+        toolbar.unselectedItemTintColor = LightColors.Text.two
+        
+        return toolbar
+    }()
     
     private lazy var subHeaderView: UIView = {
         let subHeaderView = UIView()
@@ -90,7 +109,7 @@ class HomeScreenViewController: UIViewController, Subscriber {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     deinit {
         Store.unsubscribe(self)
     }
@@ -144,23 +163,24 @@ class HomeScreenViewController: UIViewController, Subscriber {
     }
     
     // MARK: Setup
-
+    
     private func addSubviews() {
         view.addSubview(subHeaderView)
         subHeaderView.addSubview(logoImageView)
         subHeaderView.addSubview(totalAssetsTitleLabel)
         subHeaderView.addSubview(totalAssetsAmountLabel)
         view.addSubview(promptContainerStack)
-        view.addSubview(toolbar)
+        view.addSubview(toolbarContainerView)
+        toolbarContainerView.addSubview(toolbar)
         
         assetListTableView.refreshControl = pullToRefreshControl
         pullToRefreshControl.layer.zPosition = assetListTableView.view.layer.zPosition - 1
     }
-
+    
     private func addConstraints() {
         let headerHeight: CGFloat = 64
         let toolbarHeight: CGFloat = 84.0
-
+        
         subHeaderView.constrain([
             subHeaderView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             subHeaderView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: -Margins.huge.rawValue),
@@ -185,7 +205,7 @@ class HomeScreenViewController: UIViewController, Subscriber {
             promptContainerStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Margins.large.rawValue),
             promptContainerStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Margins.large.rawValue),
             promptContainerStack.topAnchor.constraint(equalTo: subHeaderView.bottomAnchor, constant: Margins.huge.rawValue),
-                promptContainerStack.heightAnchor.constraint(equalToConstant: 0).priority(.defaultLow)])
+            promptContainerStack.heightAnchor.constraint(equalToConstant: 0).priority(.defaultLow)])
         
         addChildViewController(assetListTableView, layout: {
             assetListTableView.view.constrain([
@@ -195,13 +215,17 @@ class HomeScreenViewController: UIViewController, Subscriber {
                 assetListTableView.view.bottomAnchor.constraint(equalTo: toolbar.topAnchor)])
         })
         
-        toolbar.constrain([
-            toolbar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            toolbar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            toolbar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            toolbar.heightAnchor.constraint(equalToConstant: toolbarHeight) ])
+        toolbarContainerView.constrain([
+            toolbarContainerView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            toolbarContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            toolbarContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            toolbarContainerView.heightAnchor.constraint(equalToConstant: toolbarHeight)])
+        
+        toolbar.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
     }
-
+    
     private func setInitialData() {
         title = ""
         view.backgroundColor = LightColors.Background.two
@@ -211,44 +235,28 @@ class HomeScreenViewController: UIViewController, Subscriber {
         updateTotalAssets()
     }
     
+    private let tabBarButtons = [(L10n.Button.home, UIImage(named: "home"), #selector(showHome)),
+                                 (L10n.HomeScreen.trade, UIImage(named: "trade"), #selector(trade)),
+                                 (L10n.HomeScreen.buy, UIImage(named: "buy"), #selector(buy)),
+                                 (L10n.Button.profile, UIImage(named: "user"), #selector(profile)),
+                                 (L10n.HomeScreen.menu, UIImage(named: "more"), #selector(menu))]
+    
     private func setupToolbar() {
-        toolbar.isTranslucent = false
-        toolbar.clipsToBounds = true
-        toolbar.layer.cornerRadius = CornerRadius.large.rawValue
-        toolbar.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
+        var buttons = [UITabBarItem]()
         
-        let buttons = [
-            (L10n.Button.home, #imageLiteral(resourceName: "home"), #selector(showHome)),
-            (L10n.HomeScreen.trade, #imageLiteral(resourceName: "trade"), #selector(trade)),
-            (L10n.HomeScreen.buy, #imageLiteral(resourceName: "buy"), #selector(buy)),
-            (L10n.Button.profile, #imageLiteral(resourceName: "user"), #selector(profile)),
-            (L10n.HomeScreen.menu, #imageLiteral(resourceName: "more"), #selector(menu))].map { (title, image, selector) -> UIBarButtonItem in
-                let button = UIButton.vertical(title: title, image: image)
-                button.tintColor = .gray1
-                button.addTarget(self, action: selector, for: .touchUpInside)
-                return UIBarButtonItem(customView: button)
-            }
-        
-        let paddingWidth = Margins.large.rawValue
-        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        toolbarButtons = []
-        toolbar.items = [flexibleSpace, buttons[0],
-                         flexibleSpace, buttons[1],
-                         flexibleSpace, buttons[2],
-                         flexibleSpace, buttons[3],
-                         flexibleSpace, buttons[4],
-                         flexibleSpace]
-        
-        let buttonWidth = (view.bounds.width - (paddingWidth * CGFloat(buttons.count + 1))) / CGFloat(buttons.count)
-        let buttonHeight = CGFloat(44.0)
-        buttons.forEach {
-            $0.customView?.frame = CGRect(x: 0, y: 0, width: buttonWidth, height: buttonHeight)
-            
-            // Stash the UIButton's wrapped by the toolbar items in case we need add a badge later.
-            if let button = $0.customView as? UIButton {
-                self.toolbarButtons.append(button)
-            }
+        tabBarButtons.forEach { title, image, _ in
+            let button = UITabBarItem(title: title, image: image, selectedImage: image)
+            button.setTitleTextAttributes([NSAttributedString.Key.font: Fonts.button], for: .normal)
+            buttons.append(button)
         }
+        
+        toolbar.items = buttons
+    }
+    
+    func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
+        guard let index = toolbar.items?.firstIndex(where: { $0 == item }) else { return }
+        perform(tabBarButtons[index].2)
+        tabBar.selectedItem = nil
     }
     
     private func setupSubscriptions() {
@@ -272,7 +280,7 @@ class HomeScreenViewController: UIViewController, Subscriber {
         Store.subscribe(self, name: .didUpgradePin, callback: { _ in
             if self.generalPromptView.type == .upgradePin {
                 self.hidePrompt(self.generalPromptView)
-
+                
             }
         })
         
@@ -295,7 +303,7 @@ class HomeScreenViewController: UIViewController, Subscriber {
         
         let fiatTotal: Decimal = Store.state.wallets.values.map {
             guard let balance = $0.balance,
-                let rate = $0.currentRate else { return 0.0 }
+                  let rate = $0.currentRate else { return 0.0 }
             let amount = Amount(amount: balance,
                                 rate: rate)
             return amount.fiatValue
@@ -320,7 +328,7 @@ class HomeScreenViewController: UIViewController, Subscriber {
                     $0[$1.0] = balance.cryptoAmount.double(as: unit) ?? 0
                 }
             }
-
+        
         coreSystem.widgetDataShareService.updatePortfolio(info: info)
         coreSystem.widgetDataShareService.quoteCurrencyCode = Store.state.defaultCurrencyCode
     }

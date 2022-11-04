@@ -9,25 +9,6 @@
 import UIKit
 
 extension UIButton {
-    static func vertical(title: String, image: UIImage) -> UIButton {
-        let button = UIButton(type: .system)
-        button.setTitle(title, for: .normal)
-        button.setImage(image, for: .normal)
-        button.titleLabel?.font = Fonts.button
-        button.contentMode = .center
-        button.imageView?.contentMode = .center
-        if let imageSize = button.imageView?.image?.size,
-            let font = button.titleLabel?.font {
-            let spacing: CGFloat = Margins.extraSmall.rawValue
-            let titleSize = NSString(string: title).size(withAttributes: [NSAttributedString.Key.font: font])
-
-            // These edge insets place the image vertically above the title label
-            button.titleEdgeInsets = UIEdgeInsets(top: 0.0, left: -imageSize.width, bottom: -(26.0 + spacing), right: 0.0)
-            button.imageEdgeInsets = UIEdgeInsets(top: -(titleSize.height + spacing), left: 0.0, bottom: 0.0, right: -titleSize.width)
-        }
-        return button
-    }
-    
     static func rounded(title: String) -> UIButton {
         let button = UIButton(type: .system)
         button.setTitle(title, for: .normal)
@@ -58,7 +39,7 @@ extension UIButton {
         button.tintColor = LightColors.Text.three
         return button
     }
-
+    
     static func buildFaqButton(articleId: String, currency: Currency? = nil, position: NavBarButtonPosition, tapped: (() -> Void)? = nil) -> UIButton {
         let button = UIButton.icon(image: #imageLiteral(resourceName: "faqIcon"), accessibilityLabel: L10n.AccessibilityLabels.faq, position: position)
         button.tintColor = LightColors.Text.three

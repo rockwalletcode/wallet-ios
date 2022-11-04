@@ -108,8 +108,8 @@ class OnboardingViewController: UIViewController {
     
     // CTA's that appear at the bottom of the screen
     private let createWalletButton = BRDButton(title: "", type: .secondary)
-    private let recoverButton = BRDButton(title: "", type: .blackTransparent)
-    private let restoreButton = BRDButton(title: "", type: .blackTransparent)
+    private let recoverButton = BRDButton(title: "", type: .underlined)
+    private let restoreButton = BRDButton(title: "", type: .underlined)
     
     // Constraints used to show and hide the bottom buttons.
     private var topButtonAnimationConstraint: NSLayoutConstraint?

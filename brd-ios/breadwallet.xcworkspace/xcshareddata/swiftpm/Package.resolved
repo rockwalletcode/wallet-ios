@@ -60,7 +60,7 @@
       "location" : "https://github.com/rockwalletcode/WalletKitCore.git",
       "state" : {
         "branch" : "main",
-        "revision" : "12f02841e6becfe9c871b618415d211a4c23b942"
+        "revision" : "2ae85d2de7d4af7553c68bb8d3f588e48e004a9b"
       }
     },
     {
@@ -69,7 +69,7 @@
       "location" : "https://github.com/rockwalletcode/WalletKitSwift.git",
       "state" : {
         "branch" : "main",
-        "revision" : "c4451c1bd281c90e4b10067ae485a017f26e2600"
+        "revision" : "5b1ba5f33cfdacdee1046d2262a91aa819a7660b"
       }
     }
   ],

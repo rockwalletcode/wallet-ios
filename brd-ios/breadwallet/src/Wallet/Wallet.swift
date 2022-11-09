@@ -325,6 +325,10 @@ class Wallet {
 
 extension Wallet {
     
+    func requestSync() {
+        core.system.requestSync(system: core.manager.system, manager: core.manager)
+    }
+    
     func blockUpdated() {
         publishEvent(.blockUpdated(height: 0))
     }

@@ -116,6 +116,8 @@ class TransactionsTableViewController: UITableViewController, Subscriber {
         .transactions
     ]
     
+    private var timer = Timer()
+    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
@@ -212,6 +214,10 @@ class TransactionsTableViewController: UITableViewController, Subscriber {
     }
     
     private func subscribeToTransactionUpdates() {
+        wallet?.requestSync()
+        self.timer = Timer.scheduledTimer(withTimeInterval: 20, repeats: true, block: { [weak self] _ in
+                self?.wallet?.requestSync()
+            }) // Repeat every 20 seconds while self exists
         wallet?.subscribe(self) { [weak self] event in
             switch event {
             case .balanceUpdated,

@@ -9,7 +9,6 @@
 //
 
 import UIKit
-import SnapKit
 
 struct LinkConfiguration: Configurable {
     var title: LabelConfiguration?

@@ -16,8 +16,11 @@ class KYCBasicStore: NSObject, BaseDataStore, KYCBasicDataStore {
     var lastName: String?
     var country: String?
     var countryFullName: String?
+    var state: String?
+    var stateName: String?
     var birthdate: Date?
     var birthDateString: String?
     
+    var countries: [Country]?
     // MARK: - Aditional helpers
 }

@@ -20,65 +20,17 @@ class BaseInfoViewController: BaseTableViewController<BaseCoordinator,
     var descriptionText: String? { return "THIS AS WELL" }
     
     var buttonViewModels: [ButtonViewModel] { return [] }
-    var buttonConfigs: [ButtonConfiguration] {
-        return [
-            Presets.Button.primary,
-            Presets.Button.noBorders
-        ]
-    }
-    var buttonCallbacks: [(() -> Void)] { return [] }
-    
-    private lazy var buttonStack: UIStackView = {
-        let view = UIStackView()
-        view.axis = .vertical
-        view.spacing = Margins.extraSmall.rawValue
-        return view
-    }()
+    var buttonConfigurations: [ButtonConfiguration] { return [] }
     
     // MARK: - Overrides
     
     override var closeImage: UIImage? { return .init(named: "")}
     
-    override func setupSubviews() {
-        super.setupSubviews()
+    override func setupVerticalButtons() {
+        super.setupVerticalButtons()
         
-        view.addSubview(buttonStack)
-        tableView.snp.removeConstraints()
-        tableView.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(ViewSizes.extraExtraHuge.rawValue * 2)
-            make.leading.trailing.equalToSuperview()
-            make.bottom.equalTo(buttonStack.snp.top)
-        }
-        
-        for (index, model) in buttonViewModels.enumerated() {
-            let config = buttonConfigs.indices.contains(index) ? buttonConfigs[index] : buttonConfigs.first
-            let button = FEButton()
-            button.configure(with: config ?? Presets.Button.primary)
-            button.setup(with: model)
-            button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
-            button.snp.makeConstraints { make in
-                make.height.equalTo(ViewSizes.Common.largeCommon.rawValue)
-            }
-            buttonStack.addArrangedSubview(button)
-        }
-        let count = CGFloat(buttonStack.arrangedSubviews.count)
-        var height = ViewSizes.Common.largeCommon.rawValue * count
-        height += Margins.extraSmall.rawValue * (count - 1)
-        
-        buttonStack.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.leading.equalToSuperview().inset(Margins.large.rawValue)
-            make.bottom.equalTo(view.snp.bottomMargin)
-            make.height.equalTo(height)
-        }
-    }
-    
-    override func prepareData() {
-        super.prepareData()
-        
-        for (button, model) in zip(buttonStack.arrangedSubviews, buttonViewModels) {
-            (button as? FEButton)?.setup(with: model)
-        }
+        verticalButtons.wrappedView.configure(with: .init(buttons: buttonConfigurations))
+        verticalButtons.wrappedView.setup(with: .init(buttons: buttonViewModels))
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -168,16 +120,6 @@ class BaseInfoViewController: BaseTableViewController<BaseCoordinator,
     }
     
     // MARK: - User Interaction
-    
-    @objc func buttonTapped(_ sender: UIButton) {
-        guard let index = buttonStack.arrangedSubviews.firstIndex(of: sender),
-              buttonCallbacks.indices.contains(index)
-        else {
-            buttonCallbacks.first?()
-            return
-        }
-        buttonCallbacks[index]()
-    }
     
     // MARK: - SwapInfoResponseDisplay
     

@@ -9,7 +9,6 @@
 //
 
 import UIKit
-import SnapKit
 
 enum Kyc2: String, Equatable {
     case notStarted = "KYC2_NOT_STARTED"
@@ -157,7 +156,6 @@ struct VerificationConfiguration: Configurable {
     var shadow: ShadowConfiguration?
     var background: BackgroundConfiguration?
     var title: LabelConfiguration?
-    // TODO: custom
     var status: StatusViewConfiguration?
     var infoButton: ButtonConfiguration?
     var description: LabelConfiguration?
@@ -172,7 +170,6 @@ enum KYC {
 struct VerificationViewModel: ViewModel {
     var kyc: KYC
     var title: LabelViewModel?
-    // TODO: custom
     var status: VerificationStatus
     var infoButton: ButtonViewModel?
     var description: LabelViewModel?

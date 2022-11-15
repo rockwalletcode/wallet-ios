@@ -75,7 +75,6 @@ class FETimerView: FEView<TimerConfiguration, TimerViewModel> {
         let dateValue = TimeInterval(viewModel.till / 1000.0)
         triggerDate = Date(timeIntervalSince1970: dateValue)
         
-        // TODO: replace with animation
         iconView.setup(with: viewModel.image)
         
         invalidate()

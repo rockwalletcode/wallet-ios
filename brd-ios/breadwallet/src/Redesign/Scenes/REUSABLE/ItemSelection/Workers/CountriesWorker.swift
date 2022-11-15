@@ -8,8 +8,20 @@ struct CountriesResponseData: ModelResponse {
     struct CountryResponseData: ModelResponse {
         var iso2: String
         var localizedName: String
+        var states: [USState]?
     }
     var countries: [CountryResponseData]
+}
+
+struct USState: ModelResponse, ItemSelectable {
+    var iso2: String
+    var name: String
+    
+    var displayName: String? {
+        return name
+    }
+    
+    var displayImage: ImageViewModel? { return nil }
 }
 
 protocol ItemSelectable {
@@ -21,12 +33,22 @@ struct Country: Model, ItemSelectable {
     var code: String
     var name: String
     
+    var states: [USState]?
+    
     var displayName: String? { return name }
     var displayImage: ImageViewModel? { return .imageName(code) }
 }
+
 class CountriesMapper: ModelMapper<CountriesResponseData, [Country]> {
     override func getModel(from response: CountriesResponseData?) -> [Country]? {
-        return response?.countries.compactMap { return .init(code: $0.iso2, name: $0.localizedName) }
+        var countries = response?.countries.compactMap({ return Country(code: $0.iso2, name: $0.localizedName, states: $0.states) })
+        
+        if let firstIndexUS = countries?.firstIndex(where: { $0.code == "US" }), let us = countries?[firstIndexUS] {
+            countries?.remove(at: firstIndexUS)
+            countries?.insert(us, at: 0)
+        }
+        
+        return countries
     }
 }
 

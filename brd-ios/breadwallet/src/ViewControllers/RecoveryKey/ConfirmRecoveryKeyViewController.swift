@@ -19,8 +19,14 @@ class ConfirmRecoveryKeyViewController: BaseRecoveryKeyViewController {
     
     private let firstWordInputView = RecoveryKeyWordInputView()
     private let secondWordInputView = RecoveryKeyWordInputView()
-    private let continueButton = BRDButton(title: L10n.Button.continueAction, type: .primary)
-
+    
+    private lazy var continueButton: FEButton = {
+        let view = FEButton()
+        view.configure(with: Presets.Button.primary)
+        view.setup(with: .init(title: L10n.Button.continueAction))
+        return view
+    }()
+    
     typealias ConfirmationWordIndices = (first: Int, second: Int)
 
     private let confirmationIndices: (ConfirmationWordIndices) = {
@@ -114,7 +120,7 @@ class ConfirmRecoveryKeyViewController: BaseRecoveryKeyViewController {
         
         constrainContinueButton(continueButton)
         
-        continueButton.title = L10n.Button.confirm
+        continueButton.setup(with: .init(title: L10n.Button.confirm))
         
         continueButton.tap = { [unowned self] in
             self.userDidWriteKey()

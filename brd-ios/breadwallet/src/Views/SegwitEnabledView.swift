@@ -13,7 +13,7 @@ class SegwitEnabledView: UIView {
     private let primaryLabel = UILabel.wrapping(font: .customBody(size: 13.0), color: .white)
     private let secondaryLabel = UILabel.wrapping(font: .customBody(size: 11.0), color: .white)
     let home = BRDButton(title: L10n.Segwit.homeButton, type: .primary)
-    let checkView = LinkStatusCircle(colour: .greenCheck)
+    let checkView = LinkStatusCircle(colour: LightColors.Success.one)
     
     init() {
         super.init(frame: .zero)

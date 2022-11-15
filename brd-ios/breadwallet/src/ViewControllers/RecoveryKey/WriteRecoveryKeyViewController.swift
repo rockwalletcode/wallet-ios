@@ -45,7 +45,14 @@ class WriteRecoveryKeyViewController: BaseRecoveryKeyViewController {
     private let headingLabel = UILabel()
     private let subheadingLabel = UILabel()
     private let stepLabel = UILabel()
-    private let doneButton = BRDButton(title: L10n.Button.done, type: .primary)
+    
+    private lazy var doneButton: FEButton = {
+        let view = FEButton()
+        view.configure(with: Presets.Button.primary)
+        view.setup(with: .init(title: L10n.Button.done))
+        return view
+    }()
+    
     private let infoView = InfoView()
     
     var pageIndex: Int = 0 {

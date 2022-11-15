@@ -26,6 +26,10 @@ class KYCBasicInteractor: NSObject, Interactor, KYCBasicViewActions {
                         self?.dataStore?.lastName = profileData?.lastName
                         self?.dataStore?.country = profileData?.country
                         self?.dataStore?.countryFullName = data?.first(where: { $0.code == self?.dataStore?.country })?.name
+                        if let state = profileData?.state {
+                            self?.dataStore?.state = state
+                            self?.dataStore?.stateName = data?.first(where: { $0.code == self?.dataStore?.country })?.states?.first(where: { $0.iso2 == state })?.name
+                        }
                         
                         self?.dataStore?.birthdate = self?.getBirthDateFormatter().date(from: profileData?.dateOfBirth ?? "")
                         if let birthDate = self?.dataStore?.birthdate {
@@ -46,6 +50,17 @@ class KYCBasicInteractor: NSObject, Interactor, KYCBasicViewActions {
                 self?.presenter?.presentError(actionResponse: .init(error: error))
             }
         }
+        
+        let data = CountriesRequestData()
+        CountriesWorker().execute(requestData: data) { [weak self] result in
+            switch result {
+            case .success(let data):
+                self?.dataStore?.countries = data
+                
+            case .failure(let error):
+                self?.presenter?.presentError(actionResponse: .init(error: error))
+            }
+        }
     }
     
     func nameSet(viewAction: KYCBasicModels.Name.ViewAction) {
@@ -61,20 +76,25 @@ class KYCBasicInteractor: NSObject, Interactor, KYCBasicViewActions {
             dataStore?.countryFullName = viewAction.countryFullName
             presenter?.presentData(actionResponse: .init(item: dataStore))
             validate(viewAction: .init())
-            
             return
         }
         
-        let data = CountriesRequestData()
-        CountriesWorker().execute(requestData: data) { [weak self] result in
-            switch result {
-            case .success(let data):
-                self?.presenter?.presentCountry(actionResponse: .init(countries: data))
-                
-            case .failure(let error):
-                self?.presenter?.presentError(actionResponse: .init(error: error))
-            }
+        presenter?.presentCountry(actionResponse: .init(countries: dataStore?.countries))
+    }
+    
+    func pickState(viewAction: KYCBasicModels.SelectState.ViewAction) {
+        guard viewAction.state == nil,
+              let countryCode = dataStore?.country,
+              let states = dataStore?.countries?.first(where: { $0.code == countryCode })?.states
+        else {
+            dataStore?.state = viewAction.state?.iso2
+            dataStore?.stateName = viewAction.state?.name
+            presenter?.presentData(actionResponse: .init(item: dataStore))
+            validate(viewAction: .init())
+            return
         }
+        
+        presenter?.presentState(actionResponse: .init(states: states))
     }
     
     func birthDateSet(viewAction: KYCBasicModels.BirthDate.ViewAction) {
@@ -88,10 +108,14 @@ class KYCBasicInteractor: NSObject, Interactor, KYCBasicViewActions {
     }
     
     func validate(viewAction: KYCBasicModels.Validate.ViewAction) {
-        let isValid = FieldValidator.validate(fields: [dataStore?.firstName,
+        var isValid = FieldValidator.validate(fields: [dataStore?.firstName,
                                                        dataStore?.lastName,
                                                        dataStore?.country,
                                                        dataStore?.birthDateString])
+        if dataStore?.country == "US" {
+            // only US customers need to fill out the state field
+            isValid = isValid && FieldValidator.validate(fields: [dataStore?.state])
+        }
         
         presenter?.presentValidate(actionResponse: .init(isValid: isValid))
     }
@@ -100,6 +124,7 @@ class KYCBasicInteractor: NSObject, Interactor, KYCBasicViewActions {
         guard let firstName = dataStore?.firstName,
               let lastName = dataStore?.lastName,
               let country = dataStore?.country,
+              let state = dataStore?.state,
               let birthDateText = dataStore?.birthDateString,
               let birthDate = dataStore?.birthdate else {
             return
@@ -114,6 +139,7 @@ class KYCBasicInteractor: NSObject, Interactor, KYCBasicViewActions {
         let data = KYCBasicRequestData(firstName: firstName,
                                        lastName: lastName,
                                        country: country,
+                                       state: state,
                                        birthDate: birthDateText)
         KYCLevelOneWorker().execute(requestData: data) { [weak self] result in
             switch result {

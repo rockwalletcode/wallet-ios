@@ -133,9 +133,9 @@ class EnterPhraseCell: UICollectionViewCell {
     }
 
     private var accessoryView: UIView {
-        let view = UIView(color: .secondaryButton)
+        let view = UIView(color: LightColors.Background.one)
         view.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 44)
-        let topBorder = UIView(color: .secondaryShadow)
+        let topBorder = UIView(color: LightColors.Outline.one)
         view.addSubview(topBorder)
         view.addSubview(previousField)
         view.addSubview(nextField)

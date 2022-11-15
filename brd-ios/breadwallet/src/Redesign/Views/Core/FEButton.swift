@@ -36,6 +36,7 @@ struct ButtonViewModel: ViewModel {
     var isUnderlined = false
     var image: String?
     var enabled = true
+    var callback: (() -> Void)?
 }
 
 class FEButton: UIButton, ViewProtocol, StateDisplayable, Borderable, Shadable {
@@ -128,6 +129,12 @@ class FEButton: UIButton, ViewProtocol, StateDisplayable, Borderable, Shadable {
         }
         
         isEnabled = viewModel.enabled
+        
+        addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+    }
+    
+    @objc private func buttonTapped() {
+        viewModel?.callback?()
     }
     
     func animateTo(state: DisplayState, withAnimation: Bool = true) {

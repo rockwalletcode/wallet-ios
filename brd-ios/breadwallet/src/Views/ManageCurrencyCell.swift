@@ -51,9 +51,7 @@ class ManageCurrencyCell: UITableViewCell {
     func set(currency: CurrencyMetaData, balance: Amount?, listType: EditWalletType, isHidden: Bool, isRemovable: Bool) {
         header.text = currency.name
         iconImageView.wrappedView.setup(with: .image(currency.imageSquareBackground))
-        iconImageView.configure(background: BackgroundConfiguration(tintColor: currency.isSupported ? .white : .disabledBackground,
-                                                                    border: .init(borderWidth: 0,
-                                                                                  cornerRadius: .fullRadius)))
+        iconImageView.configure(background: BackgroundConfiguration(border: .init(borderWidth: 0, cornerRadius: .fullRadius)))
         isCurrencyHidden = isHidden
         isCurrencyRemovable = isRemovable
         identifier = currency.uid

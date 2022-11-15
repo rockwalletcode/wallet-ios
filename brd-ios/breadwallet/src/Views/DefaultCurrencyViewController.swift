@@ -46,7 +46,7 @@ class DefaultCurrencyViewController: UITableViewController, Subscriber {
         tableView.separatorStyle = .none
         tableView.backgroundColor = LightColors.Background.one
 
-        let titleLabel = UILabel(font: .customBold(size: 17.0), color: .almostBlack)
+        let titleLabel = UILabel(font: .customBold(size: 17.0), color: LightColors.Text.one)
         titleLabel.text = L10n.Settings.currency
         titleLabel.sizeToFit()
         navigationItem.titleView = titleLabel

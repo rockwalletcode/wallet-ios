@@ -11,7 +11,7 @@ import UIKit
 class SegwitViewController: UIViewController {
     
     let logo = UIImageView(image: UIImage(named: "SegWitLogo"))
-    let label = UILabel.wrapping(font: .customBody(size: 14.0), color: .almostBlack)
+    let label = UILabel.wrapping(font: .customBody(size: 14.0), color: LightColors.Text.one)
     let button = BRDButton(title: L10n.Segwit.enable, type: .primary)
     let confirmView = EnableSegwitView()
     let enabled = SegwitEnabledView()

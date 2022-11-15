@@ -13,7 +13,6 @@ enum ButtonType {
     case secondary
     case tertiary
     case underlined
-    case secondaryTransparent
     case search
 }
 
@@ -97,9 +96,9 @@ class BRDButton: UIControl {
             
             switch type {
             case .tertiary:
-                container.layer.borderColor = UIColor.primaryButton.cgColor
-                imageView?.tintColor = .primaryButton
-                label.textColor = .primaryButton
+                imageView?.tintColor = LightColors.primaryPressed
+                label.textColor = LightColors.primaryPressed
+                container.layer.borderColor = LightColors.primaryPressed.cgColor
                 
             case .search:
                 imageView?.tintColor = LightColors.Contrast.two
@@ -164,7 +163,6 @@ class BRDButton: UIControl {
 
     private func addContent() {
         addSubview(container)
-        container.backgroundColor = .primaryButton
         container.isUserInteractionEnabled = false
         container.constrain(toSuperviewEdges: nil)
         label.text = title
@@ -241,12 +239,6 @@ class BRDButton: UIControl {
             container.backgroundColor = .clear
             label.textColor = LightColors.Contrast.two
             imageView?.tintColor = LightColors.Contrast.two
-        case .secondaryTransparent:
-            container.backgroundColor = .transparentButton
-            label.textColor = .black
-            container.layer.borderColor = nil
-            container.layer.borderWidth = 0.0
-            imageView?.tintColor = .white
         case .search:
             label.font = Fonts.Body.two
             container.backgroundColor = LightColors.Background.two

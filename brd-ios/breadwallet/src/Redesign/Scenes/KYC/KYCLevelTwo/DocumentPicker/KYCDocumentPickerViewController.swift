@@ -36,7 +36,7 @@ class KYCDocumentPickerViewController: BaseTableViewController<KYCCoordinator,
         case .documents:
             cell = self.tableView(tableView, navigationCellForRowAt: indexPath)
             (cell as? WrapperTableViewCell<NavigationItemView>)?.setup({ view in
-                view.configure(with: .init(image: Presets.Image.primary,
+                view.configure(with: .init(image: BackgroundConfiguration(tintColor: LightColors.Text.one),
                                            label: .init(font: Fonts.Body.one,
                                                         textColor: LightColors.Contrast.one),
                                            background: .init(backgroundColor: LightColors.Background.cards)))

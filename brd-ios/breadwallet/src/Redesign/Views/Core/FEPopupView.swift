@@ -9,7 +9,6 @@
 //
 
 import UIKit
-import SnapKit
 
 struct PopupConfiguration: Configurable {
     var background: BackgroundConfiguration?

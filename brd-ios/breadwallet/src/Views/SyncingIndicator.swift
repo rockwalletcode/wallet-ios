@@ -74,7 +74,7 @@ class SyncingIndicator: UIView {
         setupConstraints()
         
         label.font = (style == .home) ? .customBold(size: 12.0) : .customBody(size: 14.0)
-        label.textColor = (style == .home) ? .transparentBlack : UIColor(red: 0.08, green: 0.07, blue: 0.2, alpha: 0.4)
+        label.textColor = (style == .home) ? LightColors.Outline.one : LightColors.Text.two
         label.textAlignment = .right
         label.text = text
     }

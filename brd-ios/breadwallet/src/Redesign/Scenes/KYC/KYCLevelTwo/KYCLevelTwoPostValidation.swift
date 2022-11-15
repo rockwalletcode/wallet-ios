@@ -19,12 +19,6 @@ class KYCLevelTwoPostValidationViewController: CheckListViewController {
     ]
     }
     
-    override func prepareData() {
-        super.prepareData()
-        
-        confirmButton.wrappedView.setup(with: .init(title: L10n.Button.confirm))
-    }
-    
     override func buttonTapped() {
         UserManager.shared.refresh { [weak self] _ in
             (self?.coordinator as? KYCCoordinator)?.dismissFlow()

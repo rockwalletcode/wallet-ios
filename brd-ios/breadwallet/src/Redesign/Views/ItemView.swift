@@ -19,6 +19,13 @@ struct ItemViewModel: ViewModel {
 }
 
 class ItemView: FEView<ItemViewConfiguration, ItemViewModel> {
+    private lazy var stack: UIStackView = {
+        let view = UIStackView()
+        view.spacing = Margins.large.rawValue
+        view.axis = .horizontal
+        return view
+    }()
+    
     private lazy var imageView: FEImageView = {
         let view = FEImageView()
         return view
@@ -31,20 +38,17 @@ class ItemView: FEView<ItemViewConfiguration, ItemViewModel> {
     
     override func setupSubviews() {
         super.setupSubviews()
-        content.addSubview(imageView)
+        content.addSubview(stack)
+        stack.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        stack.addArrangedSubview(imageView)
         imageView.snp.makeConstraints { make in
             make.width.equalTo(Margins.extraHuge.rawValue)
             make.height.equalTo(Margins.huge.rawValue)
-            make.leading.equalToSuperview()
-            make.centerY.equalToSuperview()
         }
         
-        content.addSubview(titleLabel)
-        titleLabel.snp.makeConstraints { make in
-            make.leading.equalTo(imageView.snp.trailing).offset(Margins.large.rawValue)
-            make.centerY.equalToSuperview()
-            make.trailing.equalToSuperview()
-        }
+        stack.addArrangedSubview(titleLabel)
     }
     
     override func configure(with config: ItemViewConfiguration?) {
@@ -56,7 +60,10 @@ class ItemView: FEView<ItemViewConfiguration, ItemViewModel> {
         
         titleLabel.setup(with: .text(viewModel.title))
 
-        let image = viewModel.image ?? .imageName("logo_icon")
+        imageView.isHidden = viewModel.image == nil
+        guard let image = viewModel.image else {
+            return
+        }
         imageView.setup(with: image)
     }
 }

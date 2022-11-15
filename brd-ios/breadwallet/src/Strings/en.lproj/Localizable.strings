@@ -102,6 +102,11 @@
 
 "Account.SelectCountry" = "Select country";
 
+"Account.SelectState" = "Select state";
+
+/* State title label in select state view */
+"Account.State" = "State";
+
 /* Submit your photo for document id title */
 "Account.SubmitPhoto" = "Submit your photo";
 
@@ -111,7 +116,7 @@
 /* Upgrade your limits label in profile screen */
 "Account.UpgradeLimits" = "Upgrade your limits";
 
-"Account.UpgradeVerificationIdentity" = "You need to upgrade your verification status before you can buy or swap assets.";
+"Account.UpgradeVerificationIdentity" = "You need to upgrade your verification status before you can buy assets.";
 
 /* You need to be at least 18 years old to complete Level 1 verification label in verify account */
 "Account.Verification" = "You need to be at least 18 years old to complete Level 1 verification";
@@ -130,7 +135,7 @@
 /* Enter and verify your email address for your account label in registration flow */
 "Account.VerifyEmail" = "Enter and verify your new email address for your RockWallet account.";
 
-"Account.VerifyIdentity" = "We need to verify your identity before you can buy or swap assets.";
+"Account.VerifyIdentity" = "We need to verify your identity before you can %@ assets.";
 
 /* Verify personal information text explanation */
 "Account.VerifyPersonalInformation" = "We need to verify your personal information for compliance purposes. This information won’t be shared with outside sources unless required by law.";
@@ -584,6 +589,12 @@
 /* 3D Secure label on buy flow */
 "Buy.3DSecure" = "3D Secure";
 
+"Buy.achFee" = "ACH fee (%s)";
+
+"Buy.achPaymentDurationWarning" = "Currently, ACH payments will take 7-10 days to complete.";
+
+"Buy.achPayments" = "ACH Payments";
+
 /* Add card title for buy cryptos */
 "Buy.AddCard" = "Add card";
 
@@ -597,9 +608,11 @@
 "Buy.BillingAddress" = "Billing address";
 
 /* Buy min and max limit text */
-"Buy.BuyLimits" = "Currently, minimum limit for buy is $%@ USD and maximum limit is $%@ USD/day.";
+"Buy.BuyLimits" = "Currently, minimum for Buy is $%@ USD and maximum is $%@ USD/day.";
 
-"Buy.BuyLimits.android" = "Currently, minimum limit for buy is $30.00 USD and maximum limit is $500.00 USD per day.";
+"Buy.BuyLimits.android" = "Currently, minimum for Buy is $30.00 USD and maximum is $500.00 USD per day.";
+
+"Buy.buyWithCard" = "Buy with card";
 
 /* Card label on add card flow */
 "Buy.Card" = "Card";
@@ -645,12 +658,16 @@
 /* First Name label in billing address view on buy flow */
 "Buy.FirstName" = "First Name";
 
+"Buy.fundWithAch" = "Fund with ACH";
+
 "Buy.InvalidExpirationDate" = "Entered expiration date is not valid!";
 
 "Buy.iWant" = "I want";
 
 /* Last Name label in billing address view on buy flow */
 "Buy.LastName" = "Last Name";
+
+"Buy.linkBankAccount" = "Link bank account";
 
 /* Month and year label in add card flow */
 "Buy.MonthYear" = "MM/YY";
@@ -712,10 +729,14 @@
 
 "Buy.Terms.android" = "By placing this order you agree to our %@";
 
+"Buy.transferFromBank" = "Transfer from bank account";
+
 /* Try a different payment method button title in failure buy screen */
 "Buy.TryAnotherPayment" = "Try a different payment method";
 
 "Buy.txHashHeader" = "%@ Transaction ID";
+
+"Buy.understandAndAgree" = "I understand and agree";
 
 /* Your order label in buy flow */
 "Buy.YourOrder" = "Your order:";
@@ -798,6 +819,14 @@
 "CloudBackup.understandText" = "I understand that this feature will not work unless iCloud Keychain is enabled.";
 
 "CloudBackup.warningBody" = "Your iCloud backup will be erased after %1$@ more incorrect PIN attempts.";
+
+"ComingSoon.body" = "Buy and Swap aren't currently available in your state. We'll notify you when you can use these features.\n\nYou can still safely send and receive digital assets to your wallet in the meantime.";
+
+"ComingSoon.buttons.backHome" = "BACK TO HOME";
+
+"ComingSoon.buttons.contactSupport" = "Contat support";
+
+"ComingSoon.title" = "Coming soon!";
 
 /* Amount to Send: ($1.00) */
 "Confirmation.amountLabel" = "Amount to Send:";
@@ -933,7 +962,7 @@
 "ErrorMessages.emailUnavailableTitle" = "Email Unavailable";
 
 /* Not enough ETH for transaction fee */
-"ErrorMessages.ethBalanceLowAddEth" = "%s is an ERC-20 token on the Ethereum blockchain and requires ETH network fees. Please add ETH to your wallet. ";
+"ErrorMessages.ethBalanceLowAddEth" = "%s is an ERC-20 token on the Ethereum blockchain and requires ETH network fees. Please add ETH to your wallet.";
 
 "ErrorMessages.exchangeFailed" = "Swap failed. Reason: %@.";
 
@@ -1378,7 +1407,7 @@
 "OnboardingPageFour.title" = "Start investing today with as little as $50!";
 
 /* Onboarding screen Page 1 title */
-"OnboardingPageOne.title" = "Empowering you in the emerging digital asset economy";
+"OnboardingPageOne.title" = "Empowering you to navigate the digital asset economy easily and securely";
 
 /* Onboarding screen Page 3 subtitle */
 "OnboardingPageThree.subtitle" = "Invest and diversify with RockWallet, easily and securely.";
@@ -1713,7 +1742,7 @@
 "RecoveryKeyFlow.unlinkWallet" = "Unlink your wallet from this device.";
 
 /* Subtitle displayed to the user on the intro screen when unlinking a wallet. */
-"RecoveryKeyFlow.unlinkWalletSubtext" = "Start a new wallet by unlinking your device from the currently installed wallet.";
+"RecoveryKeyFlow.unlinkWalletSubtext" = "Start a new wallet by unlinking your device from the currently-installed wallet.";
 
 /* Warning displayed when the user starts the process of unlinking a wallet */
 "RecoveryKeyFlow.unlinkWalletWarning" = "Wallet must be recovered to regain access.";
@@ -2336,7 +2365,7 @@
 "Swap.SwapAgain" = "Swap again";
 
 /* Swap min and max limit text */
-"Swap.SwapLimits" = "Currently, minimum limit for swap is $%@ USD and maximum limit is $%@ USD/day.";
+"Swap.SwapLimits" = "Currently, minimum for Swap is $%@ USD and maximum is $%@ USD/day.";
 
 "Swap.Swapping" = "Swapping %1$@/%2$@";
 

@@ -22,7 +22,7 @@ class InAppAlert: UIView {
     var hide: (() -> Void)?
 
     private let close = UIButton.buildModernCloseButton(position: .middle)
-    private let message = UILabel.wrapping(font: .customBody(size: 16.0), color: .whiteTint)
+    private let message = UILabel.wrapping(font: .customBody(size: 16.0), color: LightColors.Background.one)
     private let image = UIImageView()
 
     override func draw(_ rect: CGRect) {
@@ -53,7 +53,7 @@ class InAppAlert: UIView {
         close.tap = { [weak self] in
             self?.dismiss()
         }
-        close.tintColor = .whiteTint
+        close.tintColor = LightColors.Background.one
         message.textAlignment = .center
     }
 

@@ -45,18 +45,11 @@ class BuyCoordinator: BaseCoordinator, BuyRoutes, BillingAddressRoutes, OrderPre
         navigationController.present(navController, animated: true)
     }
     
-    func showSuccess(paymentReference: String) {
+    func showSuccess(paymentReference: String, transactionType: Transaction.TransactionType) {
         open(scene: Scenes.Success) { vc in
             vc.navigationItem.hidesBackButton = true
+            vc.transactionType = transactionType
             vc.dataStore?.itemId = paymentReference
-            
-            vc.firstCallback = { [weak self] in
-                self?.goBack(completion: {})
-            }
-            
-            vc.secondCallback = { [weak self] in
-                self?.showBuyDetails(exchangeId: paymentReference)
-            }
         }
     }
     
@@ -64,28 +57,12 @@ class BuyCoordinator: BaseCoordinator, BuyRoutes, BillingAddressRoutes, OrderPre
         open(scene: Scenes.Failure) { vc in
             vc.navigationItem.hidesBackButton = true
             vc.failure = FailureReason.buy
-            
-            vc.firstCallback = { [weak self] in
-                self?.popToRoot(completion: { [weak self] in
-                    (self?.navigationController.topViewController as? BuyViewController)?.didTriggerGetData?()
-                })
-            }
-            
-            vc.secondCallback = { [weak self] in
-                self?.showSupport()
-            }
         }
     }
     
     func showTimeout() {
         open(scene: Scenes.Timeout) { vc in
             vc.navigationItem.hidesBackButton = true
-            
-            vc.firstCallback = { [weak self] in
-                self?.popToRoot(completion: { [weak self] in
-                    (self?.navigationController.topViewController as? BuyViewController)?.didTriggerGetData?()
-                })
-            }
         }
     }
     
@@ -96,25 +73,6 @@ class BuyCoordinator: BaseCoordinator, BuyRoutes, BillingAddressRoutes, OrderPre
         webViewController.setAsNonDismissableModal()
         
         navigationController.present(navController, animated: true)
-    }
-    
-    func showSupport() {
-        guard let url = URL(string: C.supportLink) else { return }
-        let webViewController = SimpleWebViewController(url: url)
-        webViewController.setup(with: .init(title: L10n.MenuButton.support))
-        let navController = RootNavigationController(rootViewController: webViewController)
-        webViewController.setAsNonDismissableModal()
-        
-        navigationController.present(navController, animated: true)
-    }
-    
-    func showBuyDetails(exchangeId: String) {
-        open(scene: ExchangeDetailsViewController.self) { vc in
-            vc.navigationItem.hidesBackButton = true
-            vc.dataStore?.itemId = exchangeId
-            vc.dataStore?.transactionType = .buyTransaction
-            vc.prepareData()
-        }
     }
     
     func showCardSelector(cards: [PaymentCard], selected: ((PaymentCard?) -> Void)?, fromBuy: Bool = true) {

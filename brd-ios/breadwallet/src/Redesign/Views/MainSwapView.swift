@@ -9,7 +9,6 @@
 //
 
 import UIKit
-import SnapKit
 
 struct MainSwapConfiguration: Configurable {
     var shadow: ShadowConfiguration?

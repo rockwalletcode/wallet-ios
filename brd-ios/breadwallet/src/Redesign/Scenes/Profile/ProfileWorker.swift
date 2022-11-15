@@ -17,8 +17,14 @@ enum CustomerRole: String, Codable {
     case kyc2
 }
 
+enum ExchangeFlow {
+    case buy
+    case swap
+}
+
 struct ProfileResponseData: ModelResponse {
     var country: String?
+    var state: String?
     var dateOfBirth: String?
     var firstName: String?
     var lastName: String?
@@ -45,6 +51,7 @@ struct ProfileResponseData: ModelResponse {
 
 struct Profile: Model {
     var country: String?
+    var state: String?
     var dateOfBirth: String?
     var firstName: String?
     var lastName: String?
@@ -97,6 +104,7 @@ class ProfileMapper: ModelMapper<ProfileResponseData, Profile> {
         let usedBuyDaily = limits?.usedBuyDaily ?? 0
 
         return .init(country: response.country,
+                     state: response.state,
                      dateOfBirth: response.dateOfBirth,
                      firstName: response.firstName,
                      lastName: response.lastName,

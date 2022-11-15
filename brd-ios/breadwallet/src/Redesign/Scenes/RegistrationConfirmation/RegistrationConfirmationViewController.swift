@@ -18,37 +18,26 @@ class RegistrationConfirmationViewController: BaseTableViewController<Registrati
     
     override var isModalDismissableEnabled: Bool { return true }
 
-    lazy var confirmButton: WrapperView<FEButton> = {
-        let button = WrapperView<FEButton>()
-        return button
+    lazy var continueButton: FEButton = {
+        let view = FEButton()
+        return view
     }()
     
     // MARK: - Overrides
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func setupVerticalButtons() {
+        super.setupVerticalButtons()
         
-        view.addSubview(confirmButton)
-        confirmButton.snp.makeConstraints { make in
-            make.centerX.leading.equalToSuperview()
-            make.bottom.equalTo(view.snp.bottomMargin)
-        }
+        continueButton.configure(with: Presets.Button.primary)
+        continueButton.setup(with: .init(title: L10n.Button.confirm,
+                                         enabled: false,
+                                         callback: { [weak self] in
+            self?.buttonTapped()
+        }))
         
-        confirmButton.wrappedView.snp.makeConstraints { make in
-            make.height.equalTo(ViewSizes.Common.largeCommon.rawValue)
-            make.edges.equalTo(confirmButton.snp.margins)
-        }
-        confirmButton.setupCustomMargins(top: .small, leading: .large, bottom: .large, trailing: .large)
-        
-        tableView.snp.remakeConstraints { make in
-            make.leading.trailing.top.equalToSuperview()
-            make.bottom.equalTo(confirmButton.snp.top)
-        }
-        
-        confirmButton.wrappedView.configure(with: Presets.Button.primary)
-        confirmButton.wrappedView.setup(with: .init(title: L10n.Button.confirm, enabled: false))
-        
-        confirmButton.wrappedView.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        guard let config = continueButton.config, let model = continueButton.viewModel else { return }
+        verticalButtons.wrappedView.configure(with: .init(buttons: [config]))
+        verticalButtons.wrappedView.setup(with: .init(buttons: [model]))
     }
     
     override func setupSubviews() {
@@ -145,7 +134,8 @@ class RegistrationConfirmationViewController: BaseTableViewController<Registrati
     // MARK: - RegistrationConfirmationResponseDisplay
     
     func displayValidate(responseDisplay: RegistrationConfirmationModels.Validate.ResponseDisplay) {
-        confirmButton.wrappedView.setup(with: .init(title: L10n.Button.confirm, enabled: responseDisplay.isValid))
+        continueButton.viewModel?.enabled = responseDisplay.isValid
+        verticalButtons.wrappedView.getButton(continueButton)?.setup(with: continueButton.viewModel)
     }
     
     func displayConfirm(responseDisplay: RegistrationConfirmationModels.Confirm.ResponseDisplay) {

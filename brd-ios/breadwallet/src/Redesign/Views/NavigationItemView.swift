@@ -9,7 +9,6 @@
 //
 
 import UIKit
-import SnapKit
 
 struct NavigationConfiguration: Configurable {
     var image: BackgroundConfiguration?

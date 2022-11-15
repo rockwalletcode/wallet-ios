@@ -22,7 +22,7 @@ class AboutHeaderView: UIView {
     }()
     
     private lazy var separator: UIView = {
-        let separator = UIView(color: .secondaryShadow)
+        let separator = UIView(color: LightColors.Outline.two)
         separator.translatesAutoresizingMaskIntoConstraints = false
         
         return separator

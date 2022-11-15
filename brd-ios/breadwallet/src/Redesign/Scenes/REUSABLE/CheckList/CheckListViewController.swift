@@ -16,41 +16,21 @@ class CheckListViewController: BaseTableViewController<BaseCoordinator,
     typealias Models = CheckListModels
 
     override var sceneLeftAlignedTitle: String? { return "Checklist base VC" }
+    
     var checklistTitle: LabelViewModel { return .text("OVERRIDE IN SUBCLASS") }
     var checkmarks: [ChecklistItemViewModel] { return [] }
     
-    var continueCallback: (() -> Void)?
-    
-    lazy var confirmButton: WrapperView<FEButton> = {
-        let button = WrapperView<FEButton>()
-        return button
-    }()
-    
     // MARK: - Overrides
-    override func setupSubviews() {
-        super.setupSubviews()
+    
+    override func setupVerticalButtons() {
+        super.setupVerticalButtons()
         
-        view.addSubview(confirmButton)
-        confirmButton.snp.makeConstraints { make in
-            make.centerX.leading.equalToSuperview()
-            make.bottom.equalTo(view.snp.bottomMargin)
-        }
-        
-        confirmButton.wrappedView.snp.makeConstraints { make in
-            make.height.equalTo(ViewSizes.Common.largeCommon.rawValue)
-            make.edges.equalTo(confirmButton.snp.margins)
-        }
-        
-        tableView.snp.remakeConstraints { make in
-            make.leading.trailing.top.equalToSuperview()
-            make.bottom.equalTo(confirmButton.snp.top)
-        }
-        
-        confirmButton.wrappedView.setup(with: .init(title: L10n.Button.confirm))
-        
-        confirmButton.setupCustomMargins(top: .small, leading: .large, bottom: .large, trailing: .large)
-        confirmButton.wrappedView.configure(with: Presets.Button.primary)
-        confirmButton.wrappedView.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        verticalButtons.wrappedView.configure(with: .init(buttons: [Presets.Button.primary]))
+        verticalButtons.wrappedView.setup(with: .init(buttons: [.init(title: L10n.Button.confirm,
+                                                                      callback: { [weak self] in
+            self?.buttonTapped()
+        })
+        ]))
     }
     
     override func prepareData() {

@@ -39,7 +39,7 @@ class BaseRecoveryKeyViewController: UIViewController {
         return .lightContent
     }
     
-    func constrainContinueButton(_ button: BRDButton) {
+    func constrainContinueButton(_ button: FEButton) {
         button.constrain([
             button.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: Margins.large.rawValue),
             button.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -Margins.large.rawValue),

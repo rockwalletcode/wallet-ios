@@ -134,10 +134,15 @@ class RecoveryKeyIntroViewController: BaseRecoveryKeyViewController {
     // wallet access.
     private let keyUseInfoView = InfoView()
     
-    private let continueButton = BRDButton(title: L10n.Onboarding.next, type: .tertiary)
+    private lazy var continueButton: FEButton = {
+        let view = FEButton()
+        view.configure(with: Presets.Button.primary)
+        view.setup(with: .init(title: L10n.Onboarding.next))
+        return view
+    }()
+    
     private var pagingView: UICollectionView?
     private var pagingViewContainer: UIView = UIView()
-    
     private var pages: [RecoveryKeyIntroPage] = [RecoveryKeyIntroPage]()
     
     private var pageIndex: Int = 0 {
@@ -162,7 +167,7 @@ class RecoveryKeyIntroViewController: BaseRecoveryKeyViewController {
                 // for the paging causes the page content to disappear before the next page cell animates in.
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
                     let page = self.pages[self.pageIndex]
-                    self.continueButton.title = page.continueButtonText
+                    self.continueButton.setup(with: .init(title: page.continueButtonText))
                     self.keyUseInfoView.isHidden = self.shouldHideInfoView
                     
                     if self.onLastPage {
@@ -175,7 +180,7 @@ class RecoveryKeyIntroViewController: BaseRecoveryKeyViewController {
                         self.showBackButton()
                     }
                     
-                    self.continueButton.setType(type: self.onLastPage ? .secondary : .tertiary)
+                    self.continueButton.configure(with: self.onLastPage ? Presets.Button.secondary : Presets.Button.primary)
                 }
             }
         }
@@ -314,7 +319,7 @@ class RecoveryKeyIntroViewController: BaseRecoveryKeyViewController {
                                               stepHint: L10n.RecoveryKeyFlow.howItWorksStep("3"),
                                               continueButtonText: L10n.RecoveryKeyFlow.generateKeyButton))
         } else {
-            continueButton.title = L10n.Swap.gotItButton
+            continueButton.setup(with: .init(title: L10n.Swap.gotItButton))
             pages.append(landingPage)
         }
     }

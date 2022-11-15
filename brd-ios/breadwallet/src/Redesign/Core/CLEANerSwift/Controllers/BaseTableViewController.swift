@@ -46,14 +46,13 @@ class BaseTableViewController<C: CoordinatableRoutes,
     
     override func setupSubviews() {
         super.setupSubviews()
+        
         view.backgroundColor = LightColors.Background.two
         tableView.backgroundColor = .clear
         
-        // TODO: register proper accessoryViews
         tableView.registerAccessoryView(WrapperAccessoryView<FELabel>.self)
         tableView.registerAccessoryView(WrapperAccessoryView<FEButton>.self)
         tableView.registerAccessoryView(WrapperAccessoryView<AssetView>.self)
-        // TODO: register base cells
         tableView.register(WrapperTableViewCell<FELabel>.self)
         tableView.register(WrapperTableViewCell<FEButton>.self)
         tableView.register(WrapperTableViewCell<FETextField>.self)

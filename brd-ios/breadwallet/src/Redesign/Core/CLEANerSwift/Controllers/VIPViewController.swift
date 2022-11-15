@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import SnapKit
 
 protocol DataPresentable {
     func prepareData()
@@ -25,6 +24,7 @@ class VIPViewController<C: CoordinatableRoutes,
                                                        DataPresentable {
     
     // MARK: Title and tab bar appearance
+    
     var sceneTitle: String? { return nil }
     var sceneLeftAlignedTitle: String? { return nil } // TODO: Use large titles. Multiple lines of text makes it harder to use large titles.
     var tabIcon: UIImage? { return nil }
@@ -40,14 +40,20 @@ class VIPViewController<C: CoordinatableRoutes,
     }()
     
     lazy var infoButton: UIButton = {
-        let infoButton = UIButton()
-        infoButton.tintColor = LightColors.Text.one
-        infoButton.addTarget(self, action: #selector(infoButtonTapped), for: .touchUpInside)
-        
-        return infoButton
+        let view = UIButton()
+        view.tintColor = LightColors.Text.one
+        view.addTarget(self, action: #selector(infoButtonTapped), for: .touchUpInside)
+        return view
+    }()
+    
+    lazy var verticalButtons: WrapperView<VerticalButtonsView> = {
+        let view = WrapperView<VerticalButtonsView>()
+        view.setupCustomMargins(top: .zero, leading: .large, bottom: .zero, trailing: .large)
+        return view
     }()
     
     // MARK: Modal dimissable
+    
     var isModalDismissableEnabled: Bool { return false }
     var dismissText: String { return "" }
     var closeImage: UIImage? { return nil }
@@ -58,6 +64,7 @@ class VIPViewController<C: CoordinatableRoutes,
     }
 
     // MARK: VIP
+    
     weak var coordinator: C?
     var interactor: I?
     var dataStore: DS? {
@@ -66,13 +73,13 @@ class VIPViewController<C: CoordinatableRoutes,
     
     lazy var blurView: UIVisualEffectView? = {
         let blur = UIBlurEffect(style: .regular)
-        let blurView = UIVisualEffectView(effect: blur)
-        blurView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        
-        return blurView
+        let view = UIVisualEffectView(effect: blur)
+        view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        return view
     }()
 
     // MARK: Initialization
+    
     convenience init() {
         self.init(nibName: nil, bundle: nil)
         setupVIP()
@@ -88,6 +95,7 @@ class VIPViewController<C: CoordinatableRoutes,
     }
 
     // MARK: Overrides
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -145,7 +153,7 @@ class VIPViewController<C: CoordinatableRoutes,
     }
     
     @objc func infoButtonTapped() {
-        // override in subclass
+        // Override in subclass
     }
 
     func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {

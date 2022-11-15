@@ -168,7 +168,7 @@ class OrderPreviewViewController: BaseTableViewController<BuyCoordinator,
     func displaySubmit(responseDisplay: OrderPreviewModels.Submit.ResponseDisplay) {
         LoadingView.hide()
         
-        coordinator?.showSuccess(paymentReference: responseDisplay.paymentReference)
+        coordinator?.showSuccess(paymentReference: responseDisplay.paymentReference, transactionType: .buyTransaction)
     }
     
     func displayThreeDSecure(responseDisplay: BillingAddressModels.ThreeDSecure.ResponseDisplay) {

@@ -9,7 +9,6 @@
 //
 
 import UIKit
-import SnapKit
 
 class WrapperView<T: UIView>: UIView,
                               Wrappable,

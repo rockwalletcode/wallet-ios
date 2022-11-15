@@ -303,7 +303,7 @@ class StakeViewController: UIViewController, Subscriber, ModalPresentable {
         let arrow = UIImageView()
         
         arrow.image = UIImage(named: "RightArrow")?.withRenderingMode(.alwaysTemplate)
-        arrow.tintColor = .almostBlack
+        arrow.tintColor = LightColors.Text.one
         
         let feeText = baker?.feeString ?? ""
         bakerFee.text = "\(L10n.Staking.feeHeader) \(feeText)"

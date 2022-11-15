@@ -39,9 +39,6 @@ class RegistrationCoordinator: BaseCoordinator, RegistrationRoutes {
     }
     
     override func showProfile() {
-        // TODO: "Inject" profile VC below verification code so that once you ‘write’ it in.. verification screen goes back to profile.. not ‘forward’.
-        // basically when you tap profile nvc should have the following stack: profileVC, verificationCodeVc, and after code is accepted.. the screen is poped back to profile
-        
         upgradeAccountOrShowPopup { [weak self] _ in
             self?.set(coordinator: ProfileCoordinator.self, scene: Scenes.Profile) { vc in
                 vc?.prepareData()

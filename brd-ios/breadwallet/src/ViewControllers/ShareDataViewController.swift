@@ -10,11 +10,11 @@ import UIKit
 
 class ShareDataViewController: UIViewController {
 
-    private let titleLabel = UILabel(font: .customBold(size: 26.0), color: .almostBlack)
-    private let body = UILabel.wrapping(font: .customBody(size: 16.0), color: .almostBlack)
-    private let label = UILabel(font: .customBold(size: 16.0), color: .almostBlack)
+    private let titleLabel = UILabel(font: .customBold(size: 26.0), color: LightColors.Text.one)
+    private let body = UILabel.wrapping(font: .customBody(size: 16.0), color: LightColors.Text.one)
+    private let label = UILabel(font: .customBold(size: 16.0), color: LightColors.Text.one)
     private let toggle = GradientSwitch()
-    private let separator = UIView(color: .secondaryShadow)
+    private let separator = UIView(color: LightColors.Outline.two)
 
     override func viewDidLoad() {
         addSubviews()

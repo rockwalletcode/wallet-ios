@@ -51,7 +51,7 @@ final public class DatePickerViewController: UIViewController {
                      maximumDate: Date? = nil,
                      action: Action?) {
         let alert = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
-        alert.view.tintColor = .almostBlack
+        alert.view.tintColor = LightColors.Text.one
         alert.popoverPresentationController?.sourceView = sourceView
         alert.popoverPresentationController?.sourceRect = sourceView.frame
         

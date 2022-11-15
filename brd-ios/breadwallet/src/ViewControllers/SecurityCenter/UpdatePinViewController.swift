@@ -54,7 +54,7 @@ class UpdatePinViewController: UIViewController, Subscriber {
         
     private let warning = UILabel.wrapping(font: Fonts.Body.two, color: LightColors.Text.two)
     private var pinView: PinView
-    private let pinPadBackground = UIView(color: .almostBlack)
+    private let pinPadBackground = UIView(color: LightColors.Text.one)
     private let pinPad = PinPadViewController(style: .clear, keyboardType: .pinPad, maxDigits: 0, shouldShowBiometrics: false)
     private let spacer = UIView()
     private let keyMaster: KeyMaster

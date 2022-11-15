@@ -17,35 +17,24 @@ class RegistrationViewController: BaseTableViewController<RegistrationCoordinato
 
     // MARK: - Overrides
     
-    lazy var confirmButton: WrapperView<FEButton> = {
-        let button = WrapperView<FEButton>()
-        return button
+    lazy var continueButton: FEButton = {
+        let view = FEButton()
+        return view
     }()
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func setupVerticalButtons() {
+        super.setupVerticalButtons()
         
-        view.addSubview(confirmButton)
-        confirmButton.snp.makeConstraints { make in
-            make.centerX.leading.equalToSuperview()
-            make.bottom.equalTo(view.snp.bottomMargin)
-        }
+        continueButton.configure(with: Presets.Button.primary)
+        continueButton.setup(with: .init(title: L10n.RecoverWallet.next,
+                                         enabled: false,
+                                         callback: { [weak self] in
+            self?.buttonTapped()
+        }))
         
-        confirmButton.wrappedView.snp.makeConstraints { make in
-            make.height.equalTo(ViewSizes.Common.largeCommon.rawValue)
-            make.edges.equalTo(confirmButton.snp.margins)
-        }
-        confirmButton.setupCustomMargins(top: .small, leading: .large, bottom: .large, trailing: .large)
-        
-        tableView.snp.remakeConstraints { make in
-            make.leading.trailing.top.equalToSuperview()
-            make.bottom.equalTo(confirmButton.snp.top)
-        }
-        
-        confirmButton.wrappedView.configure(with: Presets.Button.primary)
-        confirmButton.wrappedView.setup(with: .init(title: L10n.RecoverWallet.next, enabled: false))
-        
-        confirmButton.wrappedView.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        guard let config = continueButton.config, let model = continueButton.viewModel else { return }
+        verticalButtons.wrappedView.configure(with: .init(buttons: [config]))
+        verticalButtons.wrappedView.setup(with: .init(buttons: [model]))
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -115,8 +104,10 @@ class RegistrationViewController: BaseTableViewController<RegistrationCoordinato
     }
 
     // MARK: - RegistrationResponseDisplay
+    
     func displayValidate(responseDisplay: RegistrationModels.Validate.ResponseDisplay) {
-        confirmButton.wrappedView.setup(with: .init(title: L10n.RecoverWallet.next, enabled: responseDisplay.isValid))
+        continueButton.viewModel?.enabled = responseDisplay.isValid
+        verticalButtons.wrappedView.getButton(continueButton)?.setup(with: continueButton.viewModel)
     }
     
     func displayNext(responseDisplay: RegistrationModels.Next.ResponseDisplay) {

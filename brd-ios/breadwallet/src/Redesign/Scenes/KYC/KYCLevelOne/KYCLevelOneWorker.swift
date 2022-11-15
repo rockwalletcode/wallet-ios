@@ -14,6 +14,7 @@ struct KYCBasicRequestData: RequestModelData {
     var firstName: String
     var lastName: String
     var country: String
+    var state: String?
     var birthDate: String
     
     func getParameters() -> [String: Any] {
@@ -21,8 +22,9 @@ struct KYCBasicRequestData: RequestModelData {
             "first_name": firstName,
             "last_name": lastName,
             "country": country,
+            "state": state,
             "date_of_birth": birthDate
-        ]
+        ].compactMapValues { $0 }
     }
 }
 

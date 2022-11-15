@@ -45,6 +45,9 @@ class KYCBasicViewController: BaseTableViewController<KYCCoordinator,
         case .country:
             cell = self.tableView(tableView, countryTextFieldCellForRowAt: indexPath)
             
+        case .state:
+            cell = self.tableView(tableView, countryTextFieldCellForRowAt: indexPath)
+            
         case .birthdate:
             cell = self.tableView(tableView, dateCellForRowAt: indexPath)
             
@@ -156,6 +159,9 @@ class KYCBasicViewController: BaseTableViewController<KYCCoordinator,
         case .country:
             interactor?.pickCountry(viewAction: .init())
             
+        case .state:
+            interactor?.pickState(viewAction: .init())
+            
         default:
             return
         }
@@ -172,6 +178,12 @@ class KYCBasicViewController: BaseTableViewController<KYCCoordinator,
     func displayCountry(responseDisplay: KYCBasicModels.SelectCountry.ResponseDisplay) {
         coordinator?.showCountrySelector(countries: responseDisplay.countries) { [weak self] model in
             self?.interactor?.pickCountry(viewAction: .init(code: model?.code, countryFullName: model?.name))
+        }
+    }
+    
+    func displayState(responseDisplay: KYCBasicModels.SelectState.ResponseDisplay) {
+        coordinator?.showStateSelector(states: responseDisplay.states) { [weak self] model in
+            self?.interactor?.pickState(viewAction: .init(state: model))
         }
     }
     

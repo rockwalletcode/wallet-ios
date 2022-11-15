@@ -9,7 +9,6 @@
 //
 
 import UIKit
-import SnapKit
 
 struct ScrollableButtonsConfiguration: Configurable {
     var background: BackgroundConfiguration?

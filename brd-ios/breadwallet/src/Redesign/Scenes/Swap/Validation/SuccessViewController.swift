@@ -15,31 +15,22 @@ extension Scenes {
 }
 
 class SuccessViewController: BaseInfoViewController {
+    var transactionType: Transaction.TransactionType = .defaultTransaction
     override var imageName: String? { return "success" }
     override var titleText: String? { return L10n.Buy.purchaseSuccessTitle }
     override var descriptionText: String? { return L10n.Buy.purchaseSuccessText }
     override var buttonViewModels: [ButtonViewModel] {
         return [
-            .init(title: L10n.Swap.backToHome),
-            .init(title: L10n.Buy.details, isUnderlined: true)
+            .init(title: L10n.Swap.backToHome, callback: { [weak self] in
+                self?.coordinator?.goBack(completion: {})
+            }),
+            .init(title: L10n.Buy.details, isUnderlined: true, callback: { [weak self] in
+                self?.coordinator?.showExchangeDetails(with: self?.dataStore?.itemId, type: self?.transactionType ?? .defaultTransaction)
+            })
         ]
     }
-
-    override var buttonCallbacks: [(() -> Void)] {
-        return [
-            first,
-            second
-        ]
-    }
-    
-    var firstCallback: (() -> Void)?
-    var secondCallback: (() -> Void)?
-    
-    func first() {
-        firstCallback?()
-    }
-
-    func second() {
-        secondCallback?()
+    override var buttonConfigurations: [ButtonConfiguration] {
+        return [Presets.Button.primary,
+                Presets.Button.noBorders]
     }
 }

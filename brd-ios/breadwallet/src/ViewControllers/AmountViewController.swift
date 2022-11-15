@@ -340,7 +340,7 @@ class AmountViewController: UIViewController {
         }
         
         if let max = maximum {
-            amountLabel.textColor = amount > max ? UIColor.cameraGuideNegative : .darkText
+            amountLabel.textColor = amount > max ? LightColors.Error.one : LightColors.Text.two
         }
     }
 

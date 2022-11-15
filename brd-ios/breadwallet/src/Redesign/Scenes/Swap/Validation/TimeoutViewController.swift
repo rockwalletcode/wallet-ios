@@ -20,19 +20,14 @@ class TimeoutViewController: BaseInfoViewController {
     override var descriptionText: String? { return L10n.PaymentConfirmation.paymentExpired }
     override var buttonViewModels: [ButtonViewModel] {
         return [
-            .init(title: L10n.PaymentConfirmation.tryAgain)
+            .init(title: L10n.PaymentConfirmation.tryAgain, callback: { [weak self] in
+                self?.coordinator?.popToRoot(completion: { [weak self] in
+                    (self?.navigationController?.topViewController as? BuyViewController)?.didTriggerGetData?()
+                })
+            })
         ]
     }
-
-    override var buttonCallbacks: [(() -> Void)] {
-        return [
-            first
-        ]
-    }
-
-    var firstCallback: (() -> Void)?
-    
-    func first() {
-        firstCallback?()
+    override var buttonConfigurations: [ButtonConfiguration] {
+        return [Presets.Button.primary]
     }
 }

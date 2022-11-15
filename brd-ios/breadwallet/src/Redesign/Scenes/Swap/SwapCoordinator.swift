@@ -32,28 +32,10 @@ class SwapCoordinator: BaseCoordinator, SwapRoutes, AssetSelectionDisplayable {
         }
     }
     
-    func showSwapDetails(exchangeId: String) {
-        open(scene: ExchangeDetailsViewController.self) { vc in
-            vc.navigationItem.hidesBackButton = true
-            vc.dataStore?.itemId = exchangeId
-            vc.dataStore?.transactionType = .swapTransaction
-            vc.prepareData()
-        }
-    }
-    
     func showFailure() {
         open(scene: Scenes.Failure) { vc in
             vc.navigationItem.hidesBackButton = true
             vc.failure = FailureReason.swap
-            vc.firstCallback = { [weak self] in
-                self?.popToRoot(completion: {
-                    (self?.navigationController.topViewController as? SwapViewController)?.didTriggerGetExchangeRate?()
-                })
-            }
-            
-            vc.secondCallback = { [weak self] in
-                self?.goBack(completion: {})
-            }
         }
     }
     

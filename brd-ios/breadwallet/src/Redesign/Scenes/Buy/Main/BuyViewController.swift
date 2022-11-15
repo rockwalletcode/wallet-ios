@@ -16,9 +16,9 @@ class BuyViewController: BaseTableViewController<BuyCoordinator, BuyInteractor, 
         return L10n.HomeScreen.buy
     }
     
-    lazy var continueButton: WrapperView<FEButton> = {
-        let button = WrapperView<FEButton>()
-        return button
+    lazy var continueButton: FEButton = {
+        let view = FEButton()
+        return view
     }()
     
     var didTriggerGetData: (() -> Void)?
@@ -38,32 +38,24 @@ class BuyViewController: BaseTableViewController<BuyCoordinator, BuyInteractor, 
         tableView.register(WrapperTableViewCell<CardSelectionView>.self)
         tableView.delaysContentTouches = false
         
-        // TODO: Same code as CheckListViewController. Refactor
-        view.addSubview(continueButton)
-        continueButton.snp.makeConstraints { make in
-            make.centerX.leading.equalToSuperview()
-            make.bottom.equalTo(view.snp.bottomMargin)
-        }
-        
-        continueButton.wrappedView.snp.makeConstraints { make in
-            make.height.equalTo(ViewSizes.Common.largeCommon.rawValue)
-            make.edges.equalTo(continueButton.snp.margins)
-        }
-        
-        continueButton.setupCustomMargins(top: .small, leading: .large, bottom: .large, trailing: .large)
-        
-        tableView.snp.remakeConstraints { make in
-            make.leading.centerX.top.equalToSuperview()
-            make.bottom.equalTo(continueButton.snp.top)
-        }
-        
-        continueButton.wrappedView.configure(with: Presets.Button.primary)
-        continueButton.wrappedView.setup(with: .init(title: L10n.Button.continueAction, enabled: false))
-        continueButton.wrappedView.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
-        
         didTriggerGetData = { [weak self] in
             self?.interactor?.getData(viewAction: .init())
         }
+    }
+    
+    override func setupVerticalButtons() {
+        super.setupVerticalButtons()
+        
+        continueButton.configure(with: Presets.Button.primary)
+        continueButton.setup(with: .init(title: L10n.Button.continueAction,
+                                         enabled: false,
+                                         callback: { [weak self] in
+            self?.buttonTapped()
+        }))
+        
+        guard let config = continueButton.config, let model = continueButton.viewModel else { return }
+        verticalButtons.wrappedView.configure(with: .init(buttons: [config]))
+        verticalButtons.wrappedView.setup(with: .init(buttons: [model]))
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -151,7 +143,8 @@ class BuyViewController: BaseTableViewController<BuyCoordinator, BuyInteractor, 
     private func getRateAndTimerCell() -> WrapperTableViewCell<ExchangeRateView>? {
         guard let section = sections.firstIndex(of: Models.Sections.rateAndTimer),
               let cell = tableView.cellForRow(at: .init(row: 0, section: section)) as? WrapperTableViewCell<ExchangeRateView> else {
-            continueButton.wrappedView.isEnabled = false
+            continueButton.viewModel?.enabled = false
+            verticalButtons.wrappedView.getButton(continueButton)?.setup(with: continueButton.viewModel)
             
             return nil
         }
@@ -190,13 +183,18 @@ class BuyViewController: BaseTableViewController<BuyCoordinator, BuyInteractor, 
         guard let fromSection = sections.firstIndex(of: Models.Sections.from),
               let toSection = sections.firstIndex(of: Models.Sections.to),
               let fromCell = tableView.cellForRow(at: .init(row: 0, section: fromSection)) as? WrapperTableViewCell<SwapCurrencyView>,
-              let toCell = tableView.cellForRow(at: .init(row: 0, section: toSection)) as? WrapperTableViewCell<CardSelectionView>
-        else { return continueButton.wrappedView.isEnabled = false }
+              let toCell = tableView.cellForRow(at: .init(row: 0, section: toSection)) as? WrapperTableViewCell<CardSelectionView> else {
+            continueButton.viewModel?.enabled = false
+            verticalButtons.wrappedView.getButton(continueButton)?.setup(with: continueButton.viewModel)
+            
+            return
+        }
         
         fromCell.wrappedView.setup(with: actionResponse.cryptoModel)
         toCell.wrappedView.setup(with: actionResponse.cardModel)
         
-        continueButton.wrappedView.isEnabled = dataStore?.isFormValid ?? false
+        continueButton.viewModel?.enabled = dataStore?.isFormValid ?? false
+        verticalButtons.wrappedView.getButton(continueButton)?.setup(with: continueButton.viewModel)
     }
     
     func displayExchangeRate(responseDisplay: BuyModels.Rate.ResponseDisplay) {
@@ -211,7 +209,8 @@ class BuyViewController: BaseTableViewController<BuyCoordinator, BuyInteractor, 
                 }
             }
         } else {
-            continueButton.wrappedView.isEnabled = false
+            continueButton.viewModel?.enabled = false
+            verticalButtons.wrappedView.getButton(continueButton)?.setup(with: continueButton.viewModel)
         }
         
         if let section = sections.firstIndex(of: Models.Sections.accountLimits),
@@ -245,7 +244,9 @@ class BuyViewController: BaseTableViewController<BuyCoordinator, BuyInteractor, 
             return
         }
         
-        continueButton.wrappedView.isEnabled = false
+        continueButton.viewModel?.enabled = false
+        verticalButtons.wrappedView.getButton(continueButton)?.setup(with: continueButton.viewModel)
+        
         coordinator?.showMessage(with: responseDisplay.error,
                                  model: responseDisplay.model,
                                  configuration: responseDisplay.config)

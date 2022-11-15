@@ -40,7 +40,6 @@ final class RegistrationPresenter: NSObject, Presenter, RegistrationActionRespon
                 LabelViewModel.text(item.type?.instructions)
             ],
             .email: [
-                // TODO: validator?
                 TextFieldModel(title: L10n.Receive.emailButton, value: item.email)
             ],
             .tickbox: [

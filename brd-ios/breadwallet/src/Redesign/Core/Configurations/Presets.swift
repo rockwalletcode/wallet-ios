@@ -10,7 +10,6 @@
 
 import UIKit
 
-// TODO: Unify with designs and use color / font enums
 struct Presets {
     struct Background {
         struct Primary {
@@ -65,21 +64,17 @@ struct Presets {
         static var extraSmallPlain = BorderConfiguration(borderWidth: 0, cornerRadius: .extraSmall)
         static var mediumPlain = BorderConfiguration(borderWidth: 0, cornerRadius: .medium)
         static var commonPlain = BorderConfiguration(borderWidth: 0, cornerRadius: .common)
+        
         static var error = BorderConfiguration(tintColor: LightColors.Error.one, borderWidth: 1, cornerRadius: .medium)
         static var accountVerification = BorderConfiguration(tintColor: LightColors.Outline.one, borderWidth: 1, cornerRadius: .small)
-        static var secondaryButton = BorderConfiguration(tintColor: LightColors.primary, borderWidth: 1, cornerRadius: .fullRadius)
         
         static var normal = BorderConfiguration(borderWidth: 0, cornerRadius: .medium)
         static var selected = BorderConfiguration(borderWidth: 0, cornerRadius: .medium)
         static var disabled = BorderConfiguration(borderWidth: 0, cornerRadius: .medium)
         
-        static var normalButtonMediumRadius = BorderConfiguration(borderWidth: 0, cornerRadius: .medium)
-        static var selectedButtonMediumRadius = BorderConfiguration(borderWidth: 0, cornerRadius: .medium)
-        static var disabledButtonMediumRadius = BorderConfiguration(borderWidth: 0, cornerRadius: .medium)
-        
-        static var normalButtonFullRadius = BorderConfiguration(borderWidth: 0, cornerRadius: .fullRadius)
-        static var selectedButtonFullRadius = BorderConfiguration(borderWidth: 0, cornerRadius: .fullRadius)
-        static var disabledButtonFullRadius = BorderConfiguration(borderWidth: 0, cornerRadius: .fullRadius)
+        static var normalButtonFullRadius = BorderConfiguration(tintColor: LightColors.primary, borderWidth: 1, cornerRadius: .fullRadius)
+        static var selectedButtonFullRadius = BorderConfiguration(tintColor: LightColors.secondary, borderWidth: 1, cornerRadius: .fullRadius)
+        static var disabledButtonFullRadius = BorderConfiguration(tintColor: LightColors.Disabled.one, borderWidth: 1, cornerRadius: .fullRadius)
         
         static var normalTextField = BorderConfiguration(tintColor: LightColors.Outline.two, borderWidth: 1, cornerRadius: .extraSmall)
         static var selectedTextField = BorderConfiguration(tintColor: LightColors.Outline.two, borderWidth: 1, cornerRadius: .extraSmall)
@@ -104,12 +99,6 @@ struct Presets {
                                                offset: .init(width: 0, height: 8),
                                                shadowRadius: .small)
     }
-    
-    struct Image {
-        static var primary = BackgroundConfiguration(tintColor: LightColors.Text.one)
-        static var secondary = BackgroundConfiguration(tintColor: LightColors.Text.two)
-        static var tertiary = BackgroundConfiguration(tintColor: LightColors.Contrast.two)
-    }
 }
 
 extension Presets {
@@ -118,8 +107,8 @@ extension Presets {
                                                  selectedConfiguration: Presets.Background.Primary.selected,
                                                  disabledConfiguration: Presets.Background.Primary.disabled)
         
-        static var secondary = ButtonConfiguration(normalConfiguration: Presets.Background.Secondary.normal.withBorder(border: Presets.Border.secondaryButton),
-                                                   selectedConfiguration: Presets.Background.Secondary.normal.withBorder(border: Presets.Border.normalButtonFullRadius),
+        static var secondary = ButtonConfiguration(normalConfiguration: Presets.Background.Secondary.normal.withBorder(border: Presets.Border.normalButtonFullRadius),
+                                                   selectedConfiguration: Presets.Background.Secondary.selected.withBorder(border: Presets.Border.selectedButtonFullRadius),
                                                    disabledConfiguration: Presets.Background.Secondary.disabled.withBorder(border: Presets.Border.disabledButtonFullRadius))
         
         static var noBorders = ButtonConfiguration(normalConfiguration: BackgroundConfiguration(tintColor: LightColors.secondary),
@@ -187,7 +176,7 @@ extension Presets {
 
 extension Presets {
     struct InfoView {
-        static var verification = InfoViewConfiguration(headerLeadingImage: Presets.Image.tertiary,
+        static var verification = InfoViewConfiguration(headerLeadingImage: BackgroundConfiguration(tintColor: LightColors.Contrast.two),
                                                         headerTitle: .init(font: Fonts.Subtitle.three, textColor: LightColors.Contrast.one),
                                                         headerTrailing: .init(normalConfiguration: .init(tintColor: LightColors.Text.three),
                                                                               selectedConfiguration: .init(tintColor: LightColors.Text.two),
@@ -195,8 +184,8 @@ extension Presets {
                                                         title: .init(font: Fonts.Subtitle.three, textColor: LightColors.Text.one),
                                                         description: .init(font: Fonts.Body.two, textColor: LightColors.Text.one),
                                                         button: Presets.Button.primary.withBorder(normal: Presets.Border.normal,
-                                                                                                  selected: Presets.Border.selectedButtonMediumRadius,
-                                                                                                  disabled: Presets.Border.disabledButtonMediumRadius),
+                                                                                                  selected: Presets.Border.normal,
+                                                                                                  disabled: Presets.Border.normal),
                                                         background: .init(backgroundColor: LightColors.Background.three,
                                                                           border: Presets.Border.commonPlain),
                                                         shadow: Presets.Shadow.zero)

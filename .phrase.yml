@@ -5,7 +5,7 @@ phrase:
       project_id: "a455af2b6d471250f17362a7b85acb1e"
       params:
         file_format: strings
-        locale_id: en
+        locale_id: en-US
         update_translations: true
   pull:
     targets:

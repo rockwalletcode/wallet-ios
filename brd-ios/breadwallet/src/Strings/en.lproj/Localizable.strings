@@ -3089,3 +3089,5 @@
 "Test.added_key" = "Will this work? will it not? nobody knows :D"
 // another key added.. cause i have issues
 "Test.added_key_twosett" = ""
+// Yet another test... this one to test if auto sync works as well :)
+"Test.auto_sync" = "If this appears without me tapping sync.. then it works! :D."

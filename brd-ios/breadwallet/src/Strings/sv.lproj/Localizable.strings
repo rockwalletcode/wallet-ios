@@ -1485,9 +1485,6 @@
 /* Adress already used alert title */
 "Send.UsedAddress.title" = "Adressen är redan använd";
 
-/* Section header for "other settings". */
-"Settings.other" = "Andra";
-
 /* About label */
 "Settings.about" = "Om";
 
@@ -1538,6 +1535,9 @@
 
 /* Notifications label */
 "Settings.notifications" = "Meddelanden";
+
+/* Section header for "other settings". */
+"Settings.other" = "Andra";
 
 /* Preferences settings section header */
 "Settings.preferences" = "Preferenser";

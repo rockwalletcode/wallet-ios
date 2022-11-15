@@ -584,6 +584,12 @@
 /* 3D Secure label on buy flow */
 "Buy.3DSecure" = "3D Secure";
 
+"Buy.achFee" = "ACH fee (%s)";
+
+"Buy.achPaymentDurationWarning" = "Currently, ACH payments will take 7-10 days to complete.";
+
+"Buy.achPayments" = "ACH Payments";
+
 /* Add card title for buy cryptos */
 "Buy.AddCard" = "Add card";
 
@@ -600,6 +606,8 @@
 "Buy.BuyLimits" = "Currently, minimum limit for buy is $%@ USD and maximum limit is $%@ USD/day.";
 
 "Buy.BuyLimits.android" = "Currently, minimum limit for buy is $30.00 USD and maximum limit is $500.00 USD per day.";
+
+"Buy.buyWithCard" = "Buy with card";
 
 /* Card label on add card flow */
 "Buy.Card" = "Card";
@@ -645,12 +653,16 @@
 /* First Name label in billing address view on buy flow */
 "Buy.FirstName" = "First Name";
 
+"Buy.fundWithAch" = "Fund with ACH";
+
 "Buy.InvalidExpirationDate" = "Entered expiration date is not valid!";
 
 "Buy.iWant" = "I want";
 
 /* Last Name label in billing address view on buy flow */
 "Buy.LastName" = "Last Name";
+
+"Buy.linkBankAccount" = "Link bank account";
 
 /* Month and year label in add card flow */
 "Buy.MonthYear" = "MM/YY";
@@ -712,10 +724,14 @@
 
 "Buy.Terms.android" = "By placing this order you agree to our %@";
 
+"Buy.transferFromBank" = "Transfer from bank account";
+
 /* Try a different payment method button title in failure buy screen */
 "Buy.TryAnotherPayment" = "Try a different payment method";
 
 "Buy.txHashHeader" = "%@ Transaction ID";
+
+"Buy.understandAndAgree" = "I understand and agree";
 
 /* Your order label in buy flow */
 "Buy.YourOrder" = "Your order:";
@@ -933,7 +949,7 @@
 "ErrorMessages.emailUnavailableTitle" = "Email Unavailable";
 
 /* Not enough ETH for transaction fee */
-"ErrorMessages.ethBalanceLowAddEth" = "%s is an ERC-20 token on the Ethereum blockchain and requires ETH network fees. Please add ETH to your wallet. ";
+"ErrorMessages.ethBalanceLowAddEth" = "%s is an ERC-20 token on the Ethereum blockchain and requires ETH network fees. Please add ETH to your wallet.";
 
 "ErrorMessages.exchangeFailed" = "Swap failed. Reason: %@.";
 
@@ -2093,6 +2109,9 @@
 /* Notifications label */
 "Settings.notifications" = "Notifications";
 
+/* Section header for "other settings". */
+"Settings.other" = "Other";
+
 /* Preferences settings section header */
 "Settings.preferences" = "Preferences";
 
@@ -2388,6 +2407,15 @@
 
 /* Syncing view syncing state header text */
 "SyncingView.syncing" = "Syncing";
+
+/* Test adding keys from XCode */
+"Test.added_key" = "Will this work? will it not? nobody knows :D";
+
+/* another key added.. cause i have issues */
+"Test.added_key_twosett" = "This.. this is smth that i HAVE translated now! :D ";
+
+/* Yet another test... this one to test if auto sync works as well :) */
+"Test.auto_sync" = "If this appears without me tapping sync.. then it works! :D.";
 
 /* 6 d (6 days) */
 "TimeSince.days" = "%1$@ d";
@@ -3085,9 +3113,3 @@
 
 "WritePaperPhrase.warning2" = "Remember to write these words down. Swipe back if you forgot.";
 
-// Test adding keys from XCode
-"Test.added_key" = "Will this work? will it not? nobody knows :D"
-// another key added.. cause i have issues
-"Test.added_key_twosett" = ""
-// Yet another test... this one to test if auto sync works as well :)
-"Test.auto_sync" = "If this appears without me tapping sync.. then it works! :D."

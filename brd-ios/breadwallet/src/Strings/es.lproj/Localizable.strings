@@ -1485,9 +1485,6 @@
 /* Adress already used alert title */
 "Send.UsedAddress.title" = "Ya se ha utilizado la dirección";
 
-/* Section header for "other settings". */
-"Settings.other" = "Otro";
-
 /* About label */
 "Settings.about" = "Acerca de nosotros";
 
@@ -1538,6 +1535,9 @@
 
 /* Notifications label */
 "Settings.notifications" = "Notificaciones";
+
+/* Section header for "other settings". */
+"Settings.other" = "Otro";
 
 /* Preferences settings section header */
 "Settings.preferences" = "Preferencias";

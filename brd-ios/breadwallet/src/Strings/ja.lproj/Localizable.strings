@@ -1391,9 +1391,6 @@
 /* Adress already used alert title */
 "Send.UsedAddress.title" = "アドレスはすでに使用されています";
 
-/* Section header for "other settings". */
-"Settings.other" = "その他";
-
 /* About label */
 "Settings.about" = "概要";
 
@@ -1441,6 +1438,9 @@
 
 /* Notifications label */
 "Settings.notifications" = "通知";
+
+/* Section header for "other settings". */
+"Settings.other" = "その他";
 
 /* Preferences settings section header */
 "Settings.preferences" = "設定";

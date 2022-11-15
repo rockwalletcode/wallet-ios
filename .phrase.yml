@@ -7,21 +7,9 @@ phrase:
         file_format: strings
         locale_id: en
         update_translations: true
-    - file: ./brd-ios/breadwalletWidget/en.lproj/BreadWalletWidget.strings
-      project_id: "a455af2b6d471250f17362a7b85acb1e"
-      params:
-        file_format: strings
-        locale_id: en
-        update_translations: true
   pull:
     targets:
     - file: ./brd-ios/breadwallet/src/Strings/<locale_code>.lproj/Localizable.strings
-      project_id: "a455af2b6d471250f17362a7b85acb1e"
-      params:
-        file_format: strings
-        include_unverified_translations: true
-        encoding: UTF-8
-    - file: ./brd-ios/breadwalletWidget/<locale_code>.lproj/BreadwalletWidget.strings
       project_id: "a455af2b6d471250f17362a7b85acb1e"
       params:
         file_format: strings

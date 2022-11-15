@@ -3085,3 +3085,5 @@
 
 "WritePaperPhrase.warning2" = "Remember to write these words down. Swipe back if you forgot.";
 
+// Test adding keys from XCode
+"Test.added_key" = "Will this work? will it not? nobody knows :D"

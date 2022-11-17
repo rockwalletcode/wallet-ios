@@ -487,7 +487,7 @@ class SendViewController: UIViewController, Subscriber, ModalPresentable {
             showAlert(title: L10n.Alert.error, message: message)
             
         case .insufficientFunds:
-            if currency.isEthereumCompatible {
+            if currency.isERC20Token {
                 showAlert(message: L10n.ErrorMessages.ethBalanceLowAddEth(currency.code))
             } else {
                 showAlert(title: L10n.Alert.error, message: L10n.Send.insufficientFunds)

@@ -21,7 +21,7 @@ struct KYCCameraImagePickerModel: ViewModel {
     var confirmation: LabelViewModel?
 }
 
-class KYCCameraViewController: UIViewController, ViewProtocol, UIPickerViewDelegate, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
+class KYCCameraViewController: UIViewController, ViewProtocol, UIPickerViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     private var spinner: UIActivityIndicatorView!
     
     override var preferredStatusBarStyle: UIStatusBarStyle {

@@ -27,6 +27,7 @@ class SendViewController: UIViewController, Subscriber, ModalPresentable {
         self.sender = sender
         self.initialRequest = initialRequest
         self.balance = currency.state?.balance ?? Amount.zero(currency)
+        self.maximum = self.balance
         addressCell = AddressCell(currency: currency)
         amountView = AmountViewController(currency: currency, isPinPadExpandedAtLaunch: false)
         attributeCell = AttributeCell(currency: currency)
@@ -264,6 +265,8 @@ class SendViewController: UIViewController, Subscriber, ModalPresentable {
             }
             self?.isSendingMax = true
             self?.amountView.forceUpdateAmount(amount: max)
+            
+            self?.updateFeesMax()
         }
     }
     
@@ -277,6 +280,36 @@ class SendViewController: UIViewController, Subscriber, ModalPresentable {
                 case .success(let fee):
                     self?.currentFeeBasis = fee
                     self?.sendButton.isEnabled = true
+                    
+                case .failure:
+                    self?.sendButton.isEnabled = false
+                    
+                    _ = self?.handleValidationResult(.insufficientFunds)
+                }
+                
+                self?.amountView.updateBalanceLabel()
+            }
+        }
+    }
+    
+    @objc private func updateFeesMax() {
+        guard let amount = amount else { return }
+        guard let address = address, !address.isEmpty else { return _ = handleValidationResult(.invalidAddress) }
+        
+        sender.estimateFee(address: address, amount: amount, tier: feeLevel, isStake: false) { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let fee):
+                    self?.currentFeeBasis = fee
+                    self?.sendButton.isEnabled = true
+                    
+                    guard let feeBasis = self?.currentFeeBasis,
+                          let feeCurrency = self?.sender.wallet.feeCurrency else {
+                        return
+                    }
+                    let fee = Amount(cryptoAmount: feeBasis.fee, currency: feeCurrency)
+                    let value = amount - fee
+                    self?.amountView.forceUpdateAmount(amount: value)
                     
                 case .failure:
                     self?.sendButton.isEnabled = false

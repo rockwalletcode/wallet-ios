@@ -278,6 +278,10 @@ class SendViewController: UIViewController, Subscriber, ModalPresentable {
         guard let amount = amount else { return }
         guard let address = address, !address.isEmpty else { return _ = handleValidationResult(.invalidAddress) }
         
+        if amount > balance {
+            return _ = handleValidationResult(.insufficientFunds)
+        }
+        
         sender.estimateFee(address: address, amount: amount, tier: feeLevel, isStake: false) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
@@ -288,7 +292,7 @@ class SendViewController: UIViewController, Subscriber, ModalPresentable {
                 case .failure:
                     self?.sendButton.isEnabled = false
                     
-                    _ = self?.handleValidationResult(.insufficientFunds)
+                    _ = self?.handleValidationResult(.insufficientGas)
                 }
                 
                 self?.amountView.updateBalanceLabel()

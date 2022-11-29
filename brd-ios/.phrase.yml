@@ -1,13 +1,13 @@
 phrase:
   push:
     sources:
-    - file: ./brd-ios/breadwallet/src/Strings/en.lproj/Localizable.strings
+    - file: ./breadwallet/src/Strings/en.lproj/Localizable.strings
       project_id: "389f9cee76464e67a65ffd66d3f4d395"
       params:
         file_format: strings
         locale_id: en-US
         update_translations: true
-    - file: ./brd-ios/breadwalletWidget/en.lproj/BreadWalletWidget.strings
+    - file: ./breadwalletWidget/en.lproj/BreadWalletWidget.strings
       project_id: "fd548746242c61f1dbc394156c78b468"
       params:
         file_format: strings
@@ -15,13 +15,13 @@ phrase:
         update_translations: true
   pull:
     targets:
-    - file: ./brd-ios/breadwallet/src/Strings/<locale_code>.lproj/Localizable.strings
+    - file: ./breadwallet/src/Strings/<locale_code>.lproj/Localizable.strings
       project_id: "389f9cee76464e67a65ffd66d3f4d395"
       params:
         file_format: strings
         include_unverified_translations: true
         encoding: UTF-8
-    - file: ./brd-ios/breadwalletWidget/<locale_code>.lproj/BreadwalletWidget.strings
+    - file: ./breadwalletWidget/<locale_code>.lproj/BreadwalletWidget.strings
       project_id: "fd548746242c61f1dbc394156c78b468"
       params:
         file_format: strings

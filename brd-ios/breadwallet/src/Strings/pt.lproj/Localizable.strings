@@ -1700,10 +1700,6 @@
 
 "SupportForm.pleaseDescribe" = "Por favor, descreva sua experiência";
 
-"Symbols.lock" = "\u{1F512}";
-
-"Symbols.narrowSpace" = "\u{2009}";
-
 /* Syncing view done syncing state header text */
 "SyncingView.activity" = "Atividade";
 

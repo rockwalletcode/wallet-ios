@@ -42,6 +42,13 @@ struct AddCard: Model {
             default: return false
             }
         }
+        
+        var achPending: Bool {
+            switch self {
+            case .authorized, .pending: return true
+            default: return false
+            }
+        }
     }
     
     enum ResponseCodes: String {

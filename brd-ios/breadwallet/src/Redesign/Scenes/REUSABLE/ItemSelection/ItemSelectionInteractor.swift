@@ -78,7 +78,7 @@ class ItemSelectionInteractor: NSObject, Interactor, ItemSelectionViewActions {
         PaymentCardsWorker().execute(requestData: PaymentCardsRequestData()) { [weak self] result in
             switch result {
             case .success(let data):
-                self?.dataStore?.items = data
+                self?.dataStore?.items = data?.filter { $0.type == .buyCard }
                 
             default:
                 break

@@ -751,8 +751,8 @@ internal enum L10n {
     internal enum Buttons {
       /// BACK TO HOME
       internal static let backHome = L10n.tr("Localizable", "ComingSoon.buttons.backHome", fallback: "BACK TO HOME")
-      /// Contat support
-      internal static let contactSupport = L10n.tr("Localizable", "ComingSoon.buttons.contactSupport", fallback: "Contat support")
+      /// Contact support
+      internal static let contactSupport = L10n.tr("Localizable", "ComingSoon.buttons.contactSupport", fallback: "Contact support")
     }
   }
   internal enum ConfirmGift {

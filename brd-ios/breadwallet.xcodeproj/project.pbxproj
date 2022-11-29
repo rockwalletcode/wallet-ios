@@ -12,7 +12,7 @@
 			buildConfigurationList = 7E390A2927F57D11003C929D /* Build configuration list for PBXAggregateTarget "syncResources" */;
 			buildPhases = (
 				7E390A2A27F57D15003C929D /* Download */,
-				7E67772628C9C4910052927A /* Generate localization */,
+				7EF24AFE293603730070868D /* Phrase */,
 			);
 			dependencies = (
 			);
@@ -3666,9 +3666,8 @@
 			shellPath = /bin/sh;
 			shellScript = "cd BuildTools\nSDKROOT=(xcrun --sdk macosx --show-sdk-path)\nswift run -c release swiftgen --config Resources/swiftgen.yml\n";
 		};
-		7E67772628C9C4910052927A /* Generate localization */ = {
+		7EF24AFE293603730070868D /* Phrase */ = {
 			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -3676,14 +3675,14 @@
 			);
 			inputPaths = (
 			);
-			name = "Generate localization";
+			name = Phrase;
 			outputFileListPaths = (
 			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/opt/homebrew/bin/phraseapp pull\n";
+			shellScript = "ls\n/opt/homebrew/bin/phrase pull \n";
 		};
 		CEE0EF531EBF8C8A0018DB36 /* Icon Versioning */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4890,6 +4889,7 @@
 		};
 		7E390A2127F57D11003C929D /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7EF514B428EB5B6D004A31C5 /* debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9YQ85QS3PL;
@@ -4899,6 +4899,7 @@
 		};
 		7E390A2527F57D11003C929D /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7EF514B628EB5B6D004A31C5 /* prod.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9YQ85QS3PL;
@@ -5176,6 +5177,7 @@
 		};
 		7ECCA98D2872FD1000F99368 /* Staging */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7EF514B528EB5B6D004A31C5 /* staging.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9YQ85QS3PL;

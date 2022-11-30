@@ -285,8 +285,8 @@ class SendViewController: UIViewController, Subscriber, ModalPresentable {
                     self?.currentFeeBasis = fee
                     self?.sendButton.isEnabled = true
                     
-                case .failure:
-                    self?.handleEstimateFeeError()
+                case .failure(let error):
+                    self?.handleEstimateFeeError(error: error)
                 }
                 
                 self?.amountView.updateBalanceLabel()
@@ -318,8 +318,8 @@ class SendViewController: UIViewController, Subscriber, ModalPresentable {
                     
                     self?.amountView.forceUpdateAmount(amount: value)
                     
-                case .failure:
-                    self?.handleEstimateFeeError()
+                case .failure(let error):
+                    self?.handleEstimateFeeError(error: error)
                 }
                 
                 self?.amountView.updateBalanceLabel()
@@ -328,13 +328,27 @@ class SendViewController: UIViewController, Subscriber, ModalPresentable {
     }
     
     // TODO: WalletKit is not throwing the right error. Instead, we are always getting "WalletKit.Wallet.FeeEstimationError.ServiceError" error.
-    private func handleEstimateFeeError() {
+    private func handleEstimateFeeError(error: Error) {
         sendButton.isEnabled = false
         
         if currency.isERC20Token {
             _ = handleValidationResult(.insufficientGas)
         } else {
-            _ = handleValidationResult(.insufficientFunds)
+            if error as! WalletKit.Wallet.FeeEstimationError == WalletKit.Wallet.FeeEstimationError.InsufficientFunds {
+                _ = handleValidationResult(.insufficientFunds)
+            } else if error as! WalletKit.Wallet.FeeEstimationError == WalletKit.Wallet.FeeEstimationError.InsufficientGas {
+                if let amt = amount {
+                    if amt > balance {
+                        _ = handleValidationResult(.insufficientFunds)
+                    } else {
+                        _ = handleValidationResult(.insufficientGas)
+                    }
+                } else {
+                    _ = handleValidationResult(.insufficientFunds)
+                }
+            } else {
+                _ = handleValidationResult(.insufficientFunds)
+            }
         }
     }
     

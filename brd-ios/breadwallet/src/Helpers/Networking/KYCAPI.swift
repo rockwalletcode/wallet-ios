@@ -23,7 +23,8 @@ enum KYCAuthEndpoints: String, URLType {
     case confirm = "auth/associate/confirm"
     case resend = "auth/associate/resend"
     
-    case session = "kyc/session"
+    case veriffSession = "kyc/session"
+    case veriffSubmittedStatus = "kyc/veriff/submitted-status"
     case basic = "kyc/basic"
     case documents = "kyc/documents"
     case upload = "kyc/upload"

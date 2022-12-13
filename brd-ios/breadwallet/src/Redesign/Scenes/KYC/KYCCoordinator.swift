@@ -10,6 +10,7 @@
 
 import AVFoundation
 import UIKit
+import Veriff
 
 class KYCCoordinator: BaseCoordinator,
                       KYCBasicRoutes,
@@ -101,10 +102,6 @@ class KYCCoordinator: BaseCoordinator,
         controller.coordinator = self
         controller.setBarButtonItem(from: navigationController, to: .right, target: self, action: #selector(popFlow(sender:)))
         navigationController.pushViewController(controller, animated: true)
-    }
-    
-    func showKYCVeriff() {
-        
     }
     
     func showIdentitySelector() {

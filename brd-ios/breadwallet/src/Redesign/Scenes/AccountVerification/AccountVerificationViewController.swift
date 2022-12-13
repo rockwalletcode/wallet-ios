@@ -108,17 +108,44 @@ class AccountVerificationViewController: BaseTableViewController<KYCCoordinator,
     func sessionDidEndWithResult(_ result: Veriff.VeriffSdk.Result) {
         switch result.status {
         case .done:
-            // The user successfully submitted the session
-            break
+            interactor?.setVeriffStatus(viewAction: .init())
+            
         case .canceled:
-            // The user canceled the verification process.
             break
+            
         case .error(let error):
+            handleVeriffError(error)
+            
+        default:
             break
-//            switch error {
-//                // ...
-//            }
         }
+    }
+    
+    private func handleVeriffError(_ error: Veriff.VeriffSdk.Error) {
+        /*
+        switch error {
+        case .cameraUnavailable:
+            <#code#>
+        case .microphoneUnavailable:
+            <#code#>
+        case .serverError:
+            <#code#>
+        case .localError:
+            <#code#>
+        case .networkError:
+            <#code#>
+        case .uploadError:
+            <#code#>
+        case .videoFailed:
+            <#code#>
+        case .deprecatedSDKVersion:
+            <#code#>
+        case .unknown:
+            <#code#>
+        default:
+            <#code#>
+        }
+         */
     }
     
     // MARK: - AccountVerificationResponseDisplay
@@ -138,11 +165,10 @@ class AccountVerificationViewController: BaseTableViewController<KYCCoordinator,
             coordinator?.showKYCLevelTwo()
             
         case .veriff:
-            coordinator?.showKYCVeriff()
-            
             let veriff = VeriffSdk.shared
             veriff.delegate = self
             veriff.startAuthentication(sessionUrl: responseDisplay.sessionUrl, presentingFrom: self)
+            
         }
     }
     

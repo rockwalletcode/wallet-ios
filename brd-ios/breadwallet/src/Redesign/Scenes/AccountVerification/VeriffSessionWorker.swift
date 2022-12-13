@@ -32,6 +32,6 @@ class VeriffSessionWorkerMapper: ModelMapper<VeriffSessionResponseData, VeriffSe
 
 class VeriffSessionWorker: BaseApiWorker<VeriffSessionWorkerMapper> {
     override func getUrl() -> String {
-        return KYCAuthEndpoints.session.url
+        return KYCAuthEndpoints.veriffSession.url
     }
 }

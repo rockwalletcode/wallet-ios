@@ -9,6 +9,9 @@
 # a nonzero exit code.
 set -e
 
+# This sets the marketing version from the environment variable in all the right places
+agvtool set-marketing-version $APP_VERSION
+
 # Create the .env file
 BRD_ENV=../.env
 touch $BRD_ENV

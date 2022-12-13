@@ -9,11 +9,7 @@
 # a nonzero exit code.
 set -e
 
-# Install SwiftLint to run lint checks
- brew install SwiftLint
-
 # Create the .env file
-
 BRD_ENV=../.env
 touch $BRD_ENV
 

@@ -35,6 +35,10 @@ class BuyViewController: BaseTableViewController<BuyCoordinator, BuyInteractor, 
         getRateAndTimerCell()?.wrappedView.invalidate()
     }
     
+    override var sceneLeftAlignedTitle: String? {
+        return UserManager.shared.profile?.canUseAch == true ? nil : L10n.Button.buy
+    }
+    
     override func setupSubviews() {
         super.setupSubviews()
         

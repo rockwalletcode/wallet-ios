@@ -10,7 +10,6 @@
 
 import AVFoundation
 import UIKit
-import Veriff
 
 class KYCCoordinator: BaseCoordinator,
                       KYCBasicRoutes,

@@ -19,14 +19,14 @@ struct VeriffSessionResponseData: ModelResponse {
 struct VeriffSession: Model {
     var sessionId: String
     var vendorData: String
-    var url: String
+    var sessionUrl: String
 }
 
 class VeriffSessionWorkerMapper: ModelMapper<VeriffSessionResponseData, VeriffSession> {
     override func getModel(from response: VeriffSessionResponseData?) -> VeriffSession? {
         return .init(sessionId: response?.sessionId ?? "",
                      vendorData: response?.vendorData ?? "",
-                     url: response?.url ?? "")
+                     sessionUrl: response?.url ?? "")
     }
 }
 

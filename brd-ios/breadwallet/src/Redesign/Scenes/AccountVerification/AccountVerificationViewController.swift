@@ -142,7 +142,7 @@ class AccountVerificationViewController: BaseTableViewController<KYCCoordinator,
             
             let veriff = VeriffSdk.shared
             veriff.delegate = self
-            veriff.startAuthentication(sessionUrl: "responseDisplay.sessionUrl", presentingFrom: self)
+            veriff.startAuthentication(sessionUrl: responseDisplay.sessionUrl, presentingFrom: self)
         }
     }
     

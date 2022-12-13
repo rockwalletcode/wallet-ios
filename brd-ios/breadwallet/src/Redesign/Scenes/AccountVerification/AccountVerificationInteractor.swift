@@ -23,7 +23,7 @@ class AccountVerificationInteractor: NSObject, Interactor, AccountVerificationVi
                 switch result {
                 case .success(let data):
                     self?.presenter?.presentStartVerification(actionResponse: .init(level: Models.KYCLevel(rawValue: viewAction.level) ?? .one,
-                                                                                    sessionUrl: data?.sessionId))
+                                                                                    sessionUrl: data?.sessionUrl))
 
                 case .failure(let error):
                     self?.presenter?.presentError(actionResponse: .init(error: error))

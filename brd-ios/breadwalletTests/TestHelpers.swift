@@ -11,7 +11,7 @@ import XCTest
 @testable import breadwallet
 @testable import WalletKit
 
-let testWalletSecAttrService: String = (Bundle.main.bundleIdentifier ?? "") + ".testnetQA.tests"
+let testWalletSecAttrService = "com.rockwallet.app.testnetQA.tests"
 
 typealias CoreCurrency = WalletKit.Currency
 typealias AppCurrency = breadwallet.Currency

@@ -10,10 +10,14 @@
 
 import UIKit
 
-struct AppGroup {
-    struct Main {
-        static let groupId: String = "group." + (Bundle.main.bundleIdentifier ?? "")
-        static let containerUrl: URL? = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: groupId)
+public enum AppGroup: String {
+    case placeholderApp = "group.com.rockwallet.app"
+
+    public var containerURL: URL? {
+        switch self {
+        case .placeholderApp:
+            return FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: rawValue)
+        }
     }
 }
 
@@ -258,7 +262,7 @@ struct CurrencyFileManager {
     }
     
     static func sharedFilePath(type: DownloadedCurrencyType) -> String? {
-        return AppGroup.Main.containerUrl?.appendingPathComponent("\(type.rawValue).json").path
+        return AppGroup.placeholderApp.containerURL?.appendingPathComponent("\(type.rawValue).json").path
     }
     
     static func bundledFilePath(type: DownloadedCurrencyType) -> String? {

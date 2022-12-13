@@ -79,6 +79,6 @@ extension DefaultWidgetDataShareService {
         static let portfolioInfoKey = "PortfolioInfo"
         static let sharePortfolioKey = "SharePortfolio"
         static let quoteCurrencyCodeKey = "QuoteCurrencyCode"
-        static let defaults = UserDefaults(suiteName: AppGroup.Main.groupId)!
+        static let defaults = UserDefaults(suiteName: AppGroup.placeholderApp.rawValue)!
     }
 }

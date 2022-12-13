@@ -107,7 +107,7 @@ open class BRReplicatedKVStore: NSObject {
     init(encryptionKey: Key, remoteAdaptor: BRRemoteKVStoreAdaptor) throws {
         key = encryptionKey
         remote = remoteAdaptor
-        dbQueue = DispatchQueue(label: (Bundle.main.bundleIdentifier ?? "") + ".kvDBQueue", attributes: [])
+        dbQueue = DispatchQueue(label: "com.rockwallet.app.kvDBQueue", attributes: [])
         super.init()
         try self.openDatabase()
         try self.migrateDatabase()
@@ -488,7 +488,7 @@ open class BRReplicatedKVStore: NSObject {
             
             self.log("Syncing \(allKeyData.count) keys")
             var failures = 0
-            let q = DispatchQueue(label: (Bundle.main.bundleIdentifier ?? "") + ".kvSyncQueue", attributes: DispatchQueue.Attributes.concurrent)
+            let q = DispatchQueue(label: "com.rockwallet.app.kvSyncQueue", attributes: DispatchQueue.Attributes.concurrent)
             let grp = DispatchGroup()
             let seph = DispatchSemaphore(value: 10)
             

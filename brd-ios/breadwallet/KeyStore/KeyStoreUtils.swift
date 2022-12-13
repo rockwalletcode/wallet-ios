@@ -11,14 +11,14 @@
 import Foundation
 
 var WalletSecAttrService: String {
-    if E.isRunningTests { return Bundle.main.bundleIdentifier ?? "" + ".testnetQA.tests" }
+    if E.isRunningTests { return (Bundle.main.bundleIdentifier ?? "") + ".testnetQA.tests" }
     
     #if TESTNET
-    return Bundle.main.bundleIdentifier ?? "" + ".testnetQA"
+    return (Bundle.main.bundleIdentifier ?? "") + ".testnetQA"
     #elseif INTERNAL
-    return Bundle.main.bundleIdentifier ?? "" + ".internalQA"
+    return (Bundle.main.bundleIdentifier ?? "") + ".internalQA"
     #else
-    return Bundle.main.bundleIdentifier ?? ""
+    return (Bundle.main.bundleIdentifier ?? "")
     #endif
 }
 

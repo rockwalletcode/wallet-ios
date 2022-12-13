@@ -12,7 +12,7 @@ import UIKit
 
 public enum AppGroup: String {
     case placeholderApp = "group.com.rockwallet.app"
-
+    
     public var containerURL: URL? {
         switch self {
         case .placeholderApp:

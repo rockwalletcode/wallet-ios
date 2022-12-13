@@ -12,7 +12,6 @@ import Foundation
 
 var WalletSecAttrService: String {
     if E.isRunningTests { return "com.rockwallet.app.testnetQA.tests" }
-    
     #if TESTNET
     return "com.rockwallet.app.testnetQA"
     #elseif INTERNAL

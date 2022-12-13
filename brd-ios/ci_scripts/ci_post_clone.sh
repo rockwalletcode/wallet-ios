@@ -32,4 +32,4 @@ echo "" >> $BRD_ENV
 
 # This sets the marketing version from the environment variable in all the right places
 cd ..
-agvtool set-marketing-version $APP_VERSION
+agvtool new-marketing-version $APP_VERSION

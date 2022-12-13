@@ -240,7 +240,6 @@ class RedeemGiftViewController: UIViewController, Subscriber {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        guard #available(iOS 13.0, *) else { return .default }
         return .lightContent
     }
     

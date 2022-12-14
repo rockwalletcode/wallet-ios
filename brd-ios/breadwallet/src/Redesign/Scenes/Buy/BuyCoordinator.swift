@@ -134,6 +134,14 @@ class BuyCoordinator: BaseCoordinator, BuyRoutes, BillingAddressRoutes, OrderPre
         }
     }
     
+    func showManageAssets(coreSystem: CoreSystem?) {
+        guard let coreSystem = coreSystem, let assetCollection = coreSystem.assetCollection else { return }
+        
+        let vc = ManageWalletsViewController(assetCollection: assetCollection, coreSystem: coreSystem)
+        let nc = RootNavigationController(rootViewController: vc)
+        navigationController.present(nc, animated: true)
+    }
+    
     // MARK: - Aditional helpers
 }
 

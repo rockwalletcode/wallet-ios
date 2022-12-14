@@ -2397,10 +2397,7 @@
 "Swap.RateValue" = "Rate";
 
 /* Receiving network fee text label on Swap screen */
-"Swap.ReceiveNetworkFee" = "Receiving network fee\n(included)";
-
-/* Receiving fee label on Swap screen */
-"Swap.ReceivingFee" = "Receiving fee\n";
+"Swap.ReceiveNetworkFee" = "Receiving network fee";
 
 "Swap.RequestTimedOut" = "Your swap request timed out. Please try again.";
 
@@ -2413,10 +2410,7 @@
 "Swap.SendingFee" = "Sending fee\n";
 
 /* Sending network fee text label on Swap screen */
-"Swap.SendNetworkFee" = "Sending network fee\n(included)";
-
-/* Send network fee not included label on swap */
-"Swap.sendNetworkFeeNotIncluded" = "Sending network fee\n(not included)";
+"Swap.SendNetworkFee" = "Sending network fee";
 
 /* Swap again button title in swap failure screen */
 "Swap.SwapAgain" = "Swap again";
@@ -2446,7 +2440,7 @@
 
 "Swap.transactionTo" = "To %1$@";
 
-"Swap.youReceive" = "You receive";
+"Swap.youReceive" = "You'll receive";
 
 "Swap.youSend" = "You send";
 
@@ -3192,4 +3186,6 @@
 "WritePaperPhrase.warning" = "For security purposes, do not screenshot or email these words.";
 
 "WritePaperPhrase.warning2" = "Remember to write these words down. Swipe back if you forgot.";
+
+"Buy.disabledUSDCMessage" = "USDC needs to be enabled in your wallet first. You can enable it here, or by selecting Manage assets on the home screen.";
 

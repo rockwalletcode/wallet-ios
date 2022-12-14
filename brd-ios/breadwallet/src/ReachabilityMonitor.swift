@@ -20,7 +20,7 @@ class Reachability {
     private static let shared = Reachability()
     private var didChangeCallbacks = [((Bool) -> Void)]()
     private var networkReachability: SCNetworkReachability?
-    private let reachabilitySerialQueue = DispatchQueue(label: "com.rockwallet.app.reachabilityQueue")
+    private let reachabilitySerialQueue = DispatchQueue(label: (Bundle.main.bundleIdentifier ?? "") + ".reachabilityQueue")
 
     private init() {
         networkReachability = SCNetworkReachabilityCreateWithName(kCFAllocatorDefault, "google.com")

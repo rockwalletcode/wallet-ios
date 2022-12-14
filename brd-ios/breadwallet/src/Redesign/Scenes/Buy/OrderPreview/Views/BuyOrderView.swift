@@ -14,11 +14,11 @@ struct BuyOrderConfiguration: Configurable {
     var title: LabelConfiguration = .init(font: Fonts.Body.two, textColor: LightColors.Text.one)
     var currencyAmountName: LabelConfiguration = .init(font: Fonts.Title.five, textColor: LightColors.Text.one)
     var rate: LabelConfiguration = .init(font: Fonts.Title.five, textColor: LightColors.Text.one)
-    var rateValue: TitleValueConfiguration = Presets.TitleValue.horizontal
-    var amount: TitleValueConfiguration = Presets.TitleValue.horizontal
-    var cardFee: TitleValueConfiguration = Presets.TitleValue.horizontal
-    var networkFee: TitleValueConfiguration = Presets.TitleValue.horizontal
-    var totalCost: TitleValueConfiguration = Presets.TitleValue.horizontalBold
+    var rateValue: TitleValueConfiguration = Presets.TitleValue.common
+    var amount: TitleValueConfiguration = Presets.TitleValue.common
+    var cardFee: TitleValueConfiguration = Presets.TitleValue.common
+    var networkFee: TitleValueConfiguration = Presets.TitleValue.common
+    var totalCost: TitleValueConfiguration = Presets.TitleValue.bold
     var shadow: ShadowConfiguration? = Presets.Shadow.light
     var background: BackgroundConfiguration? = .init(backgroundColor: LightColors.Background.one,
                                                      tintColor: LightColors.Text.one,

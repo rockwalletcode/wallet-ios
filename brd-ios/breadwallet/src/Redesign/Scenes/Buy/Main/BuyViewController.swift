@@ -35,6 +35,10 @@ class BuyViewController: BaseTableViewController<BuyCoordinator, BuyInteractor, 
         getRateAndTimerCell()?.wrappedView.invalidate()
     }
     
+    override var sceneLeftAlignedTitle: String? {
+        return UserManager.shared.profile?.canUseAch == true ? nil : L10n.Button.buy
+    }
+    
     override func setupSubviews() {
         super.setupSubviews()
         
@@ -170,6 +174,8 @@ class BuyViewController: BaseTableViewController<BuyCoordinator, BuyInteractor, 
             view.didChangeValue = { [weak self] segment in
                 self?.view.endEditing(true)
                 self?.interactor?.selectPaymentMethod(viewAction: .init(method: segment))
+                guard (Store.state.currencies.first(where: { $0.code == C.USDC }) == nil) else { return }
+                view.setup(with: SegmentControlViewModel(selectedIndex: .buyCard))
             }
         }
         
@@ -304,7 +310,15 @@ class BuyViewController: BaseTableViewController<BuyCoordinator, BuyInteractor, 
                                  configuration: responseDisplay.config)
     }
     
-    func displayAchData(actionResponse: BuyModels.AchData.ActionResponse) {
+    func displayManageAssetsMessage(actionResponse: BuyModels.AchData.ResponseDisplay) {
+        coordinator?.showMessage(model: actionResponse.model,
+                                 configuration: actionResponse.config,
+                                 onTapCallback: { [weak self] in
+            self?.coordinator?.showManageAssets(coreSystem: self?.dataStore?.coreSystem)
+        })
+    }
+    
+    func displayAchData(actionResponse: BuyModels.AchData.ResponseDisplay) {
         interactor?.getPaymentCards(viewAction: .init())
     }
     

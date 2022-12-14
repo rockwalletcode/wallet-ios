@@ -11,6 +11,9 @@ final class AccountVerificationPresenter: NSObject, Presenter, AccountVerificati
     weak var viewController: AccountVerificationViewController?
 
     // MARK: - AccountVerificationActionResponses
+    
+    private var isPending = false
+    
     func presentData(actionResponse: FetchModels.Get.ActionResponse) {
         guard let item = actionResponse.item as? Models.Item else { return }
         
@@ -25,7 +28,17 @@ final class AccountVerificationPresenter: NSObject, Presenter, AccountVerificati
             levelOneStatus = item.status
             levelTwoStatus = .none
         }
+        
         let isActive = levelOneStatus == .levelOne || item.status == .levelOne
+        
+        switch item.status {
+        case .levelTwo(.submitted):
+            isPending = true
+            
+        default:
+            break
+        }
+        
         let sections = [ Models.Section.verificationLevel ]
         
         let sectionRows: [Models.Section: [Any]] = [
@@ -50,7 +63,7 @@ final class AccountVerificationPresenter: NSObject, Presenter, AccountVerificati
     }
     
     func presentStartVerification(actionResponse: AccountVerificationModels.Start.ActionResponse) {
-        viewController?.displayStartVerification(responseDisplay: .init(level: actionResponse.level))
+        viewController?.displayStartVerification(responseDisplay: .init(level: actionResponse.level, isPending: isPending))
     }
     
     func presentPersonalInfoPopup(actionResponse: AccountVerificationModels.PersonalInfo.ActionResponse) {
@@ -59,6 +72,14 @@ final class AccountVerificationPresenter: NSObject, Presenter, AccountVerificati
                                    body: text)
         
         viewController?.displayPersonalInfoPopup(responseDisplay: .init(model: model))
+    }
+    
+    func presentPendingStatusError(actionResponse: AccountVerificationModels.PendingMessage.ActionResponse) {
+        let model = InfoViewModel(description: .text(L10n.AccountKYCLevelTwo.verificationPending), dismissType: .auto)
+        let config = Presets.InfoView.error
+        
+        viewController?.displayPendingStatusError(responseDisplay: .init(model: model,
+                                                                         config: config))
     }
 
     // MARK: - Additional Helpers

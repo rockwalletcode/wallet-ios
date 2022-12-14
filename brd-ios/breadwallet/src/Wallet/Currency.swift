@@ -198,7 +198,7 @@ class Currency: SharedCurrency, CurrencyWithIcon, ItemSelectable {
         }
         
         // Allow scanning BTC on BSV screen and vice-versa.
-        if (isBitcoin && currency.isBitcoinSV) || (isBitcoinSV && currency.isBitcoin) {
+        if ((isBitcoin && currency.isBitcoinSV) || (isBitcoinSV && currency.isBitcoin)) && request.scheme == nil {
             return true
         }
         

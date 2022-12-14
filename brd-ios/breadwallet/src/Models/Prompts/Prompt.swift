@@ -136,7 +136,7 @@ protocol Prompt {
      *  Invoked when this prompt is shown to the user. This function may be used to track the number of
      *  times a prompt has been shown, and whether to show it again.
      */
-    func didPrompt()
+    func didPrompt() -> Bool
 }
 
 //
@@ -206,7 +206,25 @@ extension Prompt {
         }
     }
     
-    func didPrompt() {}
+    func didPrompt() -> Bool {
+        guard !PromptFactory.shared.presentedPopups.contains(type) else { return true }
+        
+        switch type {
+        case .noInternet:
+            return false
+            
+        case .biometrics:
+            UserDefaults.hasPromptedBiometrics = true
+            PromptFactory.shared.presentedPopups.append(type)
+            
+            return false
+            
+        default:
+            PromptFactory.shared.presentedPopups.append(type)
+            
+            return false
+        }
+    }
 }
 
 // Struct for basic prompts that include a Dismiss and Continue button, such as the paper-key prompt.
@@ -220,16 +238,10 @@ struct StandardPrompt: Prompt {
     var type: PromptType {
         return promptType
     }
-    
-    func didPrompt() {
-        if type == .biometrics {
-            UserDefaults.hasPromptedBiometrics = true
-        }
-    }
 }
 
 class PromptFactory: Subscriber {
-    private static let shared = PromptFactory()
+    static let shared = PromptFactory()
     
     private var prompts = [Prompt]() {
         didSet {
@@ -237,12 +249,10 @@ class PromptFactory: Subscriber {
         }
     }
     
+    var presentedPopups: [PromptType] = []
+    
     init() {
         addDefaultPrompts()
-    }
-    
-    static var promptCount: Int {
-        return shared.prompts.count
     }
     
     static func nextPrompt(walletAuthenticator: WalletAuthenticator) -> Prompt? {

@@ -49,7 +49,7 @@ class WriteRecoveryKeyViewController: BaseRecoveryKeyViewController {
     private lazy var doneButton: FEButton = {
         let view = FEButton()
         view.configure(with: Presets.Button.primary)
-        view.setup(with: .init(title: L10n.Button.done))
+        view.setup(with: .init(title: L10n.Button.done, enabled: false))
         return view
     }()
     
@@ -230,13 +230,8 @@ class WriteRecoveryKeyViewController: BaseRecoveryKeyViewController {
     }
     
     private func enableDoneButton(_ enable: Bool) {
-        // If the user is in write-key-again mode, always enable the Done button because the
-        // the flow can be exited at any time.
-        if mode == .writeKey {
-            doneButton.isEnabled = true
-        } else {
-            doneButton.isEnabled = enable
-        }
+        // If the user is in write-key-again mode, always enable the Done button because the flow can be exited at any time.
+        doneButton.setup(with: .init(title: L10n.Button.done, enabled: mode == .writeKey ? true : enable))
     }
     
     private func listenForBackgroundNotification() {

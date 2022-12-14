@@ -25,5 +25,9 @@ class AccountVerificationInteractor: NSObject, Interactor, AccountVerificationVi
         presenter?.presentPersonalInfoPopup(actionResponse: .init())
     }
     
+    func showPendingStatusError(viewAction: AccountVerificationModels.PendingMessage.ViewAction) {
+        presenter?.presentPendingStatusError(actionResponse: .init())
+    }
+    
     // MARK: - Aditional helpers
 }

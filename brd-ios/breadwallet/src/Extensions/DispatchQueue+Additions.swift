@@ -10,6 +10,6 @@ import Foundation
 
 extension DispatchQueue {
     static var walletQueue: DispatchQueue = {
-        return DispatchQueue(label: C.walletQueue)
+        return DispatchQueue(label: (Bundle.main.bundleIdentifier ?? "") + ".WalletQueue")
     }()
 }

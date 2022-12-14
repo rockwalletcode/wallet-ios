@@ -174,7 +174,7 @@ class UpdatePinViewController: UIViewController, Subscriber {
     }
     
     private func addCloudView() {
-        guard type == .recoverBackup, #available(iOS 13.6, *) else { return }
+        guard type == .recoverBackup else { return }
         let hosting = UIHostingController(rootView: CloudBackupIcon(style: .down))
         view.addSubview(hosting.view)
         hosting.view.backgroundColor = .clear
@@ -277,7 +277,7 @@ class UpdatePinViewController: UIViewController, Subscriber {
     }
     
     private func recoverBackupFor(pin: String) {
-        guard let backupKey = backupKey, #available(iOS 13.6, *) else { return }
+        guard let backupKey = backupKey else { return }
         let result = keyMaster.unlockBackup(pin: pin, key: backupKey)
         switch result {
         case .success(let account):

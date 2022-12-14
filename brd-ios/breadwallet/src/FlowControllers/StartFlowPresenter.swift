@@ -161,7 +161,6 @@ class StartFlowPresenter: Subscriber {
     }
     
     private func enterRecoverCloudBackup() {
-        guard #available(iOS 13.6, *) else { return }
         let backups = keyMaster.listBackups()
         if backups.count > 1 {
             let selectView = SelectBackupView(backups: backups) {
@@ -269,10 +268,10 @@ class StartFlowPresenter: Subscriber {
     }
     
     private func enterCloudBackup(pin: String, callback: @escaping () -> Void) {
-        guard #available(iOS 13.6, *) else { callback(); return }
         //We don't need to show the backup view if backup is already on
         guard !keyMaster.doesCloudBackupExist() else { callback(); return }
         guard let navController = navigationController else { return }
+        
         let synchronizer = BackupSynchronizer(context: .onboarding,
                                               keyStore: self.keyMaster,
                                               navController: navController)

@@ -23,18 +23,24 @@ enum AccountVerificationModels {
     struct Start {
         struct ViewAction {
             var level: Int = 0
-            /// if the user wants to start a basic verification, but already has
-            /// an advanced confirmed, we need to warn him that it will be reset
-            var confirmed: Bool?
         }
         
         struct ActionResponse {
             var level: KYCLevel
-            var confirmed: Bool?
         }
         
         struct ResponseDisplay {
             var level: KYCLevel
+            var isPending: Bool
+        }
+    }
+    
+    struct PendingMessage {
+        struct ViewAction {}
+        struct ActionResponse {}
+        struct ResponseDisplay {
+            var model: InfoViewModel
+            var config: InfoViewConfiguration
         }
     }
     

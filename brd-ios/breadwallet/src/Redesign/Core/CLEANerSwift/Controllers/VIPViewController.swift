@@ -181,7 +181,10 @@ class VIPViewController<C: CoordinatableRoutes,
     func displayMessage(responseDisplay: MessageModels.ResponseDisplays) {
         guard !isAccessDenied(responseDisplay: responseDisplay) else { return }
         
-        coordinator?.showMessage(with: responseDisplay.error, model: responseDisplay.model, configuration: responseDisplay.config)
+        coordinator?.showMessage(with: responseDisplay.error,
+                                 model: responseDisplay.model,
+                                 configuration: responseDisplay.config,
+                                 onTapCallback: nil)
     }
     
     func isAccessDenied(responseDisplay: MessageModels.ResponseDisplays) -> Bool {
@@ -189,7 +192,8 @@ class VIPViewController<C: CoordinatableRoutes,
          
         coordinator?.showMessage(with: responseDisplay.error,
                                  model: responseDisplay.model,
-                                 configuration: responseDisplay.config)
+                                 configuration: responseDisplay.config,
+                                 onTapCallback: nil)
         
         return true
     }

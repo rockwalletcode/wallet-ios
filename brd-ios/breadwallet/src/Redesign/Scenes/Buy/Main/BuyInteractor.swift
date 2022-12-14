@@ -190,7 +190,16 @@ class BuyInteractor: NSObject, Interactor, BuyViewActions {
                 self?.dataStore?.allPaymentCards = data
                 
                 if self?.dataStore?.autoSelectDefaultPaymentMethod == true {
-                    let paymentCards = self?.dataStore?.allPaymentCards?.filter { $0.type == .buyCard }
+                    let paymentCards: [PaymentCard]?
+                    
+                    switch self?.dataStore?.paymentMethod {
+                    case .buyAch:
+                        paymentCards = self?.dataStore?.allPaymentCards?.filter { $0.type == .buyAch }
+                        
+                    default:
+                        paymentCards = self?.dataStore?.allPaymentCards?.filter { $0.type == .buyCard }
+                    }
+                    
                     self?.dataStore?.paymentCard = paymentCards?.first
                 }
                 
@@ -205,26 +214,33 @@ class BuyInteractor: NSObject, Interactor, BuyViewActions {
     }
     
     func selectPaymentMethod(viewAction: BuyModels.PaymentMethod.ViewAction) {
-        dataStore?.paymentMethod = viewAction.method
-        
-        var paymentCards: [PaymentCard]?
-        
-        if dataStore?.paymentMethod == .buyCard {
-            paymentCards = dataStore?.allPaymentCards?.filter { $0.type == .buyCard }
-            if let currency = Store.state.currencies.first(where: { $0.code == C.BTC }) ?? Store.state.currencies.first {
-                dataStore?.toAmount = .zero(currency)
+        let currency = Store.state.currencies.first(where: { $0.code == C.USDC })
+        guard viewAction.method == .buyAch, currency == nil else {
+            dataStore?.paymentMethod = viewAction.method
+            var paymentCards: [PaymentCard]?
+            
+            switch dataStore?.paymentMethod {
+            case .buyAch:
+                if let currency = Store.state.currencies.first(where: { $0.code == C.USDC }) {
+                    dataStore?.toAmount = .zero(currency)
+                }
+                paymentCards = dataStore?.allPaymentCards?.filter { $0.type == .buyAch }
+                
+            default:
+                if let currency = Store.state.currencies.first(where: { $0.code == C.BTC }) ?? Store.state.currencies.first {
+                    dataStore?.toAmount = .zero(currency)
+                }
+                paymentCards = dataStore?.allPaymentCards?.filter { $0.type == .buyCard }
             }
-        } else {
-            paymentCards = dataStore?.allPaymentCards?.filter { $0.type == .buyAch }
-            if let currency = Store.state.currencies.first(where: { $0.code == C.USDC }) {
-                dataStore?.toAmount = .zero(currency)
+            
+            if dataStore?.autoSelectDefaultPaymentMethod == true {
+                dataStore?.paymentCard = paymentCards?.first
             }
+            
+            getExchangeRate(viewAction: .init())
+            return
         }
         
-        if dataStore?.autoSelectDefaultPaymentMethod == true {
-            dataStore?.paymentCard = paymentCards?.first
-        }
-        
-        getExchangeRate(viewAction: .init())
+        presenter?.presentUSDCMessage(actionResponse: .init())
     }
 }

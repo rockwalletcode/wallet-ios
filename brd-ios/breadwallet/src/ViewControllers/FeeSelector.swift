@@ -122,7 +122,7 @@ class FeeSelector: UIView {
     }
     
     private func setupSegmentControl() {
-        control.selectedSegmentIndex = 1
+        control.selectedSegmentIndex = 2 // Default to priority (index 2)
         control.selectedSegmentTintColor = LightColors.Text.two
         var font: [NSAttributedString.Key: Any] = [
             NSAttributedString.Key.font: Fonts.Body.two,

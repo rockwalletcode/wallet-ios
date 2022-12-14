@@ -35,7 +35,6 @@ enum Margins: CGFloat {
     static func custom(_ increment: Int) -> CGFloat {
         return CGFloat(increment) * Margins.small.rawValue
     }
-    
 }
 
 enum BorderWidth: CGFloat {
@@ -82,6 +81,6 @@ enum ViewSizes: CGFloat {
     case extralarge = 80.0
     /// 100
     case extraExtraHuge = 100.0
-    /// illustration
+    /// Illustration
     case illustration = 180.0
 }

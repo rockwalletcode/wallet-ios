@@ -15,7 +15,9 @@ struct PlaidEventRequestData: RequestModelData {
     
     func getParameters() -> [String: Any] {
         return [
-            "plaid_callback_event": event
+            "plaid_callback_event": [
+                "name": event
+            ]
         ]
     }
 }

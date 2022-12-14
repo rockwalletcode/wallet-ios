@@ -133,6 +133,8 @@ class ApplicationController: Subscriber {
             if let modalPresenter = self.modalPresenter {
                 Store.unsubscribe(modalPresenter)
             }
+            
+            PromptFactory.shared.presentedPopups.removeAll()
             self.modalPresenter = nil
             self.rootNavigationController?.viewControllers = []
             

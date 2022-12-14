@@ -389,11 +389,12 @@ class HomeScreenViewController: UIViewController, UITabBarDelegate, Subscriber {
     private func attemptShowGeneralPrompt() {
         UserManager.shared.refresh { [weak self] _ in
             guard let self = self,
-                  let nextPrompt = PromptFactory.nextPrompt(walletAuthenticator: self.walletAuthenticator) else { return }
+                  let nextPrompt = PromptFactory.nextPrompt(walletAuthenticator: self.walletAuthenticator),
+                  !nextPrompt.didPrompt() else { return }
             
             self.generalPromptView = PromptFactory.createPromptView(prompt: nextPrompt, presenter: self)
             
-            nextPrompt.didPrompt()
+            _ = nextPrompt.didPrompt()
             
             self.layoutPrompts(self.generalPromptView)
             
@@ -445,10 +446,12 @@ class HomeScreenViewController: UIViewController, UITabBarDelegate, Subscriber {
         guard let prompt = prompt,
               (promptContainerStack.arrangedSubviews as? [PromptView])?.contains(where: { $0.type == prompt.type }) == false else { return }
         
+        prompt.transform = .init(translationX: -UIScreen.main.bounds.width, y: 0)
         promptContainerStack.insertArrangedSubview(prompt, at: 0)
         
         UIView.animate(withDuration: Presets.Animation.duration, delay: 0, options: .curveLinear) { [weak self] in
             self?.promptContainerStack.arrangedSubviews.dropFirst().forEach({ $0.isHidden = true })
+            prompt.transform = .identity
         } completion: { [weak self] _ in
             self?.promptContainerStack.layoutIfNeeded()
             self?.view.layoutIfNeeded()

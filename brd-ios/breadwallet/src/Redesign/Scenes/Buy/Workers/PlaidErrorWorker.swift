@@ -15,7 +15,9 @@ struct PlaidErrorRequestData: RequestModelData {
     
     func getParameters() -> [String: Any] {
         return [
-            "plaid_link_error": error
+            "plaid_link_error": [
+                "name": error
+            ]
         ]
     }
 }

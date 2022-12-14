@@ -14,7 +14,7 @@ class AssetListTableView: UITableViewController, Subscriber {
     var didTapAddWallet: (() -> Void)?
     var didReload: (() -> Void)?
     
-    private let loadingSpinner = UIActivityIndicatorView(style: .medium)
+    private let loadingSpinner = UIActivityIndicatorView(style: .large)
     private let assetHeight: CGFloat = ViewSizes.extralarge.rawValue
     
     private lazy var manageAssetsButton: ManageAssetsButton = {
@@ -156,6 +156,8 @@ class AssetListTableView: UITableViewController, Subscriber {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard Store.state.currencies.indices.contains(indexPath.row) else { return UITableViewCell() }
+        
         let currency = Store.state.currencies[indexPath.row]
         let viewModel = HomeScreenAssetViewModel(currency: currency)
         
@@ -196,15 +198,18 @@ extension AssetListTableView {
     
     func showLoadingIndicator(_ show: Bool) {
         guard show else {
+            tableView.isScrollEnabled = true
             loadingSpinner.removeFromSuperview()
             return
         }
         
         view.addSubview(loadingSpinner)
+        tableView.isScrollEnabled = false
         
-        loadingSpinner.constrain([
-            loadingSpinner.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            loadingSpinner.centerYAnchor.constraint(equalTo: view.centerYAnchor)])
+        loadingSpinner.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview().multipliedBy(0.8)
+        }
         
         loadingSpinner.startAnimating()
     }

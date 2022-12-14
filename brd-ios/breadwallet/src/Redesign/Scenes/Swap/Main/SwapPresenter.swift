@@ -78,7 +78,6 @@ final class SwapPresenter: NSObject, Presenter, SwapActionResponses {
     func presentAmount(actionResponse: SwapModels.Amounts.ActionResponse) {
         let balance = actionResponse.baseBalance
         let balanceText = String(format: L10n.Swap.balance(ExchangeFormatter.crypto.string(for: balance?.tokenValue.doubleValue) ?? "", balance?.currency.code ?? ""))
-        let sendingFee = L10n.Swap.sendNetworkFeeNotIncluded
         let receivingFee = L10n.Swap.receiveNetworkFee
         
         let fromFiatValue = actionResponse.from?.fiatValue == 0 ? nil : ExchangeFormatter.fiat.string(for: actionResponse.from?.fiatValue)
@@ -91,40 +90,26 @@ final class SwapPresenter: NSObject, Presenter, SwapActionResponses {
         let toFormattedFiatString = ExchangeFormatter.createAmountString(string: toFiatValue ?? "")
         let toFormattedTokenString = ExchangeFormatter.createAmountString(string: toTokenValue ?? "")
         
+        let toFee = actionResponse.toFee
         let fromFee = actionResponse.fromFee
         
-        let formattedFromFiatFeeString = String(format: "%@ %@",
-                                                ExchangeFormatter.fiat.string(for: fromFee?.fiatValue) ?? "",
-                                                C.usdCurrencyCode)
-        let formattedFromTokenFeeString = String(format: "%@ %@",
-                                                 ExchangeFormatter.crypto.string(for: fromFee?.tokenValue) ?? "",
-                                                 fromFee?.currency.code.uppercased() ?? "")
-        
-        let toFee = actionResponse.toFee
-        
-        let formattedToFiatFeeString = String(format: "%@ %@",
-                                              ExchangeFormatter.fiat.string(for: toFee?.fiatValue) ?? "",
-                                              C.usdCurrencyCode)
-        let formattedToTokenFeeString = String(format: "%@ %@",
+        let formattedToTokenFeeString = String(format: "-%@ %@",
                                                ExchangeFormatter.crypto.string(for: toFee?.tokenValue) ?? "",
                                                toFee?.currency.code.uppercased() ?? "")
         
         let swapModel = MainSwapViewModel(from: .init(amount: actionResponse.from,
                                                       formattedFiatString: fromFormattedFiatString,
                                                       formattedTokenString: fromFormattedTokenString,
-                                                      fee: actionResponse.fromFee,
-                                                      formattedFiatFeeString: formattedFromFiatFeeString,
-                                                      formattedTokenFeeString: formattedFromTokenFeeString,
                                                       title: .text(balanceText),
-                                                      feeDescription: .text(sendingFee)),
+                                                      shouldShowFiatField: true),
                                           to: .init(amount: actionResponse.to,
                                                     formattedFiatString: toFormattedFiatString,
                                                     formattedTokenString: toFormattedTokenString,
-                                                    fee: actionResponse.fromFee,
-                                                    formattedFiatFeeString: formattedToFiatFeeString,
+                                                    fee: actionResponse.toFee,
                                                     formattedTokenFeeString: formattedToTokenFeeString,
-                                                    title: .text(L10n.Swap.youReceive),
-                                                    feeDescription: .text(receivingFee)))
+                                                    title: .text(L10n.Buy.iWant),
+                                                    feeDescription: .text(receivingFee),
+                                                    shouldShowFiatField: false))
         
         guard actionResponse.handleErrors else {
             viewController?.displayAmount(responseDisplay: .init(continueEnabled: false,
@@ -251,17 +236,9 @@ final class SwapPresenter: NSObject, Presenter, SwapActionResponses {
                             ExchangeFormatter.fiat.string(for: to.fiatValue.doubleValue) ?? "",
                             C.usdCurrencyCode)
         
-        let fromFeeText = String(format: "%@ %@\n(%@ %@)",
-                                 ExchangeFormatter.crypto.string(for: actionResponse.fromFee?.tokenValue.doubleValue) ?? "",
-                                 actionResponse.fromFee?.currency.code ?? from.currency.code,
-                                 ExchangeFormatter.fiat.string(for: actionResponse.fromFee?.fiatValue.doubleValue) ?? "",
-                                 C.usdCurrencyCode)
-        
-        let toFeeText = String(format: "%@ %@\n(%@ %@)",
+        let toFeeText = String(format: "-%@ %@",
                                ExchangeFormatter.crypto.string(for: actionResponse.toFee?.tokenValue.doubleValue) ?? "",
-                               actionResponse.toFee?.currency.code ?? to.currency.code,
-                               ExchangeFormatter.fiat.string(for: actionResponse.toFee?.fiatValue.doubleValue) ?? "",
-                               C.usdCurrencyCode)
+                               actionResponse.toFee?.currency.code ?? to.currency.code)
         
         let totalCostText = String(format: "%@ %@", ExchangeFormatter.crypto.string(for: from.tokenValue.doubleValue) ?? "", from.currency.code)
         
@@ -270,9 +247,8 @@ final class SwapPresenter: NSObject, Presenter, SwapActionResponses {
         let wrappedViewModel: SwapConfirmationViewModel = .init(from: .init(title: .text(L10n.TransactionDetails.addressFromHeader), value: .text(fromText)),
                                                                 to: .init(title: .text(L10n.TransactionDetails.addressToHeader), value: .text(toText)),
                                                                 rate: .init(title: .text(L10n.Swap.rateValue), value: .text(rateText)),
-                                                                sendingFee: .init(title: .text(L10n.Swap.sendingFee), value: .text(fromFeeText)),
-                                                                receivingFee: .init(title: .text(L10n.Swap.receivingFee), value: .text(toFeeText)),
-                                                                totalCost: .init(title: .text(L10n.Confirmation.totalLabel), value: .text(totalCostText)))
+                                                                receivingFee: .init(title: .text(L10n.Swap.receiveNetworkFee), value: .text(toFeeText)),
+                                                                totalCost: .init(title: .text(L10n.Swap.youReceive), value: .text(totalCostText)))
         
         let viewModel: WrapperPopupViewModel<SwapConfirmationViewModel> = .init(title: .text(L10n.Confirmation.title),
                                                                                 confirm: .init(title: L10n.Button.confirm),
@@ -306,16 +282,14 @@ final class SwapPresenter: NSObject, Presenter, SwapActionResponses {
     private func setupMainSwapViewModel(from: Currency, to: Currency) -> MainSwapViewModel {
         return MainSwapViewModel(from: .init(amount: .zero(from),
                                              fee: .zero(from),
-                                             formattedFiatFeeString: nil,
                                              formattedTokenFeeString: nil,
                                              title: .text(String(format: L10n.Swap.balance(ExchangeFormatter.crypto.string(for: 0) ?? "", from.code))),
-                                             feeDescription: .text(L10n.Swap.sendNetworkFee)),
+                                             shouldShowFiatField: true),
                                  to: .init(amount: .zero(to),
                                            fee: .zero(to),
-                                           formattedFiatFeeString: nil,
                                            formattedTokenFeeString: nil,
-                                           title: .text(L10n.Swap.youReceive),
-                                           feeDescription: .text(L10n.Swap.sendNetworkFee)))
+                                           title: .text(L10n.Buy.iWant),
+                                           shouldShowFiatField: false))
     }
     
 }

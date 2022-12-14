@@ -37,11 +37,15 @@
 /* Delisted token alert banner message */
 "Account.delistedToken" = "Este token se ha eliminado de la lista porque el emisor ha decidido abandonar la compatibilidad con ERC20. \n\nTodavía pueda enviar estos tokens a otra plataforma. Para obtener más información, visite nuestra página de asistencia.";
 
+"Account.Email" = "Email";
+
 /* $10000 per BTC */
 "Account.exchangeRate" = "%1$@ por %2$@";
 
 /* Loading Wallet Message */
 "Account.loadingMessage" = "Cargando cartera";
+
+"Account.VerifyIdentityPlain" = "Necesitamos verificar tu identidad antes de que puedas comprar o intercambiar activos.";
 
 /* Confirm Account Creation mesage body */
 "AccountCreation.body" = "Solo cree una cuenta de Hedera si tiene la intención de almacenar HBAR en su billetera.";
@@ -289,6 +293,30 @@
 /* Yes button */
 "Button.yes" = "Sí";
 
+"Buy.Ach.WalletDisabled" = "%s debe habilitarse primero en tu monedero. Habilítalo %s o seleccionando \"Administrar activos\" en la pantalla de inicio.";
+
+"Buy.Ach.WalletDisabled.Link" = "aquí";
+
+"Buy.Ach.WalletDisabled.ManageAssets" = "Administrar activos";
+
+"Buy.achFeeText" = "Tasa ACH (tasa fija + % (por determinar)";
+
+"Buy.achLimits" = "Actualmente, el mínimo diario para comprar con ACH es %s y el máximo es %s. Actualmente, el límite total es %s.\n\nActualmente, el periodo de proceso de compra con ACH es de 7 a 10 días";
+
+"Buy.achSuccess" = "El método de pago ACH se ha añadido correctamente";
+
+"Buy.bankAccountFailureText" = "Inténtalo de nuevo o utiliza un método de pago diferente.";
+
+"Buy.bankAccountSuccessText" = "Actualmente, el periodo de proceso de compra con ACH es de 7 a 10 días. Recibirás un email de confirmación cuando tus activos digitales se añadan a tu monedero.";
+
+"Buy.bankAccountSuccessTitle" = "Tu compra se está procesando";
+
+"Buy.plaidErrorDescription" = "Consulta con tu banco o inténtalo de nuevo más tarde.";
+
+"Buy.plaidErrorTitle" = "Se ha producido un error al conectar tu cuenta a través de Plaid";
+
+"Buy.TransactionError" = "Error en la transacción";
+
 /* Camera plugin instruction */
 "CameraPlugin.centerInstruction" = "Centra tu ID en el recuadro";
 
@@ -456,6 +484,8 @@
 /* Exchange rate label */
 "DefaultCurrency.rateLabel" = "Tasa de cambio";
 
+"Disabled.disabledUntil" = "Deshabilitado hasta";
+
 /* The wallet is disabled. */
 "Disabled.title" = "Monedero bloqueado";
 
@@ -471,11 +501,23 @@
 /* Service capabilities description */
 "EME.permissions.paymentRequest" = "Solicitar %1$@ pago";
 
+"ErrorMessages.Ach.AccountClosed" = "Lamentablemente, la cuenta bancaria asociada está cerrada. Intenta añadir una cuenta bancaria diferente o un método de pago diferente.";
+
+"ErrorMessages.Ach.AccountFrozen" = "Lamentablemente, se ha producido un error al procesar la transacción. Inténtalo de nuevo más tarde o ponte en contacto con tu banco para obtener asistencia adicional.";
+
+"ErrorMessages.Ach.ErrorWhileProcessing" = "Lamentablemente, se ha producido un error al procesar la transacción. Inténtalo de nuevo más tarde o selecciona otro método de pago.";
+
+"ErrorMessages.Ach.InsufficientFunds" = "Lamentablemente, la transacción no se ha podido completar debido a la insuficiencia de fondos en tu cuenta bancaria. Inténtalo de nuevo más tarde";
+
+"ErrorMessages.default" = "¡Algo ha salido mal! Inténtalo de nuevo más tarde.";
+
 /* Email unavailable alert title */
 "ErrorMessages.emailUnavailableMessage" = "Este dispositivo no está configurado para enviar correo electrónico mediante una aplicación de iOS";
 
 /* Email unavailable alert title */
 "ErrorMessages.emailUnavailableTitle" = "Correo electrónico no disponible";
+
+"ErrorMessages.ExchangesUnavailable" = "Tenemos problemas temporales con la red. Inténtalo de nuevo más tarde.";
 
 /* Message that gets shown when we've detected the user has encountered the looping lock-screen bug. (preserve [ ] characters) */
 "ErrorMessages.loopingLockScreen.android" = "RockWallet no se puede autenticar debido a un error de tu versión de Android. [Por favor pulsa aquí para más información]";
@@ -846,6 +888,10 @@
 /* Node Selector view title */
 "NodeSelector.title" = "Nodos Bitcoin";
 
+"NoInternet.Body" = "No hemos podido conectar con el servidor. Por favor, comprueba tu conexión a Internet e inténtalo de nuevo.";
+
+"NoInternet.Title" = "Comprueba tu conexión";
+
 /* Onboarding screen 'I'll browse first' button */
 "Onboarding.browseFirst" = "Voy a explorar un poco antes";
 
@@ -916,6 +962,8 @@
 "PaymentProtocol.Errors.untrustedCertificate" = "el certificado no es de confianza";
 
 "Platform.transaction_cancelled" = "Transacción cancelada";
+
+"Prompts.ConnectionIssues.title" = "Problemas de conexión";
 
 /* Body text for a prompt that asks the user to subscribe to email updates to find out product updates. */
 "Prompts.Email.body" = "Sé el primero en recibir soporte y actualizaciones importantes de productos";
@@ -1392,6 +1440,9 @@
 /* Insufficient funds error */
 "Send.insufficientFunds" = "Fondos insuficientes";
 
+/* Insufficient gas error */
+"Send.insufficientGas" = "Fondos insuficientes";
+
 /* e,g, "You must have at least $2 in your wallet in order to transfer this type of token." In this case, "token" is an ethereum ERC20 token. */
 "Send.insufficientGasMessage" = "Debe tener al menos %1$@ en su billetera para poder transferir este tipo de token. ¿Le gustaría ir a su billetera de Ethereum ahora?";
 
@@ -1697,6 +1748,8 @@
 
 "SupportForm.pleaseDescribe" = "Por favor describa su experiencia";
 
+"Symbols.lock" = "\u{1F512}";
+
 /* Syncing view done syncing state header text */
 "SyncingView.activity" = "Actividad";
 
@@ -1729,6 +1782,18 @@
 
 /* 6 s (6 seconds) */
 "TimeSince.seconds" = "%1$@ s";
+
+"Title.AutoEnterPin" = "Introducir PIN de forma automática";
+
+"Title.ConnectionSettingsOverride" = "Anular ajustes de conexión";
+
+"Title.LockWallet" = "Bloquear monedero";
+
+"Title.SendLogs" = "Enviar registros";
+
+"Title.SuppressPaperKeyPrompt" = "Suprimir solicitud de clave en papel";
+
+"Title.UnlinkWalletNoPrompt" = "Desvincular monedero (sin avisar)";
 
 /* Add [this item to the list] */
 "TokenList.add" = "Añadir";
@@ -1840,6 +1905,12 @@
 
 /* Transaction is pending status text */
 "Transaction.pending" = "Pendiente";
+
+"Transaction.PendingPurchaseWithAch" = "Pendiente de compra con ACH";
+
+"Transaction.PurchasedWithAch" = "Comprado con ACH";
+
+"Transaction.PurchaseFailedWithAch" = "La compra con ACH ha fallado";
 
 /* Receive status text: 'In progress: 20%' */
 "Transaction.receivedStatus" = "En curso: %1$@";

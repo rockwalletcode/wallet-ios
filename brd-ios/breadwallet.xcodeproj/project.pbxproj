@@ -3600,7 +3600,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Confirm homebrew root for M1 machines\nif test -d \"/opt/homebrew/bin/\"; then\n PATH=\"/opt/homebrew/bin/:${PATH}\"\nfi\nexport PATH\n\nif which swiftlint >/dev/null; then\n git status --porcelain | grep -v '^ \\?D' | cut -c 4- | sed 's/.* -> //' | tr -d '\"' | while read file \n do\n     if [[ \"$file\" == *.swift ]]; then\n         swiftlint \"$file\" --fix \n        swiftlint --config ../.swiftlint.yml \"$file\" --fix\n     fi\n done\nelse\n  if [ \"${CONFIGURATION}\" == \"Release\" ]; then\n    exit 0;\n  else\n    echo \"error: SwiftLint not installed, download from https://github.com/realm/SwiftLint or install via homebrew\"\n    exit 0\n  fi\nfi\n";
+			shellScript = "if which swiftlint >/dev/null; then\n git status --porcelain | grep -v '^ \\?D' | cut -c 4- | sed 's/.* -> //' | tr -d '\"' | while read file \n do\n     if [[ \"$file\" == *.swift ]]; then\n         swiftlint \"$file\" --fix \n        swiftlint --config ../.swiftlint.yml \"$file\" --fix\n     fi\n done\nelse\n exit 0\nfi\n";
 		};
 		7CDC6A5521125C14004AE68E /* Thin Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5412,8 +5412,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/rockwalletcode/WalletKitSwift.git";
 			requirement = {
-				kind = revision;
-				revision = 51dc3989e794a07722297d29378eea0d6a5368b1;
+				kind = exactVersion;
+				version = 5.0.4;
 			};
 		};
 		7E5CB32B2834E63400EC787E /* XCRemoteSwiftPackageReference "cosmos" */ = {

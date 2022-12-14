@@ -12,8 +12,8 @@ import UIKit
 class CoreSystem: Subscriber {
     
     private var system: System?
-    private let queue = DispatchQueue(label: "com.rockwallet.app.CoreSystem", qos: .utility)
-    private let listenerQueue = DispatchQueue(label: "com.rockwallet.app.CoreSystem.listener", qos: .utility)
+    private let queue = DispatchQueue(label: (Bundle.main.bundleIdentifier ?? "") + ".CoreSystem", qos: .utility)
+    private let listenerQueue = DispatchQueue(label: (Bundle.main.bundleIdentifier ?? "") + ".CoreSystem.listener", qos: .utility)
     private let keyStore: KeyStore
     private var systemClient: SystemClient?
     fileprivate var btcWalletCreationCallback: (() -> Void)?
@@ -126,7 +126,10 @@ class CoreSystem: Subscriber {
     
     func refreshWallet(completion: @escaping () -> Void) {
         guard let kvStore = Backend.kvStore,
-              let account = system?.account else { return assertionFailure() }
+              let account = system?.account else {
+            completion()
+            return
+        }
         
         Backend.apiClient.updateBundles { [weak self] _ in
             self?.getCurrencyMetaData(kvStore: kvStore,

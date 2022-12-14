@@ -26,6 +26,6 @@ protocol CoordinatableRoutes: NSObject,
 }
 
 protocol MessageDisplayable {
-    func showMessage(with error: Error?, model: InfoViewModel?, configuration: InfoViewConfiguration?)
+    func showMessage(with error: Error?, model: InfoViewModel?, configuration: InfoViewConfiguration?, onTapCallback: (() -> Void)?)
     func hideMessage()
 }

@@ -18,6 +18,8 @@ struct ExchangeDetailsResponseData: ModelResponse {
         var transactionId: String?
         var usdFee: Double?
         var paymentInstrument: PaymentCardsResponseData.PaymentInstrument?
+        var feeRate: Decimal?
+        var feeFixedRate: Decimal?
     }
     
     var orderId: Int?
@@ -38,6 +40,8 @@ struct SwapDetail: Model, Hashable {
         var transactionId: String?
         var usdFee: Double
         var paymentInstrument: PaymentCard
+        var feeRate: Decimal?
+        var feeFixedRate: Decimal?
     }
     
     var orderId: Int
@@ -68,7 +72,9 @@ class ExchangeDetailsMapper: ModelMapper<ExchangeDetailsResponseData, SwapDetail
                                                                                      expiryYear: sourceCard?.expiryYear ?? 0,
                                                                                      scheme: PaymentCard.Scheme(rawValue: sourceCard?.scheme ?? "") ?? .none,
                                                                                      last4: sourceCard?.last4 ?? "",
-                                                                                     accountName: sourceCard?.accountName ?? ""))
+                                                                                     accountName: sourceCard?.accountName ?? ""),
+                                                      feeRate: source?.feeRate,
+                                                      feeFixedRate: source?.feeFixedRate)
         let destinationData = SwapDetail.SourceDestination(currency: destination?.currency?.uppercased() ?? "",
                                                            currencyAmount: destination?.currencyAmount ?? 0,
                                                            usdAmount: destination?.usdAmount ?? 0,
@@ -81,7 +87,9 @@ class ExchangeDetailsMapper: ModelMapper<ExchangeDetailsResponseData, SwapDetail
                                                                                           expiryYear: destinationCard?.expiryYear ?? 0,
                                                                                           scheme: PaymentCard.Scheme(rawValue: destinationCard?.scheme ?? "") ?? .none,
                                                                                           last4: destinationCard?.last4 ?? "",
-                                                                                          accountName: sourceCard?.accountName ?? ""))
+                                                                                          accountName: sourceCard?.accountName ?? ""),
+                                                           feeRate: source?.feeRate,
+                                                           feeFixedRate: source?.feeFixedRate)
 
         return SwapDetail(orderId: Int(response?.orderId ?? 0),
                           status: .init(string: response?.status) ?? .failed,

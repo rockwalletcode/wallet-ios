@@ -34,7 +34,6 @@ struct C {
     static let brdLogoTopMargin: CGFloat = E.isIPhoneX ? Margins.custom(9) + 35.0 : Margins.custom(9) + 20.0
     static let secondsInDay: TimeInterval = 86400
     static let secondsInMinute: TimeInterval = 60
-    static let walletQueue = "com.rockwallet.app.walletqueue"
     static let maxMemoLength = 250
     static let companyURL = "rockwallet.com"
     static let privacyPolicy = "https://\(companyURL)/privacy"

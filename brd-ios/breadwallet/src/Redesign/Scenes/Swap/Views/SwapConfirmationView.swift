@@ -11,25 +11,23 @@
 import UIKit
 
 struct SwapConfimationConfiguration: Configurable {
-    var from: TitleValueConfiguration = Presets.TitleValue.vertical.withTextAlign(textAlign: .left)
-    var to: TitleValueConfiguration = Presets.TitleValue.vertical.withTextAlign(textAlign: .left)
-    var rate: TitleValueConfiguration = Presets.TitleValue.horizontal
-    var sendingFee: TitleValueConfiguration = Presets.TitleValue.horizontal
-    var receivingFee: TitleValueConfiguration = Presets.TitleValue.horizontal
-    var totalCost: TitleValueConfiguration = Presets.TitleValue.horizontal
+    var from: TitleValueConfiguration = Presets.TitleValue.common.withTextAlign(textAlign: .left)
+    var to: TitleValueConfiguration = Presets.TitleValue.common.withTextAlign(textAlign: .left)
+    var rate: TitleValueConfiguration = Presets.TitleValue.common
+    var sendingFee: TitleValueConfiguration = Presets.TitleValue.common
+    var receivingFee: TitleValueConfiguration = Presets.TitleValue.common
+    var totalCost: TitleValueConfiguration = Presets.TitleValue.bold
 }
 
 struct SwapConfirmationViewModel: ViewModel {
     var from: TitleValueViewModel
     var to: TitleValueViewModel
     var rate: TitleValueViewModel
-    var sendingFee: TitleValueViewModel
     var receivingFee: TitleValueViewModel
     var totalCost: TitleValueViewModel
 }
 
 class SwapConfirmationView: FEView<SwapConfimationConfiguration, SwapConfirmationViewModel> {
-    
     private lazy var mainStack: UIStackView = {
         let view = UIStackView()
         view.axis = .vertical
@@ -54,13 +52,14 @@ class SwapConfirmationView: FEView<SwapConfimationConfiguration, SwapConfirmatio
         return view
     }()
     
-    private lazy var sendingFeeView: TitleValueView = {
+    private lazy var receivingFeeView: TitleValueView = {
         let view = TitleValueView()
         return view
     }()
     
-    private lazy var receivingFeeView: TitleValueView = {
-        let view = TitleValueView()
+    private lazy var lineView: UIView = {
+        let view = UIView()
+        view.backgroundColor = LightColors.Outline.one
         return view
     }()
     
@@ -92,14 +91,16 @@ class SwapConfirmationView: FEView<SwapConfimationConfiguration, SwapConfirmatio
             make.height.equalTo(ViewSizes.extraSmall.rawValue)
         }
         
-        mainStack.addArrangedSubview(sendingFeeView)
-        sendingFeeView.snp.makeConstraints { make in
-            make.height.equalTo(ViewSizes.Common.defaultCommon.rawValue)
-        }
-        
         mainStack.addArrangedSubview(receivingFeeView)
         receivingFeeView.snp.makeConstraints { make in
-            make.height.equalTo(ViewSizes.Common.defaultCommon.rawValue)
+            make.height.equalTo(ViewSizes.extraSmall.rawValue)
+        }
+        
+        mainStack.addArrangedSubview(lineView)
+        
+        lineView.snp.makeConstraints { make in
+            make.height.equalTo(ViewSizes.minimum.rawValue)
+            make.leading.trailing.equalToSuperview()
         }
         
         mainStack.addArrangedSubview(costView)
@@ -114,7 +115,6 @@ class SwapConfirmationView: FEView<SwapConfimationConfiguration, SwapConfirmatio
         fromView.configure(with: config?.from)
         toView.configure(with: config?.to)
         rateView.configure(with: config?.rate)
-        sendingFeeView.configure(with: config?.sendingFee)
         receivingFeeView.configure(with: config?.receivingFee)
         costView.configure(with: config?.totalCost)
     }
@@ -125,7 +125,6 @@ class SwapConfirmationView: FEView<SwapConfimationConfiguration, SwapConfirmatio
         fromView.setup(with: viewModel?.from)
         toView.setup(with: viewModel?.to)
         rateView.setup(with: viewModel?.rate)
-        sendingFeeView.setup(with: viewModel?.sendingFee)
         receivingFeeView.setup(with: viewModel?.receivingFee)
         costView.setup(with: viewModel?.totalCost)
     }

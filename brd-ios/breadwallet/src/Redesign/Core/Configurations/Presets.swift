@@ -72,9 +72,9 @@ struct Presets {
         static var selected = BorderConfiguration(borderWidth: 0, cornerRadius: .medium)
         static var disabled = BorderConfiguration(borderWidth: 0, cornerRadius: .medium)
         
-        static var normalButtonFullRadius = BorderConfiguration(tintColor: LightColors.primary, borderWidth: 1, cornerRadius: .fullRadius)
-        static var selectedButtonFullRadius = BorderConfiguration(tintColor: LightColors.secondary, borderWidth: 1, cornerRadius: .fullRadius)
-        static var disabledButtonFullRadius = BorderConfiguration(tintColor: LightColors.Disabled.one, borderWidth: 1, cornerRadius: .fullRadius)
+        static var normalButtonFullRadius = BorderConfiguration(tintColor: LightColors.primary, borderWidth: 1.5, cornerRadius: .fullRadius)
+        static var selectedButtonFullRadius = BorderConfiguration(tintColor: LightColors.secondary, borderWidth: 1.5, cornerRadius: .fullRadius)
+        static var disabledButtonFullRadius = BorderConfiguration(tintColor: LightColors.Disabled.one, borderWidth: 1.5, cornerRadius: .fullRadius)
         
         static var normalTextField = BorderConfiguration(tintColor: LightColors.Outline.two, borderWidth: 1, cornerRadius: .extraSmall)
         static var selectedTextField = BorderConfiguration(tintColor: LightColors.Outline.two, borderWidth: 1, cornerRadius: .extraSmall)
@@ -352,17 +352,14 @@ extension Presets {
 
 extension Presets {
     struct TitleValue {
-        static var horizontal = TitleValueConfiguration(title: .init(font: Fonts.Body.two, textColor: LightColors.Text.two, numberOfLines: 1),
-                                                        value: .init(font: Fonts.Body.two, textColor: LightColors.Text.two, textAlignment: .right))
+        static var common = TitleValueConfiguration(title: .init(font: Fonts.Body.two, textColor: LightColors.Text.two, numberOfLines: 1),
+                                                    value: .init(font: Fonts.Subtitle.two, textColor: LightColors.Text.two, textAlignment: .right))
         
-        static var horizontalBold = TitleValueConfiguration(title: .init(font: Fonts.Body.two, textColor: LightColors.Text.one, numberOfLines: 1),
-                                                            value: .init(font: Fonts.Subtitle.two, textColor: LightColors.Text.one, textAlignment: .right))
+        static var bold = TitleValueConfiguration(title: .init(font: Fonts.Body.two, textColor: LightColors.Text.one, numberOfLines: 1),
+                                                  value: .init(font: Fonts.Subtitle.one, textColor: LightColors.Text.one, textAlignment: .right))
         
-        static var vertical = TitleValueConfiguration(title: .init(font: Fonts.Body.two, textColor: LightColors.Text.two, numberOfLines: 1),
-                                                      value: .init(font: Fonts.Body.two, textColor: LightColors.Text.two, textAlignment: .right))
-        
-        static var verticalSmall = TitleValueConfiguration(title: .init(font: Fonts.Body.three, textColor: LightColors.Text.two, numberOfLines: 1),
-                                                           value: .init(font: Fonts.Body.three, textColor: LightColors.Text.two, textAlignment: .right))
+        static var small = TitleValueConfiguration(title: .init(font: Fonts.Body.three, textColor: LightColors.Text.two, numberOfLines: 1),
+                                                   value: .init(font: Fonts.Subtitle.three, textColor: LightColors.Text.two, textAlignment: .right))
         
         static var alert = TitleValueConfiguration(title: .init(font: Fonts.Title.six, textColor: LightColors.Text.three, textAlignment: .center, numberOfLines: 1),
                                                    value: .init(font: Fonts.Body.two, textColor: LightColors.Text.one, textAlignment: .center))

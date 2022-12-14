@@ -62,7 +62,7 @@ class SendViewController: UIViewController, Subscriber, ModalPresentable {
     private var paymentProtocolRequest: PaymentProtocolRequest?
     private var didIgnoreUsedAddressWarning = false
     private var didIgnoreIdentityNotCertified = false
-    private var feeLevel: FeeLevel = .regular {
+    private var feeLevel: FeeLevel = .priority { // Default to priority
         didSet {
             updateFees()
         }

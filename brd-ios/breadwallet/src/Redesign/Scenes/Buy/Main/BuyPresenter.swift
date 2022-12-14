@@ -45,7 +45,8 @@ final class BuyPresenter: NSObject, Presenter, BuyActionResponses {
         let sectionRows: [Models.Sections: [ViewModel]] =  [
             .segment: [paymentSegment],
             .rateAndTimer: [exchangeRateViewModel],
-            .from: [SwapCurrencyViewModel(title: .text(L10n.Swap.iWant))],
+            .from: [SwapCurrencyViewModel(title: .text(L10n.Swap.iWant),
+                                          shouldShowFiatField: true)],
             .paymentMethod: [paymentMethodViewModel],
             .accountLimits: [
                 LabelViewModel.text("")
@@ -90,7 +91,8 @@ final class BuyPresenter: NSObject, Presenter, BuyActionResponses {
         cryptoModel = .init(amount: actionResponse.amount,
                             formattedFiatString: formattedFiatString,
                             formattedTokenString: formattedTokenString,
-                            title: .text(L10n.Swap.iWant))
+                            title: .text(L10n.Swap.iWant),
+                            shouldShowFiatField: true)
         
         if let paymentCard = actionResponse.card, actionResponse.paymentMethod == .buyCard {
             cardModel = .init(logo: paymentCard.displayImage,
@@ -177,10 +179,11 @@ final class BuyPresenter: NSObject, Presenter, BuyActionResponses {
     }
     
     func presentPublicTokenSuccess(actionResponse: BuyModels.PlaidPublicToken.ActionResponse) {
+        viewController?.displayAchData(actionResponse: .init())
+        
         viewController?.displayMessage(responseDisplay: .init(model: .init(description: .text(L10n.Buy.achSuccess)),
                                                               config: Presets.InfoView.verification))
         
-        viewController?.displayAchData(actionResponse: .init())
     }
     
     func presentFailure(actionResponse: BuyModels.Failure.ActionResponse) {
@@ -199,6 +202,21 @@ final class BuyPresenter: NSObject, Presenter, BuyActionResponses {
         let config = Presets.InfoView.error
         
         viewController?.displayMessage(responseDisplay: .init(error: error, model: model, config: config))
+    }
+    
+    func presentUSDCMessage(actionResponse: BuyModels.AchData.ActionResponse) {
+        let infoMessage = NSMutableAttributedString(string: L10n.Buy.disabledUSDCMessage)
+        let linkRange = infoMessage.mutableString.range(of: L10n.WalletConnectionSettings.link)
+        
+        if linkRange.location != NSNotFound {
+            infoMessage.addAttribute(.underlineStyle, value: 1, range: linkRange)
+        }
+        
+        let model = InfoViewModel(description: .attributedText(infoMessage),
+                                  dismissType: .tapToDismiss)
+        let config = Presets.InfoView.verification
+        
+        viewController?.displayManageAssetsMessage(actionResponse: .init(model: model, config: config))
     }
     
     // MARK: - Additional Helpers

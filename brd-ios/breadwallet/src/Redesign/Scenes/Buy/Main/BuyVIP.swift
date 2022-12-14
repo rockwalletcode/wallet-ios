@@ -34,6 +34,7 @@ protocol BuyActionResponses: BaseActionResponses, FetchActionResponses {
     func presentLinkToken(actionResponse: BuyModels.PlaidLinkToken.ActionResponse)
     func presentPublicTokenSuccess(actionResponse: BuyModels.PlaidPublicToken.ActionResponse)
     func presentFailure(actionResponse: BuyModels.Failure.ActionResponse)
+    func presentUSDCMessage(actionResponse: BuyModels.AchData.ActionResponse)
 }
 
 protocol BuyResponseDisplays: AnyObject, BaseResponseDisplays, FetchResponseDisplays {
@@ -44,7 +45,8 @@ protocol BuyResponseDisplays: AnyObject, BaseResponseDisplays, FetchResponseDisp
     func displayNavigateAssetSelector(responseDisplay: BuyModels.AssetSelector.ResponseDisplay)
     func displayLinkToken(responseDisplay: BuyModels.PlaidLinkToken.ResponseDisplay)
     func displayFailure(responseDisplay: BuyModels.Failure.ResponseDisplay)
-    func displayAchData(actionResponse: BuyModels.AchData.ActionResponse)
+    func displayAchData(actionResponse: BuyModels.AchData.ResponseDisplay)
+    func displayManageAssetsMessage(actionResponse: BuyModels.AchData.ResponseDisplay)
 }
 
 protocol BuyDataStore: BaseDataStore, FetchDataStore {

@@ -19,19 +19,19 @@ enum BackupContext {
 class BackupSynchronizer {
     
     private let keyStore: KeyStore
-    private let navController: UINavigationController
+    private let navController: RootNavigationController
     let context: BackupContext
     var completion: (() -> Void)?
     
-    init(context: BackupContext, keyStore: KeyStore, navController: UINavigationController) {
+    init(context: BackupContext, keyStore: KeyStore, navController: RootNavigationController) {
         self.context = context
         self.keyStore = keyStore
         self.navController = navController
-        if context == .onboarding {
-            enableBackup(callback: { success in
-                print("[CloudBackups] Enabled backup during onboarding: \(success)")
-            })
-        }
+        
+        guard context == .onboarding else { return }
+        enableBackup(callback: { success in
+            print("[CloudBackups] Enabled backup during onboarding: \(success)")
+        })
     }
     
     var isBackedUp: Bool {
@@ -68,18 +68,21 @@ class BackupSynchronizer {
                 callback(false)
             }
         }
+        
         let pinViewController = VerifyPinViewController(bodyText: L10n.CloudBackup.encryptBackupMessage,
-                                          pinLength: 6, //force backups to be 6 digit
-                                          walletAuthenticator: self.keyStore,
-                                          pinAuthenticationType: .transactions,
-                                          success: pinSuccess)
+                                                        pinLength: 6, //force backups to be 6 digit
+                                                        walletAuthenticator: keyStore,
+                                                        pinAuthenticationType: .transactions,
+                                                        success: pinSuccess)
         pinViewController.transitioningDelegate = RecoveryKeyFlowController.pinTransitionDelegate
         pinViewController.modalPresentationStyle = .overFullScreen
         pinViewController.modalPresentationCapturesStatusBarAppearance = true
         pinViewController.didCancel = {
             callback(false)
         }
-        navController.present(pinViewController, animated: true, completion: nil)
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.navController.present(pinViewController, animated: true, completion: nil)
+        }
     }
-    
 }

@@ -919,7 +919,6 @@ extension KeyStore: KeyMaster {
     }
     
     func doesCloudBackupExist() -> Bool {
-        guard #available(iOS 13.6, *) else { return false }
         return !listBackups().isEmpty
     }
 }

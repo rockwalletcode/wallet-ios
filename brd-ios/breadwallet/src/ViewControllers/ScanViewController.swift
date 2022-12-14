@@ -175,11 +175,14 @@ extension ScanViewController: AVCaptureMetadataOutputObjectsDelegate {
             }
         }
     }
-
+    
     func handleURI(_ uri: String) {
         print("QR content detected: \(uri)")
+        
         self.currentUri = uri
+        
         let result = QRCode(content: uri)
+        
         guard .invalid != result else {
             guide.state = .negative
             return

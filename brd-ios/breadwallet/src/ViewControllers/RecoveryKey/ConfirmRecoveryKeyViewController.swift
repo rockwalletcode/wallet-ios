@@ -23,7 +23,7 @@ class ConfirmRecoveryKeyViewController: BaseRecoveryKeyViewController {
     private lazy var continueButton: FEButton = {
         let view = FEButton()
         view.configure(with: Presets.Button.primary)
-        view.setup(with: .init(title: L10n.Button.continueAction))
+        view.setup(with: .init(title: L10n.Button.confirm, enabled: false))
         return view
     }()
     
@@ -114,13 +114,9 @@ class ConfirmRecoveryKeyViewController: BaseRecoveryKeyViewController {
     }
     
     private func setUpContinueButton() {
-        continueButton.isEnabled = false    // enable once words are confirmed
-        
         view.addSubview(continueButton)
         
         constrainContinueButton(continueButton)
-        
-        continueButton.setup(with: .init(title: L10n.Button.confirm))
         
         continueButton.tap = { [unowned self] in
             self.userDidWriteKey()
@@ -196,7 +192,8 @@ class ConfirmRecoveryKeyViewController: BaseRecoveryKeyViewController {
             
             wordView.onValidateCallback = { [unowned self] in
                 if self.shouldEnableContinueButton() {
-                    self.continueButton.isEnabled = true
+                    self.continueButton.setup(with: .init(title: L10n.Button.confirm, enabled: true))
+                    
                     // When user gets both words correct, hide the keyboard automatically to show the enabled
                     // continue button. Queue the dismissal on the main thread to prevent trimming of the last character
                     // in the word for some languages such as Japanese.
@@ -204,7 +201,7 @@ class ConfirmRecoveryKeyViewController: BaseRecoveryKeyViewController {
                         wordView.loseFocus()
                     }
                 } else {
-                    self.continueButton.isEnabled = false
+                    self.continueButton.setup(with: .init(title: L10n.Button.confirm, enabled: false))
                 }
             }
             

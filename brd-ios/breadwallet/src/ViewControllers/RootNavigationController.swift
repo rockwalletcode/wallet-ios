@@ -75,6 +75,7 @@ class RootNavigationController: UINavigationController, UINavigationControllerDe
             is KYCBasicViewController,
             is KYCLevelTwoEntryViewController,
             is KYCDocumentPickerViewController,
+            is KYCLevelTwoPostValidationViewController,
             is SimpleWebViewController,
             is VerifyAccountViewController,
             is OrderPreviewViewController,

@@ -11,7 +11,7 @@
 import UIKit
 
 struct TimerConfiguration: Configurable {
-    var background: BackgroundConfiguration = .init(backgroundColor: .clear, tintColor: LightColors.primary)
+    var background: BackgroundConfiguration = .init(backgroundColor: .clear, tintColor: LightColors.secondary)
     var font = Fonts.Body.two
 }
 

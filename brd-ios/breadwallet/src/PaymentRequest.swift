@@ -62,6 +62,7 @@ struct PaymentRequest {
     var paymentProtocolRequest: PaymentProtocolRequest?
     var r: URL?
     var destinationTag: String?
+    var scheme: String?
     
     init?(string: String, currency: Currency) {
         self.currency = currency
@@ -88,6 +89,7 @@ struct PaymentRequest {
         //Case: Url has a crypto scheme
         //eg. bitcoin:xxxxx or ethereum:xxxx
         guard let url = formatUrl(rawUrl, forCurrency: currency) else { return nil }
+        scheme = url.scheme
         
         //The toAddress is always the host except for EIP-681 (erc20 transfer) uris
         //where the toAddress is in the address param

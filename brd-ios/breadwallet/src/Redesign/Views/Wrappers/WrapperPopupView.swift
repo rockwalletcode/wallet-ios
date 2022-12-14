@@ -11,9 +11,9 @@
 import UIKit
 
 struct WrapperPopupConfiguration<C: Configurable>: Configurable {
-    var background: BackgroundConfiguration = .init(backgroundColor: .white, tintColor: .black, border: Presets.Border.mediumPlain)
+    var background: BackgroundConfiguration = .init(backgroundColor: .white, tintColor: .black, border: Presets.Border.commonPlain)
     var leading: BackgroundConfiguration?
-    var title = LabelConfiguration(font: Fonts.Title.six, textColor: LightColors.Text.one, textAlignment: .center)
+    var title = LabelConfiguration(font: Fonts.Title.six, textColor: LightColors.Text.three, textAlignment: .center)
     var trailing = Presets.Button.blackIcon
     var confirm = Presets.Button.primary
     var cancel = Presets.Button.secondary
@@ -88,7 +88,7 @@ class WrapperPopupView<T: ViewProtocol & UIView>: UIView,
     
     private lazy var lineView: UIView = {
         let view = UIView()
-        view.backgroundColor = LightColors.Outline.two
+        view.backgroundColor = LightColors.Outline.one
         return view
     }()
     
@@ -136,13 +136,13 @@ class WrapperPopupView<T: ViewProtocol & UIView>: UIView,
         addSubview(content)
         content.snp.makeConstraints { make in
             make.center.equalToSuperview()
-            make.leading.equalTo(snp.leadingMargin)
+            make.leading.equalTo(snp.leadingMargin).inset(Margins.medium.rawValue)
             make.top.greaterThanOrEqualToSuperview()
         }
-        content.layoutMargins = UIEdgeInsets(top: Margins.large.rawValue,
-                                             left: Margins.huge.rawValue,
+        content.layoutMargins = UIEdgeInsets(top: Margins.medium.rawValue,
+                                             left: Margins.large.rawValue,
                                              bottom: Margins.large.rawValue,
-                                             right: Margins.huge.rawValue)
+                                             right: Margins.large.rawValue)
         content.isLayoutMarginsRelativeArrangement = true
         
         setupCustomMargins(vertical: .extraHuge)
@@ -168,7 +168,7 @@ class WrapperPopupView<T: ViewProtocol & UIView>: UIView,
         }
         content.addArrangedSubview(lineView)
         lineView.snp.makeConstraints { make in
-            make.height.equalTo(1)
+            make.height.equalTo(ViewSizes.minimum.rawValue)
         }
         
         content.addArrangedSubview(wrappedView)
@@ -178,6 +178,7 @@ class WrapperPopupView<T: ViewProtocol & UIView>: UIView,
         confirmButton.snp.makeConstraints { make in
             make.height.equalTo(ViewSizes.Common.largeCommon.rawValue)
         }
+        
         buttonStack.addArrangedSubview(cancelButton)
         cancelButton.snp.makeConstraints { make in
             make.height.equalTo(ViewSizes.Common.largeCommon.rawValue)

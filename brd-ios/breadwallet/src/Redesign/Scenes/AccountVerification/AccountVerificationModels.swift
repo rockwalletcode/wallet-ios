@@ -38,10 +38,6 @@ enum AccountVerificationModels {
         }
     }
     
-    struct VeriffStatus {
-        struct ViewAction {}
-    }
-    
     struct PendingMessage {
         struct ViewAction {}
         struct ActionResponse {}

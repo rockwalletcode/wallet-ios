@@ -34,10 +34,6 @@ class AccountVerificationInteractor: NSObject, Interactor, AccountVerificationVi
         }
     }
     
-    func setVeriffStatus(viewAction: AccountVerificationModels.VeriffStatus.ViewAction) {
-        VeriffStatusWorker().execute()
-    }
-    
     func showPersonalInfoPopup(viewAction: AccountVerificationModels.PersonalInfo.ViewAction) {
         presenter?.presentPersonalInfoPopup(actionResponse: .init())
     }

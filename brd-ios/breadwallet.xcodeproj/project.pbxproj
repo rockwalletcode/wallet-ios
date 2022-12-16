@@ -142,7 +142,6 @@
 		7B36D2FB290BA77C00FB6842 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B36D2FA290BA77C00FB6842 /* GradientView.swift */; };
 		7B4DF6EF294872690032CC83 /* Veriff in Frameworks */ = {isa = PBXBuildFile; productRef = 7B4DF6EE294872690032CC83 /* Veriff */; };
 		7B4DF6F12948739E0032CC83 /* VeriffSessionWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B4DF6F02948739E0032CC83 /* VeriffSessionWorker.swift */; };
-		7B4DF6F32948A2F20032CC83 /* VeriffStatusWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B4DF6F22948A2F20032CC83 /* VeriffStatusWorker.swift */; };
 		7B519A932835B506007AC80A /* currencies.json in Resources */ = {isa = PBXBuildFile; fileRef = 7B519A922835B505007AC80A /* currencies.json */; };
 		7B54E59B27F4A2B0002DD1E4 /* AlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B54E57127F4A2B0002DD1E4 /* AlertHelper.swift */; };
 		7B54E59D27F4A2B0002DD1E4 /* Shadowable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B54E57327F4A2B0002DD1E4 /* Shadowable.swift */; };
@@ -931,7 +930,6 @@
 		7B2E5051289A5F02008CACD8 /* AddCardModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddCardModels.swift; sourceTree = "<group>"; };
 		7B36D2FA290BA77C00FB6842 /* GradientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		7B4DF6F02948739E0032CC83 /* VeriffSessionWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VeriffSessionWorker.swift; sourceTree = "<group>"; };
-		7B4DF6F22948A2F20032CC83 /* VeriffStatusWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VeriffStatusWorker.swift; sourceTree = "<group>"; };
 		7B519A922835B505007AC80A /* currencies.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = currencies.json; path = Resources/currencies.json; sourceTree = "<group>"; };
 		7B54E57127F4A2B0002DD1E4 /* AlertHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertHelper.swift; sourceTree = "<group>"; };
 		7B54E57327F4A2B0002DD1E4 /* Shadowable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shadowable.swift; sourceTree = "<group>"; };
@@ -2886,7 +2884,6 @@
 				C45E0BA42845F4C40083F028 /* AccountVerificationViewController.swift */,
 				C45E0BA52845F4C40083F028 /* AccountVerificationInteractor.swift */,
 				7B4DF6F02948739E0032CC83 /* VeriffSessionWorker.swift */,
-				7B4DF6F22948A2F20032CC83 /* VeriffStatusWorker.swift */,
 			);
 			path = AccountVerification;
 			sourceTree = "<group>";
@@ -4004,7 +4001,6 @@
 				7C9BC58F231765190011732F /* WalletConnectionSettings.swift in Sources */,
 				7B9434322886A7FA00638703 /* DeleteProfileInfoModels.swift in Sources */,
 				7B05888728A2698A00D7C971 /* PaymentCardsWorker.swift in Sources */,
-				7B4DF6F32948A2F20032CC83 /* VeriffStatusWorker.swift in Sources */,
 				CE3D4C591EF743EF0016B1C8 /* GuardProtected.swift in Sources */,
 				7E8E979B283F4830008606B0 /* ProfileVIP.swift in Sources */,
 				7EC0F8AA2886D9B90037145C /* ExchangeErrors.swift in Sources */,

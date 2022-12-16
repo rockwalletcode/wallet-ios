@@ -9,8 +9,7 @@ class AccountVerificationViewController: BaseTableViewController<KYCCoordinator,
                                          AccountVerificationInteractor,
                                          AccountVerificationPresenter,
                                          AccountVerificationStore>,
-                                         AccountVerificationResponseDisplays,
-                                         VeriffSdkDelegate {
+                                         AccountVerificationResponseDisplays {
     typealias Models = AccountVerificationModels
 
     override var sceneLeftAlignedTitle: String? {
@@ -105,49 +104,6 @@ class AccountVerificationViewController: BaseTableViewController<KYCCoordinator,
         interactor?.showPersonalInfoPopup(viewAction: .init())
     }
     
-    func sessionDidEndWithResult(_ result: Veriff.VeriffSdk.Result) {
-        switch result.status {
-        case .done:
-            interactor?.setVeriffStatus(viewAction: .init())
-            
-        case .canceled:
-            break
-            
-        case .error(let error):
-            handleVeriffError(error)
-            
-        default:
-            break
-        }
-    }
-    
-    private func handleVeriffError(_ error: Veriff.VeriffSdk.Error) {
-        /*
-        switch error {
-        case .cameraUnavailable:
-            <#code#>
-        case .microphoneUnavailable:
-            <#code#>
-        case .serverError:
-            <#code#>
-        case .localError:
-            <#code#>
-        case .networkError:
-            <#code#>
-        case .uploadError:
-            <#code#>
-        case .videoFailed:
-            <#code#>
-        case .deprecatedSDKVersion:
-            <#code#>
-        case .unknown:
-            <#code#>
-        default:
-            <#code#>
-        }
-         */
-    }
-    
     // MARK: - AccountVerificationResponseDisplay
     
     func displayStartVerification(responseDisplay: AccountVerificationModels.Start.ResponseDisplay) {
@@ -165,9 +121,7 @@ class AccountVerificationViewController: BaseTableViewController<KYCCoordinator,
             coordinator?.showKYCLevelTwo()
             
         case .veriff:
-            let veriff = VeriffSdk.shared
-            veriff.delegate = self
-            veriff.startAuthentication(sessionUrl: responseDisplay.sessionUrl, presentingFrom: self)
+            VeriffSdk.shared.startAuthentication(sessionUrl: responseDisplay.sessionUrl, presentingFrom: self)
             
         }
     }

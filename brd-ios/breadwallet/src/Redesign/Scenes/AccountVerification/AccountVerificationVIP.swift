@@ -10,7 +10,6 @@ extension Scenes {
 
 protocol AccountVerificationViewActions: BaseViewActions, FetchViewActions {
     func startVerification(viewAction: AccountVerificationModels.Start.ViewAction)
-    func setVeriffStatus(viewAction: AccountVerificationModels.VeriffStatus.ViewAction)
     func showPersonalInfoPopup(viewAction: AccountVerificationModels.PersonalInfo.ViewAction)
     func showPendingStatusError(viewAction: AccountVerificationModels.PendingMessage.ViewAction)
 }

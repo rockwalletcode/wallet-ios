@@ -11,22 +11,16 @@
 import Foundation
 
 struct VeriffSessionResponseData: ModelResponse {
-    var sessionId: String?
-    var vendorData: String?
     var url: String?
 }
 
 struct VeriffSession: Model {
-    var sessionId: String
-    var vendorData: String
     var sessionUrl: String
 }
 
 class VeriffSessionWorkerMapper: ModelMapper<VeriffSessionResponseData, VeriffSession> {
     override func getModel(from response: VeriffSessionResponseData?) -> VeriffSession? {
-        return .init(sessionId: response?.sessionId ?? "",
-                     vendorData: response?.vendorData ?? "",
-                     sessionUrl: response?.url ?? "")
+        return .init(sessionUrl: response?.url ?? "")
     }
 }
 

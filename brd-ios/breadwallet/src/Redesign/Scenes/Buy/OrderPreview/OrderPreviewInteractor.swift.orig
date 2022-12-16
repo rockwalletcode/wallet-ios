@@ -154,11 +154,15 @@ class OrderPreviewInteractor: NSObject, Interactor, OrderPreviewViewActions {
         fiatFormatter.locale = Locale(identifier: C.usLocaleCode)
         fiatFormatter.usesGroupingSeparator = false
         
+<<<<<<< HEAD
+        let depositQuantity = from + (dataStore?.networkFee?.fiatValue ?? 0) + from * (dataStore?.quote?.buyFee ?? 1) / 100 + (dataStore?.quote?.buyFeeUsd ?? 0)
+=======
         let fromAmount = from * (1 + (dataStore?.quote?.buyFee ?? 0) / 100)
         let networkFee = dataStore?.networkFee?.fiatValue ?? 0
         let achFee = dataStore?.quote?.buyFeeUsd ?? 0
         
         let depositQuantity = fromAmount + networkFee + achFee
+>>>>>>> main
         let formattedDepositQuantity = fiatFormatter.string(from: depositQuantity as NSNumber) ?? ""
         
         let data = AchRequestData(quoteId: dataStore?.quote?.quoteId,

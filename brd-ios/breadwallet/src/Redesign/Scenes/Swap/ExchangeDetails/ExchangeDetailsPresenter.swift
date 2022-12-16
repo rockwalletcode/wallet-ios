@@ -57,7 +57,7 @@ final class ExchangeDetailsPresenter: NSObject, Presenter, ExchangeDetailsAction
         
         let formattedUsdAmountString = ExchangeFormatter.fiat.string(for: detail.source.usdAmount) ?? ""
         let formattedCurrencyAmountString = ExchangeFormatter.crypto.string(for: detail.source.currencyAmount) ?? ""
-        let formattedUsdAmountDestination = ExchangeFormatter.fiat.string(for: detail.destination.usdAmount) ?? ""
+        let infoImage = Asset.help.image.withRenderingMode(.alwaysOriginal)
         let formattedCurrencyAmountDestination = ExchangeFormatter.crypto.string(for: detail.destination.currencyAmount) ?? ""
         
         let timestamp = TimeInterval(detail.timestamp) / 1000
@@ -77,7 +77,7 @@ final class ExchangeDetailsPresenter: NSObject, Presenter, ExchangeDetailsAction
         case .swapTransaction:
             toCurrencyAssetViewModel = AssetViewModel(icon: toImage,
                                                       title: "\(L10n.TransactionDetails.addressToHeader) \(detail.destination.currency)",
-                                                      topRightText: "\(formattedUsdAmountDestination) \(currencyCode)")
+                                                      topRightText: "\(formattedCurrencyAmountDestination) \(detail.destination.currency)")
             
         case .buyTransaction, .buyAchTransaction, .sellTransaction:
             toCurrencyAssetViewModel = AssetViewModel(icon: toImage,

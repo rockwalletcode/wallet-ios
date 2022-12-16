@@ -362,8 +362,7 @@ class ModalPresenter: Subscriber {
             case .privateKey:
                 let alert = UIAlertController(title: L10n.Settings.importTitle, message: nil, preferredStyle: .actionSheet)
                 
-                let wallets = [Currencies.shared.bsv?.wallet,
-                               Currencies.shared.btc?.wallet,
+                let wallets = [Currencies.shared.btc?.wallet,
                                Currencies.shared.bch?.wallet]
                 wallets.forEach { wallet in
                     alert.addAction(UIAlertAction(title: wallet?.currency.code, style: .default, handler: { _ in

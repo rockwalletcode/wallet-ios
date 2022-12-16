@@ -13,10 +13,10 @@ import Foundation
 struct ExchangeDetailsResponseData: ModelResponse {
     struct SourceDestination: ModelResponse {
         var currency: String?
-        var currencyAmount: Double?
-        var usdAmount: Double?
+        var currencyAmount: Decimal?
+        var usdAmount: Decimal?
         var transactionId: String?
-        var usdFee: Double?
+        var usdFee: Decimal?
         var paymentInstrument: PaymentCardsResponseData.PaymentInstrument?
         var feeRate: Decimal?
         var feeFixedRate: Decimal?
@@ -27,7 +27,7 @@ struct ExchangeDetailsResponseData: ModelResponse {
     var statusDetails: String?
     var source: SourceDestination?
     var destination: SourceDestination?
-    var rate: Double?
+    var rate: Decimal?
     var timestamp: Int?
     var type: String?
 }
@@ -35,10 +35,10 @@ struct ExchangeDetailsResponseData: ModelResponse {
 struct SwapDetail: Model, Hashable {
     struct SourceDestination: Model, Hashable {
         var currency: String
-        var currencyAmount: Double
-        var usdAmount: Double
+        var currencyAmount: Decimal
+        var usdAmount: Decimal
         var transactionId: String?
-        var usdFee: Double
+        var usdFee: Decimal
         var paymentInstrument: PaymentCard
         var feeRate: Decimal?
         var feeFixedRate: Decimal?
@@ -49,7 +49,7 @@ struct SwapDetail: Model, Hashable {
     var statusDetails: String
     var source: SourceDestination
     var destination: SourceDestination
-    var rate: Double
+    var rate: Decimal
     var timestamp: Int
     var type: TransactionType
 }

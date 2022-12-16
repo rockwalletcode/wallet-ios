@@ -24,6 +24,7 @@ final class OrderPreviewPresenter: NSObject, Presenter, OrderPreviewActionRespon
               let isAchAccount = item.isAchAccount else { return }
         
         let wrappedViewModel = prepareOrderPreviewViewModel(for: item)
+        
         let achNotificationModel = InfoViewModel(description: .text(L10n.Buy.achPaymentDurationWarning), dismissType: .persistent)
         let achTermsModel = InfoViewModel(description: .text(L10n.Buy.terms),
                                           button: .init(title: L10n.About.terms, isUnderlined: true),

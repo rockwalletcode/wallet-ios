@@ -231,6 +231,17 @@ class BaseCoordinator: NSObject,
         navigationController.popToViewController(vc, animated: true)
     }
     
+    func showBuyWithDifferentPayment(paymentMethod: PaymentCard.PaymentType?) {
+        guard let vc = navigationController.viewControllers.first as? BuyViewController else {
+            return
+        }
+        
+        vc.dataStore?.paymentMethod = paymentMethod
+        vc.updatePaymentMethod()
+        
+        navigationController.popToViewController(vc, animated: true)
+    }
+    
     func showSwap() {
         guard let vc = navigationController.viewControllers.first as? SwapViewController else {
             return

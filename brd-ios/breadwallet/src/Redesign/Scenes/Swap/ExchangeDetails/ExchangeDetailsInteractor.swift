@@ -47,7 +47,8 @@ class ExchangeDetailsInteractor: NSObject, Interactor, ExchangeDetailsViewAction
                                last4: "121",
                                image: nil,
                                accountName: "roks account",
-                               status: .statusOk)
+                               status: .statusOk,
+                               cardType: .credit)
         
         let source = SwapDetail.SourceDestination(currency: "USD", currencyAmount: 120, usdAmount: 120, usdFee: 5, paymentInstrument: card)
         let destination = SwapDetail.SourceDestination(currency: "USDC", currencyAmount: 118, usdAmount: 120, usdFee: 5, paymentInstrument: card)

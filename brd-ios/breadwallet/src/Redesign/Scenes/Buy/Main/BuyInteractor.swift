@@ -107,7 +107,21 @@ class BuyInteractor: NSObject, Interactor, BuyViewActions {
     }
     
     func showOrderPreview(viewAction: BuyModels.OrderPreview.ViewAction) {
-        presenter?.presentOrderPreview(actionResponse: .init())
+        dataStore?.availablePayments = []
+        let containsDebitCard = dataStore?.cards.first(where: { $0.cardType == .debit }) != nil
+        
+        if dataStore?.selected?.cardType == .credit,
+            containsDebitCard {
+            dataStore?.availablePayments.append(.buyCard)
+        }
+        if dataStore?.selected?.cardType == .debit,
+           dataStore?.paymentMethod == .buyCard,
+           dataStore?.ach != nil,
+           dataStore?.toAmount?.currency.code == C.USDC {
+            dataStore?.availablePayments.append(.buyAch)
+        }
+        
+        presenter?.presentOrderPreview(actionResponse: .init(availablePayments: dataStore?.availablePayments))
     }
     
     func navigateAssetSelector(viewAction: BuyModels.AssetSelector.ViewAction) {
@@ -130,13 +144,35 @@ class BuyInteractor: NSObject, Interactor, BuyViewActions {
             if dataStore?.autoSelectDefaultPaymentMethod == true {
                 dataStore?.selected = dataStore?.cards.first
             }
-            
-            let model = dataStore?.values ?? .init()
-            setAmount(viewAction: model)
-            getExchangeRate(viewAction: .init())
-            
-            return
         }
+        
+        getExchangeRate(viewAction: .init())
+        presenter?.presentAssets(actionResponse: .init(amount: dataStore?.toAmount,
+                                                       card: dataStore?.selected,
+                                                       type: dataStore?.paymentMethod,
+                                                       quote: dataStore?.quote))
+    }
+    
+    func retryPaymentMethod(viewAction: BuyModels.RetryPaymentMethod.ViewAction) {
+        dataStore?.paymentMethod = viewAction.method
+        
+        switch viewAction.method {
+        case .buyAch:
+            dataStore?.selected = dataStore?.ach
+            
+            presenter?.presentMessage(actionResponse: .init(method: viewAction.method))
+            
+        case .buyCard:
+            if dataStore?.autoSelectDefaultPaymentMethod == true {
+                if dataStore?.availablePayments.contains(.buyCard) == true {
+                    dataStore?.selected = dataStore?.cards.first(where: { $0.cardType == .debit })
+                } else {
+                    dataStore?.selected = dataStore?.cards.first
+                }
+            }
+            presenter?.presentMessage(actionResponse: .init(method: viewAction.method))
+        }
+        
         getExchangeRate(viewAction: .init())
         presenter?.presentAssets(actionResponse: .init(amount: dataStore?.toAmount,
                                                        card: dataStore?.selected,

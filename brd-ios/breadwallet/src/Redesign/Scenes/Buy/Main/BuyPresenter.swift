@@ -165,7 +165,7 @@ final class BuyPresenter: NSObject, Presenter, BuyActionResponses {
     }
     
     func presentOrderPreview(actionResponse: BuyModels.OrderPreview.ActionResponse) {
-        viewController?.displayOrderPreview(responseDisplay: .init())
+        viewController?.displayOrderPreview(responseDisplay: .init(availablePayments: actionResponse.availablePayments))
     }
     
     func presentNavigateAssetSelector(actionResponse: BuyModels.AssetSelector.ActionResponse) {
@@ -216,6 +216,12 @@ final class BuyPresenter: NSObject, Presenter, BuyActionResponses {
         let config = Presets.InfoView.verification
         
         viewController?.displayManageAssetsMessage(actionResponse: .init(model: model, config: config))
+    }
+    
+    func presentMessage(actionResponse: BuyModels.RetryPaymentMethod.ActionResponse) {
+        let message = actionResponse.method == .buyCard ? L10n.Buy.switchedToDebitCard : L10n.Buy.switchedToAch
+        viewController?.displayMessage(responseDisplay: .init(model: .init(description: .text(message)),
+                                                              config: Presets.InfoView.verification))
     }
     
     // MARK: - Additional Helpers

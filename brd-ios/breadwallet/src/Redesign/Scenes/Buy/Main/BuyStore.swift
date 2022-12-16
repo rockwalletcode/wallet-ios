@@ -26,7 +26,20 @@ class BuyStore: NSObject, BaseDataStore, BuyDataStore {
     var from: Decimal?
     var to: Decimal?
     var values: BuyModels.Amounts.ViewAction = .init()
-    var paymentMethod: PaymentCard.PaymentType?
+    var paymentMethod: PaymentCard.PaymentType? {
+        didSet {
+            let selectedCurrency: Currency
+            if paymentMethod == .buyAch {
+                guard let currency = Store.state.currencies.first(where: { $0.code == C.USDC }) else { return }
+                selectedCurrency = currency
+            } else {
+                guard let currency = Store.state.currencies.first(where: { $0.code.lowercased() == C.BTC.lowercased() }) ?? Store.state.currencies.first  else { return  }
+                selectedCurrency = currency
+            }
+            
+            toAmount = .zero(selectedCurrency)
+        }
+    }
     var publicToken: String?
     var mask: String?
     var limits: String? {
@@ -36,23 +49,7 @@ class BuyStore: NSObject, BaseDataStore, BuyDataStore {
               let lifetimeLimit = ExchangeFormatter.fiat.string(for: UserManager.shared.profile?.achLifetimeRemainingLimit)
         else { return nil }
         
-        return L10n.Sell.disclaimer(minText, maxText, lifetimeLimit)
-    }
-    
-    override init() {
-        super.init()
-        
-        let selectedCurrency: Currency
-        
-        if paymentMethod == .buyAch {
-            guard let currency = Store.state.currencies.first(where: { $0.code == C.USDC }) else { return }
-            selectedCurrency = currency
-        } else {
-            guard let currency = Store.state.currencies.first(where: { $0.code.lowercased() == C.BTC.lowercased() }) ?? Store.state.currencies.first  else { return  }
-            selectedCurrency = currency
-        }
-        
-        toAmount = .zero(selectedCurrency)
+        return paymentMethod == .buyAch ? L10n.Buy.achLimits(minText, maxText, lifetimeLimit) : L10n.Buy.buyLimits(minText, maxText)
     }
     
     var feeAmount: Amount? {
@@ -86,7 +83,6 @@ class BuyStore: NSObject, BaseDataStore, BuyDataStore {
         guard let amount = toAmount,
               amount.tokenValue > 0,
               selected != nil,
-              selected?.status == .statusOk,
               feeAmount != nil,
               feeAmount != nil
         else {
@@ -94,4 +90,6 @@ class BuyStore: NSObject, BaseDataStore, BuyDataStore {
         }
         return true
     }
+    
+    var availablePayments: [PaymentCard.PaymentType] = []
 }

@@ -78,10 +78,10 @@ class BuyViewController: BaseTableViewController<BuyCoordinator, BuyInteractor, 
             
         case .rateAndTimer:
             cell = self.tableView(tableView, timerCellForRowAt: indexPath)
-
+            
         case .from:
             cell = self.tableView(tableView, cryptoSelectionCellForRowAt: indexPath)
-
+            
         case .paymentMethod:
             cell = self.tableView(tableView, paymentSelectionCellForRowAt: indexPath)
             
@@ -204,7 +204,7 @@ class BuyViewController: BaseTableViewController<BuyCoordinator, BuyInteractor, 
     }
     
     // MARK: - User Interaction
-
+    
     @objc override func buttonTapped() {
         super.buttonTapped()
         
@@ -258,12 +258,14 @@ class BuyViewController: BaseTableViewController<BuyCoordinator, BuyInteractor, 
     }
     
     func displayOrderPreview(responseDisplay: BuyModels.OrderPreview.ResponseDisplay) {
-        coordinator?.showOrderPreview(coreSystem: dataStore?.coreSystem,
+        coordinator?.showOrderPreview(type: .buy,
+                                      coreSystem: dataStore?.coreSystem,
                                       keyStore: dataStore?.keyStore,
                                       to: dataStore?.toAmount,
                                       from: dataStore?.from,
                                       card: dataStore?.selected,
-                                      quote: dataStore?.quote)
+                                      quote: dataStore?.quote,
+                                      availablePayments: responseDisplay.availablePayments)
     }
     
     func displayLinkToken(responseDisplay: BuyModels.PlaidLinkToken.ResponseDisplay) {
@@ -273,7 +275,7 @@ class BuyViewController: BaseTableViewController<BuyCoordinator, BuyInteractor, 
     }
     
     func displayFailure(responseDisplay: BuyModels.Failure.ResponseDisplay) {
-        coordinator?.showFailure(failure: .plaidConnection)
+        coordinator?.showFailure(failure: .plaidConnection, availablePayments: dataStore?.availablePayments)
     }
     
     override func displayMessage(responseDisplay: MessageModels.ResponseDisplays) {
@@ -306,4 +308,10 @@ class BuyViewController: BaseTableViewController<BuyCoordinator, BuyInteractor, 
     }
     
     // MARK: - Additional Helpers
+    @objc func updatePaymentMethod() {
+        guard let availablePayments = dataStore?.availablePayments else { return }
+        
+        dataStore?.paymentMethod = availablePayments.contains(.buyAch) == true ? .buyAch : .buyCard
+        interactor?.retryPaymentMethod(viewAction: .init(method: dataStore?.paymentMethod ?? .buyCard))
+    }
 }

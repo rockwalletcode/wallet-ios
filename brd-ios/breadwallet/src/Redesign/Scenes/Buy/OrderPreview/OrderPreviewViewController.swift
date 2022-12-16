@@ -211,7 +211,7 @@ class OrderPreviewViewController: BaseTableViewController<ExchangeCoordinator,
     }
     
     func displayFailure(responseDisplay: OrderPreviewModels.Failure.ResponseDisplay) {
-        coordinator?.showFailure(failure: responseDisplay.reason)
+        coordinator?.showFailure(failure: responseDisplay.reason, availablePayments: dataStore?.availablePayments)
     }
     
     func displayThreeDSecure(responseDisplay: BillingAddressModels.ThreeDSecure.ResponseDisplay) {

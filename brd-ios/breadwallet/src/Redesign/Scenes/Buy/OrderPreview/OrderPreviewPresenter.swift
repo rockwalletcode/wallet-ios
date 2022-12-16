@@ -182,7 +182,6 @@ final class OrderPreviewPresenter: NSObject, Presenter, OrderPreviewActionRespon
                   value: .text(cardFeeText),
                   infoImage: .image(infoImage))
         
-        
         switch item.type {
         case .sell:
             let totalText = String(format: currencyFormat, ExchangeFormatter.fiat.string(for: toFiatValue - networkFee - cardFee) ?? "", fiatCurrency)

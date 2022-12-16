@@ -93,9 +93,13 @@ enum BuyModels {
     struct OrderPreview {
         struct ViewAction {}
         
-        struct ActionResponse {}
+        struct ActionResponse {
+            var availablePayments: [PaymentCard.PaymentType]?
+        }
         
-        struct ResponseDisplay {}
+        struct ResponseDisplay {
+            var availablePayments: [PaymentCard.PaymentType]?
+        }
     }
     
     struct AssetSelector {
@@ -157,5 +161,17 @@ enum BuyModels {
             var model: InfoViewModel?
             var config: InfoViewConfiguration?
         }
+    }
+    
+    struct RetryPaymentMethod {
+        struct ViewAction {
+            let method: PaymentCard.PaymentType
+        }
+        
+        struct ActionResponse {
+            let method: PaymentCard.PaymentType
+        }
+        
+        struct ResponseDisplay {}
     }
 }

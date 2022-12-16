@@ -69,11 +69,12 @@ protocol OrderPreviewRoutes: CoordinatableRoutes {
                           to: Amount?,
                           from: Decimal?,
                           card: PaymentCard?,
-                          quote: Quote?)
+                          quote: Quote?,
+                          availablePayments: [PaymentCard.PaymentType]?)
     func showPinInput(keyStore: KeyStore?, callback: ((_ success: Bool) -> Void)?)
     func showTermsAndConditions(url: URL)
     func showTimeout()
     func showThreeDSecure(url: URL)
     func showSuccess(paymentReference: String, transactionType: TransactionType, reason: SuccessReason)
-    func showFailure(failure: FailureReason)
+    func showFailure(failure: FailureReason, availablePayments: [PaymentCard.PaymentType]?)
 }

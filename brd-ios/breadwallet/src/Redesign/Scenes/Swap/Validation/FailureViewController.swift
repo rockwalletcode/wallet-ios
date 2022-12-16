@@ -64,9 +64,6 @@ enum FailureReason: SimpleMessage {
     
     var firstButtonTitle: String? {
         switch self {
-        case .buyCard:
-            return L10n.Buy.tryAnotherPayment
-            
         case .swap:
             return L10n.Swap.retry
             
@@ -91,6 +88,8 @@ extension Scenes {
 }
 
 class FailureViewController: BaseInfoViewController {
+    var buttonTitle: String?
+    var availablePayments: [PaymentCard.PaymentType]?
     var failure: FailureReason? {
         didSet {
             prepareData()
@@ -100,12 +99,21 @@ class FailureViewController: BaseInfoViewController {
     override var titleText: String? { return failure?.title }
     override var descriptionText: String? { return failure?.description }
     override var buttonViewModels: [ButtonViewModel] {
+        let containsDebit = availablePayments?.contains(.buyCard) == true
+        let containsBankAccount = availablePayments?.contains(.buyAch) == true
+        if containsDebit || containsBankAccount {
+            buttonTitle = containsDebit ? L10n.PaymentConfirmation.tryWithDebit : L10n.PaymentConfirmation.tryWithAch
+        }
         return [
-            .init(title: failure?.firstButtonTitle) { [weak self] in
+            .init(title: buttonTitle != nil ? buttonTitle : failure?.firstButtonTitle) { [weak self] in
                 if self?.failure == .swap {
                     self?.coordinator?.showSwap()
                 } else {
-                    self?.coordinator?.showBuy()
+                    if containsDebit || containsBankAccount {
+                        self?.coordinator?.showBuyWithDifferentPayment(paymentMethod: containsDebit ? .buyCard : .buyAch)
+                    } else {
+                        self?.coordinator?.showBuy()
+                    }
                 }},
             .init(title: failure?.secondButtonTitle, isUnderlined: true, callback: { [weak self] in
                 if self?.failure == .buyCard {

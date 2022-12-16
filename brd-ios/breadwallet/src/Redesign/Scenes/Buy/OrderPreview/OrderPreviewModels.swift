@@ -16,7 +16,7 @@ enum PreviewType {
     case buy
     case sell
     
-    var title : String {
+    var title: String {
         switch self {
         case .buy: return L10n.Buy.orderPreview
         case .sell: return L10n.Sell.orderPreview

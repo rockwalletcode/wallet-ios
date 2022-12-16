@@ -73,7 +73,8 @@ class ExchangeDetailsMapper: ModelMapper<ExchangeDetailsResponseData, SwapDetail
                                                                                      scheme: PaymentCard.Scheme(rawValue: sourceCard?.scheme ?? "") ?? .none,
                                                                                      last4: sourceCard?.last4 ?? "",
                                                                                      accountName: sourceCard?.accountName ?? "",
-                                                                                     status: PaymentCard.Status(rawValue: sourceCard?.status ?? "") ?? .statusOk),
+                                                                                     status: PaymentCard.Status(rawValue: sourceCard?.status ?? "") ?? .none,
+                                                                                     cardType: PaymentCard.CardType(rawValue: sourceCard?.cardType ?? "") ?? .none),
                                                       feeRate: source?.feeRate,
                                                       feeFixedRate: source?.feeFixedRate)
         let destinationData = SwapDetail.SourceDestination(currency: destination?.currency?.uppercased() ?? "",
@@ -89,7 +90,8 @@ class ExchangeDetailsMapper: ModelMapper<ExchangeDetailsResponseData, SwapDetail
                                                                                           scheme: PaymentCard.Scheme(rawValue: destinationCard?.scheme ?? "") ?? .none,
                                                                                           last4: destinationCard?.last4 ?? "",
                                                                                           accountName: sourceCard?.accountName ?? "",
-                                                                                          status: PaymentCard.Status(rawValue: sourceCard?.status ?? "") ?? .statusOk),
+                                                                                          status: PaymentCard.Status(rawValue: sourceCard?.status ?? "") ?? .none,
+                                                                                          cardType: PaymentCard.CardType(rawValue: sourceCard?.cardType ?? "") ?? .none),
                                                            feeRate: source?.feeRate,
                                                            feeFixedRate: source?.feeFixedRate)
 

@@ -44,7 +44,7 @@ class SellStore: NSObject, BaseDataStore, SellDataStore {
               let lifetimeLimit = ExchangeFormatter.fiat.string(for: UserManager.shared.profile?.achLifetimeRemainingLimit)
         else { return nil }
         
-        return L10n.Sell.disclaimer(minText, maxText, lifetimeLimit)
+        return L10n.Sell.sellLimits(minText, maxText, lifetimeLimit)
     }
     
     var fromAmount: Amount?

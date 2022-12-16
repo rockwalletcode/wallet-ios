@@ -23,6 +23,7 @@ protocol BuyViewActions: BaseViewActions,
     func showOrderPreview(viewAction: BuyModels.OrderPreview.ViewAction)
     func navigateAssetSelector(viewAction: BuyModels.AssetSelector.ViewAction)
     func selectPaymentMethod(viewAction: BuyModels.PaymentMethod.ViewAction)
+    func retryPaymentMethod(viewAction: BuyModels.RetryPaymentMethod.ViewAction)
 }
 
 protocol BuyActionResponses: BaseActionResponses,
@@ -37,6 +38,7 @@ protocol BuyActionResponses: BaseActionResponses,
     func presentPublicTokenSuccess(actionResponse: BuyModels.PlaidPublicToken.ActionResponse)
     func presentFailure(actionResponse: BuyModels.Failure.ActionResponse)
     func presentUSDCMessage(actionResponse: BuyModels.AchData.ActionResponse)
+    func presentMessage(actionResponse: BuyModels.RetryPaymentMethod.ActionResponse)
 }
 
 protocol BuyResponseDisplays: AnyObject, BaseResponseDisplays, FetchResponseDisplays, ExchangeRateResponseDisplays, AchResponseDisplays {

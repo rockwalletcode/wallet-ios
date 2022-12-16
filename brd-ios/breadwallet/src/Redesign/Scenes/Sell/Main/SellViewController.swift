@@ -170,7 +170,8 @@ class SellViewController: BaseTableViewController<SellCoordinator,
                                       to: dataStore?.fromAmount,
                                       from: dataStore?.toAmount,
                                       card: dataStore?.ach,
-                                      quote: dataStore?.quote)
+                                      quote: dataStore?.quote,
+                                      availablePayments: [])
     }
     
     // MARK: - SellResponseDisplay

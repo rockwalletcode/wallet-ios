@@ -605,7 +605,7 @@
 
 "Buy.achFeeText" = "ACH fee (fixed fee + % (TBD)";
 
-"Buy.achLimits" = "Currently, minimum for buying with ACH is %s and maximum is %s per day. At the moment lifetime limit is %s.\n\nIt currently takes 7-10 days to process a purchase with ACH";
+"Buy.achLimits" = "Currently, minimum for buying with ACH is %s USD and maximum is %s USD per day. At the moment lifetime limit is %s USD.\n\nIt currently takes 7-10 days to process a purchase with ACH";
 
 "Buy.achPaymentDurationWarning" = "Currently, ACH payments will take 7-10 days to complete.";
 
@@ -634,7 +634,7 @@
 "Buy.BillingAddress" = "Billing address";
 
 /* Buy min and max limit text */
-"Buy.BuyLimits" = "Currently, minimum for Buy is $%s USD and maximum is $%s USD/day.";
+"Buy.BuyLimits" = "Currently, minimum for Buy is %s USD and maximum is %s USD/day";
 
 "Buy.BuyLimits.android" = "Currently, minimum for Buy is $30.00 USD and maximum is $500.00 USD per day.";
 
@@ -1978,7 +1978,7 @@
 
 "Sell.rate" = "Conversion rate";
 
-"Sell.SellLimits" = "Minimum withdrawal is %s and maximum is %s per day. At the moment your lifetime limit is %s.\n\nACH Withdrawals will be processed within 3-5 business days.";
+"Sell.SellLimits" = "Minimum withdrawal is %s USD and maximum is %s USD per day. At the moment your lifetime limit is %s USD.\n\nACH Withdrawals will be processed within 3-5 business days.";
 
 "Sell.subtotal" = "Subtotal";
 
@@ -2469,7 +2469,7 @@
 "Swap.SwapAgain" = "Swap again";
 
 /* Swap min and max limit text */
-"Swap.SwapLimits" = "Currently, minimum for Swap is $%s USD and maximum is $%s USD/day.";
+"Swap.SwapLimits" = "Currently, minimum for Swap is %s USD and maximum is %s USD/day.";
 
 "Swap.Swapping" = "Swapping %1$@/%2$@";
 

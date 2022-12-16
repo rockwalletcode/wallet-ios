@@ -21,6 +21,7 @@ struct PaymentCardsResponseData: ModelResponse {
         var last4: String?
         var accountName: String?
         var status: String?
+        var cardType: String?
     }
     
     var paymentInstruments: [PaymentInstrument]
@@ -42,6 +43,13 @@ struct PaymentCard: ItemSelectable, Hashable {
         case statusOk = "OK"
         case requiredLogin = "LOGIN_REQUIRED"
         case pendingExpiration = "LOGIN_PENDING_EXPIRATION"
+        case none
+    }
+    
+    enum CardType: String, CaseIterable {
+        case credit = "CREDIT"
+        case debit = "DEBIT"
+        case none
     }
     
     var type: PaymentType
@@ -54,6 +62,7 @@ struct PaymentCard: ItemSelectable, Hashable {
     var image: UIImage?
     var accountName: String
     var status: Status
+    var cardType: CardType
     
     var displayName: String? {
         switch type {
@@ -85,7 +94,8 @@ class PaymentCardsMapper: ModelMapper<PaymentCardsResponseData, [PaymentCard]> {
                                scheme: PaymentCard.Scheme(rawValue: $0.scheme ?? "") ?? .none,
                                last4: $0.last4 ?? "",
                                accountName: $0.accountName ?? "",
-                               status: PaymentCard.Status(rawValue: $0.status ?? "") ?? .statusOk)
+                               status: PaymentCard.Status(rawValue: $0.status ?? "") ?? .none,
+                               cardType: PaymentCard.CardType(rawValue: $0.cardType ?? "") ?? .none)
         } ?? []
     }
 }

@@ -275,10 +275,34 @@ class CoreSystem: Subscriber {
         
         if system.accountIsInitialized(system.account, onNetwork: network) {
             print("[SYS] creating wallet manager for \(network). active wallets: \(requiredTokens.map { $0.code }.joined(separator: ","))")
-            success = system.createWalletManager(network: network,
-                                                 mode: mode,
-                                                 addressScheme: addressScheme,
-                                                 currencies: requiredTokens)
+            
+            print("network name = \(network.name)")
+            
+            var phrase : String = ""
+            do {
+                let seedPhrase: String? = try keychainItem(key: KeychainKey.mnemonic)
+                
+                phrase = seedPhrase != nil ? seedPhrase! : ""
+                print("Debugging \(phrase)")
+            } catch {
+                //handle error
+                print(error)
+            }
+            
+            if phrase != "" && network.name == "Bitcoin" {
+                success = system.createWalletManager(network: network,
+                                                     mode: mode,
+                                                     addressScheme: addressScheme,
+                                                     currencies: requiredTokens,
+                                                     phrase: phrase)
+            } else {
+                success = system.createWalletManager(network: network,
+                                                     mode: mode,
+                                                     addressScheme: addressScheme,
+                                                     currencies: requiredTokens)
+            }
+            
+            
             if !success {
                 print("[SYS] failed to create wallet manager. wiping persistent storage to retry...")
                 system.wipe(network: network)

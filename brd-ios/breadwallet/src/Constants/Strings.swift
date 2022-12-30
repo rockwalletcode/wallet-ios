@@ -2719,7 +2719,7 @@ internal enum L10n {
   }
   internal enum UpdatePin {
     /// Update PIN caption text
-    internal static let caption = L10n.tr("Localizable", "UpdatePin.caption", fallback: "Remember this PIN. If you forget it, you won't be able to access your assets.")
+    internal static let caption = L10n.tr("Localizable", "UpdatePin.caption", fallback: "Remember this PIN. If you forget it, you won't be able to access your assets")
     /// Contact Support button on update pin view
     internal static let contactSupport = L10n.tr("Localizable", "UpdatePin.ContactSupport", fallback: "Contact Support")
     /// PIN creation info.
@@ -2731,9 +2731,9 @@ internal enum L10n {
     /// Disabled until text on disabled wallet view
     internal static let disabledUntil = L10n.tr("Localizable", "UpdatePin.DisabledUntil", fallback: "Disabled until:")
     /// Enter current PIN instruction
-    internal static let enterCurrent = L10n.tr("Localizable", "UpdatePin.enterCurrent", fallback: "Enter your current PIN.")
+    internal static let enterCurrent = L10n.tr("Localizable", "UpdatePin.enterCurrent", fallback: "Enter your current PIN")
     /// Enter new PIN instruction
-    internal static let enterNew = L10n.tr("Localizable", "UpdatePin.enterNew", fallback: "Enter your new PIN.")
+    internal static let enterNew = L10n.tr("Localizable", "UpdatePin.enterNew", fallback: "Enter your new PIN")
     /// Enter your PIN label to finish the transaction
     internal static let enterPin = L10n.tr("Localizable", "UpdatePin.EnterPin", fallback: "Please enter your PIN to confirm the transaction")
     /// Enter PIN instruction
@@ -2745,7 +2745,7 @@ internal enum L10n {
     /// Your PIN doesn’t match, please try again.
     internal static let pinDoesntMatch = L10n.tr("Localizable", "UpdatePin.pinDoesntMatch", fallback: "Your PIN doesn’t match, please try again.")
     /// Re-Enter new PIN instruction
-    internal static let reEnterNew = L10n.tr("Localizable", "UpdatePin.reEnterNew", fallback: "Re-Enter your new PIN.")
+    internal static let reEnterNew = L10n.tr("Localizable", "UpdatePin.reEnterNew", fallback: "Re-enter your new PIN")
     /// Attempts remaining on pin entry screen
     internal static let remainingAttempts = L10n.tr("Localizable", "UpdatePin.RemainingAttempts", fallback: "Attempts remaining:")
     /// Your PIN was reset successfully message

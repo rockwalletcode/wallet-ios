@@ -2942,7 +2942,7 @@
 "UnlockScreen.wipePrompt" = "Are you sure you would like to wipe this wallet?";
 
 /* Update PIN caption text */
-"UpdatePin.caption" = "Remember this PIN. If you forget it, you won't be able to access your assets.";
+"UpdatePin.caption" = "Remember this PIN. If you forget it, you won't be able to access your assets";
 
 /* Contact Support button on update pin view */
 "UpdatePin.ContactSupport" = "Contact Support";
@@ -2960,10 +2960,10 @@
 "UpdatePin.DisabledUntil" = "Disabled until:";
 
 /* Enter current PIN instruction */
-"UpdatePin.enterCurrent" = "Enter your current PIN.";
+"UpdatePin.enterCurrent" = "Enter your current PIN";
 
 /* Enter new PIN instruction */
-"UpdatePin.enterNew" = "Enter your new PIN.";
+"UpdatePin.enterNew" = "Enter your new PIN";
 
 /* Enter your PIN label to finish the transaction */
 "UpdatePin.EnterPin" = "Please enter your PIN to confirm the transaction";
@@ -2980,7 +2980,7 @@
 "UpdatePin.pinDoesntMatch" = "Your PIN doesn’t match, please try again.";
 
 /* Re-Enter new PIN instruction */
-"UpdatePin.reEnterNew" = "Re-Enter your new PIN.";
+"UpdatePin.reEnterNew" = "Re-enter your new PIN";
 
 /* Attempts remaining on pin entry screen */
 "UpdatePin.RemainingAttempts" = "Attempts remaining:";

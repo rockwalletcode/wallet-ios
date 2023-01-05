@@ -522,7 +522,7 @@ class RecoveryKeyWordInputView: UIView, UITextFieldDelegate {
             let scaleTransform = CGAffineTransform(scaleX: scale, y: scale)
             let finalTransform = scaleTransform.translatedBy(x: deltaX, y: 0)
             
-            UIView.animate(withDuration: Presets.Animation.duration, delay: 0, options: .curveEaseInOut, animations: {
+            UIView.animate(withDuration: Presets.Animation.short.rawValue, delay: 0, options: .curveEaseInOut, animations: {
                 anchor.constant = constant
                 label.transform = finalTransform
                 self.mainContainer.layoutIfNeeded()

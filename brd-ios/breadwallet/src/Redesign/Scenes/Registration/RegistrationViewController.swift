@@ -17,11 +17,6 @@ class RegistrationViewController: BaseTableViewController<RegistrationCoordinato
 
     // MARK: - Overrides
     
-    lazy var continueButton: FEButton = {
-        let view = FEButton()
-        return view
-    }()
-    
     override func setupVerticalButtons() {
         super.setupVerticalButtons()
         

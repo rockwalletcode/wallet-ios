@@ -51,15 +51,10 @@ enum AddCardModels {
     }
     
     struct Submit {
+        // TODO: Should we pass CC info or is it ok for VC to just pass the DS?
         struct ViewAction {}
-        
-        struct ActionResponse {
-            var checkoutToken: CkoCardTokenResponse?
-        }
-        
-        struct ResponseDisplay {
-            var checkoutToken: CkoCardTokenResponse?
-        }
+        struct ActionResponse {}
+        struct ResponseDisplay {}
     }
     
     struct CvvInfoPopup {

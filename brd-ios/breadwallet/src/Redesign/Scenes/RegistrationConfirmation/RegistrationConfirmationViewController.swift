@@ -18,11 +18,6 @@ class RegistrationConfirmationViewController: BaseTableViewController<Registrati
     
     override var isModalDismissableEnabled: Bool { return true }
 
-    lazy var continueButton: FEButton = {
-        let view = FEButton()
-        return view
-    }()
-    
     // MARK: - Overrides
     
     override func setupVerticalButtons() {

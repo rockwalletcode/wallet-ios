@@ -13,7 +13,7 @@ class ExchangeDetailsStore: NSObject, BaseDataStore, ExchangeDetailsDataStore {
     
     // MARK: - ExchangeDetailsDataStore
     
-    var transactionType: Transaction.TransactionType = .defaultTransaction
+    var transactionType: TransactionType = .defaultTransaction
     
     // MARK: - Aditional helpers
 }

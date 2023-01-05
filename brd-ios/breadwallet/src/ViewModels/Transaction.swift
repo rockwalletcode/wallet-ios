@@ -9,6 +9,15 @@
 import UIKit
 import WalletKit
 
+// TODO: unify all other Type enums! + rename (no need for transaction in each case name)
+enum TransactionType: String, Hashable {
+    case swapTransaction = "SWAP"
+    case buyTransaction = "BUY"
+    case buyAchTransaction = "BUY_ACH"
+    case sellTransaction = "SELL"
+    case defaultTransaction
+}
+
 /// Transacton status
 enum TransactionStatus: String, Hashable, ModelResponse {
     /// Zero confirmations
@@ -158,13 +167,6 @@ class Transaction {
     
     var hash: String { return transfer.hash?.description ?? "" }
     
-    enum TransactionType: String, Hashable {
-        case swapTransaction = "SWAP"
-        case buyTransaction = "BUY"
-        case buyAchTransaction = "BUY_ACH"
-        case defaultTransaction
-    }
-    
     var transactionType: TransactionType = .defaultTransaction
     var swapTransationStatus: TransactionStatus?
     var swapSource: SwapDetail.SourceDestination?
@@ -173,7 +175,10 @@ class Transaction {
     
     var status: TransactionStatus {
         switch transactionType {
-        case .defaultTransaction, .buyTransaction, .buyAchTransaction:
+        case .swapTransaction:
+            return swapTransationStatus ?? .failed
+            
+        default:
             switch transfer.state {
             case .created, .signed, .submitted, .pending:
                 return .pending
@@ -199,9 +204,6 @@ class Transaction {
             case .failed, .deleted:
                 return .invalid
             }
-            
-        case .swapTransaction:
-            return swapTransationStatus ?? .failed
         }
     }
     

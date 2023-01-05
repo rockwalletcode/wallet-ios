@@ -103,7 +103,7 @@ enum VerificationStatus: Equatable {
         switch self {
         case .none, .email:
             return InfoViewModel(kyc: .levelOne, headerTitle: .text(L10n.Account.accountLimits),
-                                 headerTrailing: .init(image: Asset.info.name),
+                                 headerTrailing: .init(image: Asset.info.image),
                                  status: VerificationStatus.none,
                                  description: .text(L10n.Account.fullAccess),
                                  button: .init(title: L10n.VerifyAccount.button.uppercased()),
@@ -111,34 +111,34 @@ enum VerificationStatus: Equatable {
             
         case .emailPending, .levelTwo(.submitted):
             return InfoViewModel(kyc: .levelOne, headerTitle: .text(L10n.Account.accountLimits),
-                                 headerTrailing: .init(image: Asset.info.name),
+                                 headerTrailing: .init(image: Asset.info.image),
                                  status: VerificationStatus.emailPending,
                                  description: .text(L10n.Account.verifiedAccountMessage),
                                  dismissType: .persistent)
             
         case .levelOne, .levelTwo(.notStarted):
             return InfoViewModel(kyc: .levelOne, headerTitle: .text(L10n.Account.accountLimits),
-                                 headerTrailing: .init(image: Asset.info.name),
+                                 headerTrailing: .init(image: Asset.info.image),
                                  status: VerificationStatus.levelOne,
                                  description: .text(L10n.Account.currentLimit),
                                  button: .init(title: L10n.Account.upgradeLimits.uppercased()),
                                  dismissType: .persistent)
         case .levelTwo(.levelTwo):
             return InfoViewModel(kyc: .levelTwo, headerTitle: .text(L10n.Account.accountLimits),
-                                 headerTrailing: .init(image: Asset.info.name),
+                                 headerTrailing: .init(image: Asset.info.image),
                                  status: VerificationStatus.levelTwo(.levelTwo),
                                  description: .text(L10n.Account.swapAndBuyLimit),
                                  dismissType: .persistent)
         case .levelTwo(.expired), .levelTwo(.resubmit):
             return InfoViewModel(kyc: .levelTwo, headerTitle: .text(L10n.Account.accountLimits),
-                                 headerTrailing: .init(image: Asset.info.name),
+                                 headerTrailing: .init(image: Asset.info.image),
                                  status: VerificationStatus.levelTwo(.resubmit),
                                  description: .text(L10n.Account.dataIssues),
                                  button: .init(title: L10n.Account.verificationDeclined.uppercased()),
                                  dismissType: .persistent)
         case .levelTwo(.declined):
             return InfoViewModel(kyc: .levelTwo, headerTitle: .text(L10n.Account.accountLimits),
-                                 headerTrailing: .init(image: Asset.info.name),
+                                 headerTrailing: .init(image: Asset.info.image),
                                  status: VerificationStatus.levelTwo(.declined),
                                  description: .text(L10n.Account.dataIssues),
                                  button: .init(title: L10n.Account.verificationDeclined.uppercased()),

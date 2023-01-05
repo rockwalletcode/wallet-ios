@@ -48,7 +48,7 @@ class WrapperTableViewCell<T: UIView>: UITableViewCell, Wrappable, Reusable, Ide
         
         guard shouldHighlight else { return }
         
-        UIView.animate(withDuration: Presets.Animation.duration) { [weak self] in
+        UIView.animate(withDuration: Presets.Animation.short.rawValue) { [weak self] in
             self?.contentView.backgroundColor = highlighted ? LightColors.Background.three : .clear
         }
     }

@@ -52,29 +52,6 @@ final class SwapPresenter: NSObject, Presenter, SwapActionResponses {
         viewController?.displayData(responseDisplay: .init(sections: sections, sectionRows: sectionRows))
     }
     
-    func presentExchangeRate(actionResponse: SwapModels.Rate.ActionResponse) {
-        guard let from = actionResponse.from,
-              let to = actionResponse.to,
-              let quote = actionResponse.quote else {
-            return
-        }
-        
-        let text = String(format: "1 %@ = %@ %@", from.code, RWFormatter().string(for: quote.exchangeRate.doubleValue) ?? "", to.code)
-        
-        let minText = ExchangeFormatter.fiat.string(for: quote.minimumUsd) ?? ""
-        let maxLimit = UserManager.shared.profile?.swapAllowanceDaily
-        let maxText = ExchangeFormatter.fiat.string(for: maxLimit) ?? ""
-        let limitText = String(format: L10n.Swap.swapLimits(minText, maxText))
-        
-        exchangeRateViewModel = ExchangeRateViewModel(exchangeRate: text,
-                                                      timer: TimerViewModel(till: quote.timestamp,
-                                                                            repeats: false),
-                                                      showTimer: true)
-        
-        viewController?.displayExchangeRate(responseDisplay: .init(rateAndTimer: exchangeRateViewModel,
-                                                                   accountLimits: .text(limitText)))
-    }
-    
     func presentAmount(actionResponse: SwapModels.Amounts.ActionResponse) {
         let balance = actionResponse.baseBalance
         let balanceText = String(format: L10n.Swap.balance(ExchangeFormatter.crypto.string(for: balance?.tokenValue.doubleValue) ?? "", balance?.currency.code ?? ""))
@@ -82,12 +59,10 @@ final class SwapPresenter: NSObject, Presenter, SwapActionResponses {
         
         let fromFiatValue = actionResponse.from?.fiatValue == 0 ? nil : ExchangeFormatter.fiat.string(for: actionResponse.from?.fiatValue)
         let fromTokenValue = actionResponse.from?.tokenValue == 0 ? nil : ExchangeFormatter.crypto.string(for: actionResponse.from?.tokenValue)
-        let toFiatValue = actionResponse.to?.fiatValue == 0 ? nil : ExchangeFormatter.fiat.string(for: actionResponse.to?.fiatValue)
         let toTokenValue = actionResponse.to?.tokenValue == 0 ? nil : ExchangeFormatter.crypto.string(for: actionResponse.to?.tokenValue)
         
         let fromFormattedFiatString = ExchangeFormatter.createAmountString(string: fromFiatValue ?? "")
         let fromFormattedTokenString = ExchangeFormatter.createAmountString(string: fromTokenValue ?? "")
-        let toFormattedFiatString = ExchangeFormatter.createAmountString(string: toFiatValue ?? "")
         let toFormattedTokenString = ExchangeFormatter.createAmountString(string: toTokenValue ?? "")
         
         let toFee = actionResponse.toFee
@@ -100,16 +75,13 @@ final class SwapPresenter: NSObject, Presenter, SwapActionResponses {
         let swapModel = MainSwapViewModel(from: .init(amount: actionResponse.from,
                                                       formattedFiatString: fromFormattedFiatString,
                                                       formattedTokenString: fromFormattedTokenString,
-                                                      title: .text(balanceText),
-                                                      shouldShowFiatField: true),
+                                                      title: .text(balanceText)),
                                           to: .init(amount: actionResponse.to,
-                                                    formattedFiatString: toFormattedFiatString,
                                                     formattedTokenString: toFormattedTokenString,
                                                     fee: actionResponse.toFee,
                                                     formattedTokenFeeString: formattedToTokenFeeString,
                                                     title: .text(L10n.Buy.iWant),
-                                                    feeDescription: .text(receivingFee),
-                                                    shouldShowFiatField: false))
+                                                    feeDescription: .text(receivingFee)))
         
         guard actionResponse.handleErrors else {
             viewController?.displayAmount(responseDisplay: .init(continueEnabled: false,
@@ -178,6 +150,14 @@ final class SwapPresenter: NSObject, Presenter, SwapActionResponses {
                 // Remove presented error
                 presentError(actionResponse: .init(error: nil))
             }
+            
+            let toFee = actionResponse.toFee?.fiatValue ?? 0
+            if let to = actionResponse.to?.fiatValue,
+               to < toFee {
+                // toAmount does not cover widrawal fee
+                presentError(actionResponse: .init(error: ExchangeErrors.overExchangeLimit))
+            }
+               
         }
         
         let continueEnabled = (!hasError && actionResponse.fromFee != nil)
@@ -201,16 +181,6 @@ final class SwapPresenter: NSObject, Presenter, SwapActionResponses {
         } else if let error = actionResponse.error as? FEError {
             let model = InfoViewModel(description: .text(error.errorMessage), dismissType: .auto)
             let config = Presets.InfoView.error
-            
-            switch error.errorMessage {
-            case ExchangeErrors.quoteFail.errorMessage:
-                viewController?.displayExchangeRate(responseDisplay: .init(rateAndTimer: .init(),
-                                                                           accountLimits: nil))
-                
-            default:
-                break
-            }
-            
             viewController?.displayMessage(responseDisplay: .init(error: error, model: model, config: config))
         } else {
             viewController?.displayMessage(responseDisplay: .init())
@@ -281,13 +251,11 @@ final class SwapPresenter: NSObject, Presenter, SwapActionResponses {
         return MainSwapViewModel(from: .init(amount: .zero(from),
                                              fee: .zero(from),
                                              formattedTokenFeeString: nil,
-                                             title: .text(String(format: L10n.Swap.balance(ExchangeFormatter.crypto.string(for: 0) ?? "", from.code))),
-                                             shouldShowFiatField: true),
+                                             title: .text(String(format: L10n.Swap.balance(ExchangeFormatter.crypto.string(for: 0) ?? "", from.code)))),
                                  to: .init(amount: .zero(to),
                                            fee: .zero(to),
                                            formattedTokenFeeString: nil,
-                                           title: .text(L10n.Buy.iWant),
-                                           shouldShowFiatField: false))
+                                           title: .text(L10n.Buy.iWant)))
     }
     
 }

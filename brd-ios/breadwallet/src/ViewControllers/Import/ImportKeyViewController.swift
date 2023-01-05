@@ -202,7 +202,7 @@ class ImportKeyViewController: UIViewController, Subscriber {
         let feeAmount = Amount(cryptoAmount: fee.fee, currency: wallet.currency)
         let message = String(format: L10n.Import.confirm("%@", "%@"), balanceAmount.fiatDescription, feeAmount.fiatDescription)
         
-        importConfirmationAlert.setup(with: .init(trailing: .init(image: Asset.close.name),
+        importConfirmationAlert.setup(with: .init(trailing: .init(image: Asset.close.image),
                                                   confirm: .init(title: L10n.Button.continueAction),
                                                   cancel: .init(title: L10n.Button.cancel),
                                                   wrappedView: .init(title: .text(L10n.Import.title),
@@ -219,7 +219,7 @@ class ImportKeyViewController: UIViewController, Subscriber {
             make.edges.equalToSuperview()
         }
         
-        UIView.animate(withDuration: Presets.Animation.duration) { [weak self] in
+        UIView.animate(withDuration: Presets.Animation.short.rawValue) { [weak self] in
             self?.importConfirmationAlert.alpha = 1
         }
     }

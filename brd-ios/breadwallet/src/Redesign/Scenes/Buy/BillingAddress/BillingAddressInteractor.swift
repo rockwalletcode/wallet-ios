@@ -9,6 +9,8 @@
 //
 
 import UIKit
+import Checkout
+import Frames
 
 class BillingAddressInteractor: NSObject, Interactor, BillingAddressViewActions {
     typealias Models = BillingAddressModels
@@ -105,19 +107,54 @@ class BillingAddressInteractor: NSObject, Interactor, BillingAddressViewActions 
     }
     
     func validate(viewAction: BillingAddressModels.Validate.ViewAction) {
-        let isValid = FieldValidator.validate(fields: [dataStore?.firstName,
-                                                       dataStore?.lastName,
-                                                       dataStore?.country,
-                                                       dataStore?.stateProvince,
-                                                       dataStore?.city,
-                                                       dataStore?.zipPostal,
-                                                       dataStore?.address])
-        
-        presenter?.presentValidate(actionResponse: .init(isValid: isValid))
+        presenter?.presentValidate(actionResponse: .init(isValid: dataStore?.isValid ?? false))
     }
     
     func submit(viewAction: BillingAddressModels.Submit.ViewAction) {
-        guard let dataStore = dataStore, let checkoutToken = dataStore.checkoutToken?.token else { return }
+        guard let countryIso = dataStore?.country,
+              let street = dataStore?.address,
+              let city = dataStore?.city,
+              let state = dataStore?.stateProvince,
+              let zip = dataStore?.zipPostal,
+              let lastName = dataStore?.lastName,
+              let firstName = dataStore?.firstName,
+              let cardNumber = dataStore?.cardNumber,
+              let month = Int(dataStore?.expMonth ?? ""),
+              let year = Int(dataStore?.expYear ?? ""),
+              let cvv = dataStore?.cvv
+              
+        else { return }
+        
+        let country = Checkout.Country(iso3166Alpha2: countryIso)
+        let address = Address(addressLine1: street,
+                              addressLine2: nil,
+                              city: city,
+                              state: state,
+                              zip: zip,
+                              country: country)
+        
+        let expiration = ExpiryDate(month: month, year: year)
+        let card = Checkout.Card(number: cardNumber,
+                                 expiryDate: expiration,
+                                 name: firstName + " " + lastName,
+                                 cvv: cvv,
+                                 billingAddress: address,
+                                 phone: nil)
+        
+        let checkoutApiService = CheckoutAPIService(publicKey: E.checkoutApiToken, environment: E.isSandbox ? .sandbox : .live)
+        checkoutApiService.createToken(.card(card)) { [weak self] result in
+            switch result {
+            case .success(let token):
+                self?.afterSubmit(token: token.token)
+                
+            case .failure(let error):
+                self?.presenter?.presentError(actionResponse: .init(error: error))
+            }
+        }
+    }
+    
+    private func afterSubmit(token: String?) {
+        guard let dataStore = dataStore, let checkoutToken = token else { return }
         
         let data = AddCardRequestData(token: checkoutToken,
                                       firstName: dataStore.firstName,
@@ -145,6 +182,7 @@ class BillingAddressInteractor: NSObject, Interactor, BillingAddressViewActions 
                 self?.presenter?.presentError(actionResponse: .init(error: error))
             }
         }
+        
     }
     
     // MARK: - Aditional helpers

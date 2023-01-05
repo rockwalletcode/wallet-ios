@@ -17,8 +17,13 @@ class ExchangeDetailsInteractor: NSObject, Interactor, ExchangeDetailsViewAction
     // MARK: - ExchangeDetailsViewActions
     
     func getData(viewAction: FetchModels.Get.ViewAction) {
-        let data = ExchangeDetailsRequestData(exchangeId: dataStore?.itemId)
+        guard let itemId = dataStore?.itemId,
+              !itemId.isEmpty else {
+            mockData()
+            return
+        }
         
+        let data = ExchangeDetailsRequestData(exchangeId: itemId)
         ExchangeDetailsWorker().execute(requestData: data) { [weak self] result in
             switch result {
             case .success(let data):
@@ -30,6 +35,34 @@ class ExchangeDetailsInteractor: NSObject, Interactor, ExchangeDetailsViewAction
                 self?.presenter?.presentError(actionResponse: .init(error: error))
             }
         }
+    }
+    
+    private func mockData() {
+        let card = PaymentCard(type: .ach,
+                               id: "121",
+                               fingerprint: "222",
+                               expiryMonth: 5,
+                               expiryYear: 2026,
+                               scheme: .none,
+                               last4: "121",
+                               image: nil,
+                               accountName: "roks account",
+                               status: .statusOk,
+                               cardType: .credit)
+        
+        let source = SwapDetail.SourceDestination(currency: "USD", currencyAmount: 120, usdAmount: 120, usdFee: 5, paymentInstrument: card)
+        let destination = SwapDetail.SourceDestination(currency: "USDC", currencyAmount: 118, usdAmount: 120, usdFee: 5, paymentInstrument: card)
+        
+        let details = SwapDetail(orderId: 121,
+                                 status: .pending,
+                                 statusDetails: "SMTH",
+                                 source: source,
+                                 destination: destination,
+                                 rate: 0.99,
+                                 timestamp: Int(Date().timeIntervalSince1970),
+                                 type: .sellTransaction)
+        
+        presenter?.presentData(actionResponse: .init(item: Models.Item(detail: details, type: .sellTransaction)))
     }
     
     func copyValue(viewAction: ExchangeDetailsModels.CopyValue.ViewAction) {

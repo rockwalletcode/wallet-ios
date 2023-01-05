@@ -49,8 +49,6 @@ enum CoinGeckoError: Error {
 }
 
 class CoinGeckoClient {
-        
-    init() {}
     
     private let baseURL = "https://api.coingecko.com/api/v3"
     

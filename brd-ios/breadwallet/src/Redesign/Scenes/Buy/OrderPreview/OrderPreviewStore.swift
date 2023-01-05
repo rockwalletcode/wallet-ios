@@ -15,6 +15,7 @@ class OrderPreviewStore: NSObject, BaseDataStore, OrderPreviewDataStore {
     var itemId: String?
     
     // MARK: - OrderPreviewDataStore
+    var type: PreviewType?
     var to: Amount?
     var from: Decimal?
     var toCurrency: String?
@@ -37,10 +38,11 @@ class OrderPreviewStore: NSObject, BaseDataStore, OrderPreviewDataStore {
     var cvv: String?
     var paymentReference: String?
     var paymentstatus: AddCard.Status?
+    var availablePayments: [PaymentCard.PaymentType]?
     
     // TODO: update it according to BE data
     var isAchAccount: Bool {
-        return card?.type == .buyAch
+        return card?.type == .ach
     }
     
     // MARK: - Aditional helpers

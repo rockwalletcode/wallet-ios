@@ -10,7 +10,7 @@ import Frames
 import UIKit
 import WalletKit
 
-class BuyCoordinator: BaseCoordinator, BuyRoutes, BillingAddressRoutes, OrderPreviewRoutes, AssetSelectionDisplayable {
+class BuyCoordinator: ExchangeCoordinator, BuyRoutes, BillingAddressRoutes, AssetSelectionDisplayable {
     // MARK: - BuyRoutes
     
     override func start() {
@@ -19,61 +19,20 @@ class BuyCoordinator: BaseCoordinator, BuyRoutes, BillingAddressRoutes, OrderPre
     
     func reloadBuy(selectedCard: PaymentCard) {
         let buyVC = navigationController.children.first(where: { $0 is BuyViewController }) as? BuyViewController
-        buyVC?.dataStore?.paymentCard = selectedCard
+        buyVC?.dataStore?.selected = selectedCard
         buyVC?.dataStore?.autoSelectDefaultPaymentMethod = false
         buyVC?.interactor?.getData(viewAction: .init())
     }
     
-    func showBillingAddress(checkoutToken: CkoCardTokenResponse?) {
+    func showBillingAddress(_ store: AddCardStore) {
         open(scene: Scenes.BillingAddress) { vc in
-            vc.interactor?.dataStore?.checkoutToken = checkoutToken
+            vc.dataStore?.cardNumber = store.cardNumber
+            vc.dataStore?.cvv = store.cardCVV
+            vc.dataStore?.expYear = store.cardExpDateYear
+            vc.dataStore?.expMonth = store.cardExpDateMonth
             vc.prepareData()
             LoadingView.hide()
         }
-    }
-    
-    func showThreeDSecure(url: URL) {
-        let webViewController = SimpleWebViewController(url: url)
-        let navController = RootNavigationController(rootViewController: webViewController)
-        webViewController.setAsNonDismissableModal()
-        webViewController.setup(with: .init(title: L10n.Buy._3DSecure))
-        webViewController.didDismiss = { [weak self] in
-            (self?.navigationController.topViewController as? DataPresentable)?.prepareData()
-            navController.dismiss(animated: true)
-        }
-        
-        navigationController.present(navController, animated: true)
-    }
-    
-    func showSuccess(paymentReference: String, transactionType: Transaction.TransactionType) {
-        open(scene: Scenes.Success) { vc in
-            vc.navigationItem.hidesBackButton = true
-            vc.transactionType = transactionType
-            vc.dataStore?.itemId = paymentReference
-            vc.success = transactionType == .buyTransaction ? .buyCard : .buyAch
-        }
-    }
-    
-    func showFailure(failure: FailureReason) {
-        open(scene: Scenes.Failure) { vc in
-            vc.navigationItem.hidesBackButton = true
-            vc.failure = failure
-        }
-    }
-    
-    func showTimeout() {
-        open(scene: Scenes.Timeout) { vc in
-            vc.navigationItem.hidesBackButton = true
-        }
-    }
-    
-    func showTermsAndConditions(url: URL) {
-        let webViewController = SimpleWebViewController(url: url)
-        webViewController.setup(with: .init(title: L10n.About.terms))
-        let navController = RootNavigationController(rootViewController: webViewController)
-        webViewController.setAsNonDismissableModal()
-        
-        navigationController.present(navController, animated: true)
     }
     
     func showCardSelector(cards: [PaymentCard], selected: ((PaymentCard?) -> Void)?, fromBuy: Bool = true, completion: (() -> Void)? = nil) {
@@ -112,29 +71,6 @@ class BuyCoordinator: BaseCoordinator, BuyRoutes, BillingAddressRoutes, OrderPre
                 selected?(item as? Country)
             }
             vc?.prepareData()
-        }
-    }
-    
-    func showPinInput(keyStore: KeyStore?, callback: ((_ success: Bool) -> Void)?) {
-        ExchangeAuthHelper.showPinInput(on: navigationController,
-                                        keyStore: keyStore,
-                                        callback: callback)
-    }
-    
-    func showOrderPreview(coreSystem: CoreSystem?,
-                          keyStore: KeyStore?,
-                          to: Amount?,
-                          from: Decimal?,
-                          card: PaymentCard?,
-                          quote: Quote?) {
-        open(scene: Scenes.OrderPreview) { vc in
-            vc.dataStore?.coreSystem = coreSystem
-            vc.dataStore?.keyStore = keyStore
-            vc.dataStore?.from = from
-            vc.dataStore?.to = to
-            vc.dataStore?.card = card
-            vc.dataStore?.quote = quote
-            vc.prepareData()
         }
     }
     

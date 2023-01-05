@@ -10,7 +10,7 @@
 
 import UIKit
 
-class OrderPreviewViewController: BaseTableViewController<BuyCoordinator,
+class OrderPreviewViewController: BaseTableViewController<ExchangeCoordinator,
                                   OrderPreviewInteractor,
                                   OrderPreviewPresenter,
                                   OrderPreviewStore>,
@@ -18,7 +18,7 @@ class OrderPreviewViewController: BaseTableViewController<BuyCoordinator,
     typealias Models = OrderPreviewModels
     
     override var sceneTitle: String? {
-        return L10n.Buy.orderPreview
+        return dataStore?.type?.title
     }
 
     // MARK: - Overrides
@@ -204,8 +204,14 @@ class OrderPreviewViewController: BaseTableViewController<BuyCoordinator,
     func displaySubmit(responseDisplay: OrderPreviewModels.Submit.ResponseDisplay) {
         LoadingView.hide()
         
-        let transactionType: Transaction.TransactionType = dataStore?.isAchAccount ?? false ? .buyAchTransaction : .buyTransaction
-        coordinator?.showSuccess(paymentReference: responseDisplay.paymentReference, transactionType: transactionType)
+        let transactionType: TransactionType = dataStore?.isAchAccount ?? false ? .buyAchTransaction : .buyTransaction
+        coordinator?.showSuccess(paymentReference: responseDisplay.paymentReference,
+                                 transactionType: transactionType,
+                                 reason: responseDisplay.reason)
+    }
+    
+    func displayFailure(responseDisplay: OrderPreviewModels.Failure.ResponseDisplay) {
+        coordinator?.showFailure(failure: responseDisplay.reason, availablePayments: dataStore?.availablePayments)
     }
     
     func displayThreeDSecure(responseDisplay: BillingAddressModels.ThreeDSecure.ResponseDisplay) {
@@ -214,11 +220,8 @@ class OrderPreviewViewController: BaseTableViewController<BuyCoordinator,
     
     override func displayMessage(responseDisplay: MessageModels.ResponseDisplays) {
         LoadingView.hide()
-        
-        guard !isAccessDenied(responseDisplay: responseDisplay) else { return }
-        
-        let failure: FailureReason = dataStore?.isAchAccount ?? false ? .buyAch : .buyCard
-        coordinator?.showFailure(failure: failure)
+        // TODO: do we need to handle smth else here?
+        _ = isAccessDenied(responseDisplay: responseDisplay)
     }
     
     func displayContinueEnabled(responseDisplay: OrderPreviewModels.CvvValidation.ResponseDisplay) {

@@ -33,7 +33,7 @@ class SegwitViewController: UIViewController {
                                     cancel: Presets.Button.secondary,
                                     wrappedView: .init(font: Fonts.Body.two, textColor: LightColors.Text.one, textAlignment: .center)))
         
-        alert.setup(with: .init(trailing: .init(image: Asset.close.name),
+        alert.setup(with: .init(trailing: .init(image: Asset.close.image),
                                 confirm: .init(title: L10n.Button.continueAction),
                                 cancel: .init(title: L10n.Button.cancel),
                                 wrappedView: .text(L10n.Segwit.confirmChoiceLayout),
@@ -101,7 +101,7 @@ class SegwitViewController: UIViewController {
             make.height.equalTo(ViewSizes.extraExtraHuge.rawValue)
         }
         
-        UIView.animate(withDuration: Presets.Animation.duration) { [weak self] in
+        UIView.animate(withDuration: Presets.Animation.short.rawValue) { [weak self] in
             self?.enabledView.alpha = 1
         }
     }
@@ -116,7 +116,7 @@ class SegwitViewController: UIViewController {
             make.edges.equalToSuperview()
         }
         
-        UIView.animate(withDuration: Presets.Animation.duration) { [weak self] in
+        UIView.animate(withDuration: Presets.Animation.short.rawValue) { [weak self] in
             self?.segwitAlert.alpha = 1
         }
     }

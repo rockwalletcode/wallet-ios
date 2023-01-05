@@ -12,6 +12,7 @@ import Foundation
 
 enum QuoteType {
     case swap
+    case sell
     case buy(PaymentCard.PaymentType?)
     
     var value: String {
@@ -20,13 +21,15 @@ enum QuoteType {
             return "SWAP"
         case .buy(let paymentType):
             switch paymentType {
-            case .buyCard:
+            case .card:
                 return "BUY_CARD"
-            case .buyAch:
+            case .ach:
                 return "BUY_ACH"
             default:
                 return ""
             }
+        case .sell:
+            return "SELL"
         }
     }
 }

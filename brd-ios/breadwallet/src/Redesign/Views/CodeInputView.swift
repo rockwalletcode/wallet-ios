@@ -165,7 +165,7 @@ class CodeInputView: FEView<CodeInputConfiguration, CodeInputViewModel>, StateDi
         
         UIView.setAnimationsEnabled(withAnimation)
         
-        Self.animate(withDuration: Presets.Animation.duration) { [weak self] in
+        Self.animate(withDuration: Presets.Animation.short.rawValue) { [weak self] in
             self?.errorLabel.isHidden = state != .error
             
             self?.layoutIfNeeded()

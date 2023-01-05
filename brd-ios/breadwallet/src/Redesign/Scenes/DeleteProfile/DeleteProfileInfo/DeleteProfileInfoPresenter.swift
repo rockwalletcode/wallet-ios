@@ -49,7 +49,7 @@ final class DeleteProfileInfoPresenter: NSObject, Presenter, DeleteProfileInfoAc
                                             imageName: Asset.deleteAlert.name,
                                             body: L10n.AccountDelete.accountDeletedPopup,
                                             buttons: [.init(title: L10n.Button.finish)],
-                                            closeButton: .init(image: Asset.close.name))
+                                            closeButton: .init(image: Asset.close.image))
         
         viewController?.displayDeleteProfile(responseDisplay: .init(popupViewModel: popupViewModel,
                                                                     popupConfig: Presets.Popup.normal))

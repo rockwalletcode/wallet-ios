@@ -13,9 +13,10 @@ import UIKit
 enum SuccessReason: SimpleMessage {
     case buyCard
     case buyAch
+    case sell
     
     var iconName: String {
-        return "success"
+        return Asset.success.name
     }
     
     var title: String {
@@ -25,6 +26,9 @@ enum SuccessReason: SimpleMessage {
             
         case .buyAch:
             return L10n.Buy.bankAccountSuccessTitle
+            
+        case .sell:
+            return L10n.Sell.withdrawalSuccessTitle
         }
     }
     
@@ -35,6 +39,9 @@ enum SuccessReason: SimpleMessage {
             
         case .buyAch:
             return L10n.Buy.bankAccountSuccessText
+            
+        case .sell:
+            return L10n.Sell.withdrawalSuccessText
         }
     }
     
@@ -47,6 +54,9 @@ enum SuccessReason: SimpleMessage {
     
     var secondButtonTitle: String? {
         switch self {
+        case .sell:
+            return L10n.Sell.withdrawDetails
+            
         default:
             return L10n.Buy.details
         }
@@ -64,7 +74,7 @@ class SuccessViewController: BaseInfoViewController {
         }
     }
     
-    var transactionType: Transaction.TransactionType = .defaultTransaction
+    var transactionType: TransactionType = .defaultTransaction
     override var imageName: String? { return success?.iconName }
     override var titleText: String? { return success?.title }
     override var descriptionText: String? { return success?.description }

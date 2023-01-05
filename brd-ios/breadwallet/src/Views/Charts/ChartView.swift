@@ -261,9 +261,16 @@ class ChartView: UIView {
             switch result {
             case .success(let data):
                 self.rawValues[period] = data
-                let vals = data.map { $0.close }.map { $0*1000.0 } //scale for currencies with values < 1
-                let min = vals.min() ?? 0
-                self.values[period] = vals.map { ($0 + $0*0.2) - min }.map { Int($0) } //add 20% baseline and cast to Ints
+                var vals = data.map { $0.close }
+                var min = vals.min() ?? 0
+                
+                //scale for currencies that to small
+                while min < 1 {
+                    vals = vals.map { $0 * 1000.0 }
+                    min = vals.min() ?? 0
+                }
+                
+                self.values[period] = vals.map { 1.2 * $0 - min }.map { Int($0) } //add 20% baseline and cast to Ints
                 if period == self.historyPeriod {
                     self.endCircle.isHidden = true
                     self.setCoordinates()

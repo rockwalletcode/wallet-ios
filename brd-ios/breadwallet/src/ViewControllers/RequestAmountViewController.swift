@@ -155,7 +155,7 @@ class RequestAmountViewController: UIViewController {
             alertView.contentView?.isHidden = true
         }
 
-        UIView.spring(Presets.Animation.duration, animations: {
+        UIView.spring(Presets.Animation.short.rawValue, animations: {
             alertView.toggle()
             self.parent?.view.layoutIfNeeded()
         }, completion: { _ in

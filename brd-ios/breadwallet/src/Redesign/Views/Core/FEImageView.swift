@@ -20,6 +20,11 @@ enum ImageViewModel: ViewModel {
 
 class FEImageView: FEView<BackgroundConfiguration, ImageViewModel> {
     
+    override var contentMode: UIView.ContentMode {
+        get { return imageView.contentMode }
+        set { imageView.contentMode = newValue }
+    }
+    
     // MARK: Lazy UI
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView()

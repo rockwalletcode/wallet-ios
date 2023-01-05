@@ -9,7 +9,7 @@
 import UIKit
 
 enum ExchangeDetailsModels {
-    typealias Item = (detail: SwapDetail, type: Transaction.TransactionType)
+    typealias Item = (detail: SwapDetail, type: TransactionType)
     
     enum Section: Sectionable {
         case header

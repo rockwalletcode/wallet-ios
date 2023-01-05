@@ -25,7 +25,21 @@ class BillingAddressStore: NSObject, BaseDataStore, BillingAddressDataStore {
     var address: String?
     var paymentReference: String?
     var paymentstatus: AddCard.Status?
-    var checkoutToken: CkoCardTokenResponse?
+    // from first screen
+    var cardNumber: String?
+    var expMonth: String?
+    var expYear: String?
+    var cvv: String?
     
     // MARK: - Aditional helpers
+    
+    var isValid: Bool {
+        return FieldValidator.validate(fields: [firstName,
+                                                lastName,
+                                                country,
+                                                stateProvince,
+                                                city,
+                                                zipPostal,
+                                                address])
+    }
 }

@@ -10,15 +10,16 @@
 
 import UIKit
 
+// TODO: refactor to use apples button configurations
 struct ButtonConfiguration: Configurable {
     var normalConfiguration: BackgroundConfiguration?
     var selectedConfiguration: BackgroundConfiguration?
     var disabledConfiguration: BackgroundConfiguration?
     var shadowConfiguration: ShadowConfiguration?
-    var buttonContentEdgeInsets = UIEdgeInsets(top: Margins.medium.rawValue,
-                                               left: Margins.huge.rawValue,
-                                               bottom: Margins.medium.rawValue,
-                                               right: Margins.huge.rawValue)
+    var buttonContentEdgeInsets = NSDirectionalEdgeInsets(top: Margins.medium.rawValue,
+                                                          leading: Margins.huge.rawValue,
+                                                          bottom: Margins.medium.rawValue,
+                                                          trailing: Margins.huge.rawValue)
     
     func withBorder(normal: BorderConfiguration? = nil,
                     selected: BorderConfiguration? = nil,
@@ -34,7 +35,8 @@ struct ButtonConfiguration: Configurable {
 struct ButtonViewModel: ViewModel {
     var title: String?
     var isUnderlined = false
-    var image: String?
+    // update to UIImage
+    var image: UIImage?
     var enabled = true
     var callback: (() -> Void)?
 }
@@ -95,7 +97,15 @@ class FEButton: UIButton, ViewProtocol, StateDisplayable, Borderable, Shadable {
         
         self.config = config
         
-        contentEdgeInsets = config.buttonContentEdgeInsets
+        // TODO: this might need 2 be adjusted
+        var newConfig = configuration ?? UIButton.Configuration.filled()
+        newConfig.imagePlacement = .leading
+        newConfig.titlePadding = 5
+        newConfig.imagePadding = 5
+        newConfig.contentInsets = config.buttonContentEdgeInsets
+        newConfig.baseBackgroundColor = config.normalConfiguration?.backgroundColor
+        newConfig.cornerStyle = .capsule
+        configuration = newConfig
         
         setTitleColor(config.normalConfiguration?.tintColor, for: .normal)
         setTitleColor(config.disabledConfiguration?.tintColor, for: .disabled)
@@ -109,8 +119,8 @@ class FEButton: UIButton, ViewProtocol, StateDisplayable, Borderable, Shadable {
         guard let viewModel = viewModel else { return }
 
         self.viewModel = viewModel
-        
-        if let title = viewModel.isUnderlined ? viewModel.title : viewModel.title?.uppercased() {
+        let title = viewModel.isUnderlined ? viewModel.title : viewModel.title?.uppercased()
+        if let title = title {
             if viewModel.isUnderlined {
                 let attributeString = NSMutableAttributedString(
                     string: title,
@@ -125,12 +135,21 @@ class FEButton: UIButton, ViewProtocol, StateDisplayable, Borderable, Shadable {
         }
         
         if let image = viewModel.image {
-            setBackgroundImage(.init(named: image), for: .normal)
+            if title == nil {
+                setBackgroundImage(image, for: .normal)
+            } else {
+                var config = configuration ?? UIButton.Configuration.filled()
+                config.image = image
+                config.imagePlacement = .leading
+                configuration = config
+            }
         }
         
         isEnabled = viewModel.enabled
         
         addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        
+        configure(with: config)
     }
     
     @objc private func buttonTapped() {
@@ -159,7 +178,7 @@ class FEButton: UIButton, ViewProtocol, StateDisplayable, Borderable, Shadable {
         
         UIView.setAnimationsEnabled(withAnimation)
         
-        Self.animate(withDuration: Presets.Animation.duration) { [weak self] in
+        Self.animate(withDuration: Presets.Animation.short.rawValue) { [weak self] in
             self?.updateLayout(background: background, shadow: shadow)
         }
         
@@ -189,6 +208,7 @@ class FEButton: UIButton, ViewProtocol, StateDisplayable, Borderable, Shadable {
         tintColor = background.tintColor
         titleLabel?.textColor = background.tintColor
         titleLabel?.font = Fonts.button
+        imageView?.tintColor = background.tintColor
         
         setBackground(with: background)
         

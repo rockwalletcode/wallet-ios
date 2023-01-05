@@ -215,7 +215,7 @@ class ReceiveViewController: UIViewController, Subscriber {
             alertView.contentView?.isHidden = true
         }
 
-        UIView.spring(Presets.Animation.duration, animations: {
+        UIView.spring(Presets.Animation.short.rawValue, animations: {
             if shouldAdjustPadding {
                 let newPadding = self.sharePopout.isExpanded ? largeSharePadding : smallSharePadding
                 self.topSharePopoutConstraint?.constant = newPadding

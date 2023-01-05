@@ -12,6 +12,16 @@ import UIKit
 import WalletKit
 
 class SwapStore: NSObject, BaseDataStore, SwapDataStore {
+    
+    // ExchangeRateDaatStore
+    var fromCode: String { from?.currency.code ?? "" }
+    var toCode: String { to?.currency.code ?? "" }
+    var showTimer: Bool = true
+    var quoteRequestData: QuoteRequestData {
+        return .init(from: fromCode,
+                     to: toCode)
+    }
+    
     // MARK: - SwapDataStore
     var itemId: String?
     
@@ -41,6 +51,15 @@ class SwapStore: NSObject, BaseDataStore, SwapDataStore {
     var keyStore: KeyStore?
     
     var isKYCLevelTwo: Bool?
+    
+    var limits: String? {
+        guard let quote = quote,
+              let minText = ExchangeFormatter.fiat.string(for: quote.minimumValue),
+              let maxText = ExchangeFormatter.fiat.string(for: quote.maximumValue)
+        else { return nil }
+        
+        return L10n.Swap.swapLimits(minText, maxText)
+    }
     
     // MARK: - Aditional helpers
     var fromFeeAmount: Amount? {

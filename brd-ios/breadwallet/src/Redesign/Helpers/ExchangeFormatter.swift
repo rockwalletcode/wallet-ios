@@ -13,6 +13,7 @@ import UIKit
 class RWFormatter: NumberFormatter {
     override func string(from: NSNumber) -> String {
         generatesDecimalNumbers = true
+        numberStyle = .currency
         switch from {
         case _ where from.decimalValue < 1:
             usesSignificantDigits = true

@@ -132,7 +132,7 @@ class DoubleHorizontalTextboxView: FEView<DoubleHorizontalTextboxViewConfigurati
     private func stateChanged() {
         valueChanged?(first, second)
         
-        Self.animate(withDuration: Presets.Animation.duration) { [weak self] in
+        Self.animate(withDuration: Presets.Animation.short.rawValue) { [weak self] in
             self?.content.layoutIfNeeded()
             self?.contentSizeChanged?()
         }

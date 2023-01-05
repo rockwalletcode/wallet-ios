@@ -10,6 +10,17 @@
 
 import Foundation
 
+struct PlaidLinkTokenRequestData: RequestModelData {
+    let accountId: String?
+    
+    func getParameters() -> [String: Any] {
+        let params = [
+            "account_id": accountId
+        ]
+        return params.compactMapValues { $0 }
+    }
+}
+
 struct PlaidLinkTokenResponseData: ModelResponse {
     var linkToken: String
 }
@@ -26,6 +37,6 @@ class PlaidLinkTokenWorkerMapper: ModelMapper<PlaidLinkTokenResponseData, PlaidL
 
 class PlaidLinkTokenWorker: BaseApiWorker<PlaidLinkTokenWorkerMapper> {
     override func getUrl() -> String {
-        return ExchangeEndpoints.plaidLinkToken.url
+        return APIURLHandler.getUrl(ExchangeEndpoints.plaidLinkToken)
     }
 }

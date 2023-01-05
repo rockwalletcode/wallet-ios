@@ -340,6 +340,7 @@ internal enum Asset {
   internal static let wallet = ImageAsset(name: "wallet")
   internal static let warning = ImageAsset(name: "warning")
   internal static let withdrawal = ImageAsset(name: "withdrawal")
+  internal static let dragControl = ImageAsset(name: "DragControl")
   internal static let access = ImageAsset(name: "access")
   internal static let assets = ImageAsset(name: "assets")
   internal static let cards = ImageAsset(name: "cards")

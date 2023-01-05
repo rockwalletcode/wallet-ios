@@ -25,6 +25,11 @@ class BaseTableViewController<C: CoordinatableRoutes,
         let view = UIView()
         return view
     }()
+    
+    lazy var continueButton: FEButton = {
+        let view = FEButton()
+        return view
+    }()
 
     override func setupCloseButton(closeAction: Selector) {
         guard navigationItem.leftBarButtonItem?.image != closeImage,
@@ -80,7 +85,7 @@ class BaseTableViewController<C: CoordinatableRoutes,
         sectionRows = responseDisplay.sectionRows
         
         // TODO: DiffableDataSource
-        UIView.transition(with: tableView, duration: Presets.Animation.duration, options: .transitionCrossDissolve) { [weak self] in
+        UIView.transition(with: tableView, duration: Presets.Animation.short.rawValue, options: .transitionCrossDissolve) { [weak self] in
             self?.tableView.reloadData()
         }
         
@@ -308,7 +313,8 @@ class BaseTableViewController<C: CoordinatableRoutes,
                 self?.textFieldDidUpdate(for: indexPath, with: text, on: section)
             }
             view.contentSizeChanged = {
-                self.tableView.reloadRows(at: [indexPath], with: .automatic)
+                tableView.beginUpdates()
+                tableView.endUpdates()
             }
         }
         
@@ -434,6 +440,53 @@ class BaseTableViewController<C: CoordinatableRoutes,
             guard let view = view as? StateDisplayable else { return }
             
             view.animateTo(state: .error, withAnimation: true)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, paymentSelectionCellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let section = sections[indexPath.section]
+        guard let cell: WrapperTableViewCell<CardSelectionView> = tableView.dequeueReusableCell(for: indexPath),
+              let model = sectionRows[section]?[indexPath.row] as? CardSelectionViewModel
+        else {
+            return super.tableView(tableView, cellForRowAt: indexPath)
+        }
+        
+        cell.setup { view in
+            view.configure(with: .init())
+            view.setup(with: model)
+            
+            view.didTapSelectCard = { [weak self] in
+                switch (self?.dataStore as? AchDataStore)?.paymentMethod {
+                case .ach:
+                    (self?.interactor as? AchViewActions)?.getPlaidToken(viewAction: .init())
+                default:
+                    (self?.interactor as? AchViewActions)?.getPayments(viewAction: .init(openCards: true))
+                }
+            }
+        }
+        
+        return cell
+    }
+    
+    override func setupVerticalButtons() {
+        super.setupVerticalButtons()
+        switch self {
+        case is SwapViewController,
+            is BuyViewController,
+            is SellViewController:
+            continueButton.configure(with: Presets.Button.primary)
+            continueButton.setup(with: .init(title: L10n.Button.confirm,
+                                             enabled: false,
+                                             callback: { [weak self] in
+                self?.buttonTapped()
+            }))
+            
+            guard let config = continueButton.config, let model = continueButton.viewModel else { return }
+            verticalButtons.wrappedView.configure(with: .init(buttons: [config]))
+            verticalButtons.wrappedView.setup(with: .init(buttons: [model]))
+            
+        default:
+            return
         }
     }
     

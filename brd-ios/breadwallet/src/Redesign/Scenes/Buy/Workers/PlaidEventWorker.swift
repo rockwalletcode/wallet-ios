@@ -11,14 +11,13 @@
 import Foundation
 
 struct PlaidEventRequestData: RequestModelData {
-    let event: String
+    let event: String?
     
     func getParameters() -> [String: Any] {
-        return [
-            "plaid_callback_event": [
-                "name": event
-            ]
+        let params = [
+            "plaid_callback_event": event
         ]
+        return params.compactMapValues { $0 }
     }
 }
 

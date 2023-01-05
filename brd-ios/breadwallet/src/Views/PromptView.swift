@@ -49,7 +49,7 @@ class PromptView: UIView {
         if type == .kyc {
             let infoConfig: InfoViewConfiguration = Presets.InfoView.verification
             var infoViewModel = UserManager.shared.profile?.status.viewModel ?? VerificationStatus.none.viewModel
-            infoViewModel?.headerTrailing = .init(image: Asset.close.name)
+            infoViewModel?.headerTrailing = .init(image: Asset.close.image)
             
             kycStatusView.configure(with: infoConfig)
             kycStatusView.setup(with: infoViewModel)

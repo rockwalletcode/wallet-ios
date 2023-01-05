@@ -1028,6 +1028,8 @@
 
 "ErrorMessages.ExchangesUnavailable" = "Tenemos problemas temporales con la red. Inténtalo de nuevo más tarde.";
 
+"ErrorMessages.highWidrawalFee" = "Minimum buy/swap amount for this pair is temporarily higher due to higher withdrawal network fees. Try other pairs or try again later.";
+
 "ErrorMessages.Kyc.Underage" = "Debes tener al menos 18 años para completar la verificación de Nivel 1 y Nivel 2.";
 
 /* Message that gets shown when we've detected the user has encountered the looping lock-screen bug. (preserve [ ] characters) */

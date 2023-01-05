@@ -61,39 +61,13 @@ class SwapInteractor: NSObject, Interactor, SwapViewActions {
         }
     }
     
-    func getExchangeRate(viewAction: SwapModels.Rate.ViewAction) {
-        guard let from = dataStore?.from?.currency,
-              let to = dataStore?.to?.currency else {
-            presenter?.presentError(actionResponse: .init(error: ExchangeErrors.selectAssets))
+    func getCoingeckoExchangeRate(viewAction: ExchangeRateModels.CoingeckoRate.ViewAction) {
+        guard let baseCurrency = dataStore?.from?.currency.coinGeckoId,
+              let termCurrency = dataStore?.to?.currency.coinGeckoId else {
+            presenter?.presentError(actionResponse: .init(error: ExchangeErrors.noQuote(from: dataStore?.fromCode, to: dataStore?.toCode)))
             return
         }
         
-        let group = DispatchGroup()
-        group.enter()
-        
-        let data = QuoteRequestData(from: from.code, to: to.code)
-        QuoteWorker().execute(requestData: data) { [weak self] result in
-            switch result {
-            case .success(let quote):
-                self?.dataStore?.quote = quote
-                self?.presenter?.presentExchangeRate(actionResponse: .init(quote: quote,
-                                                                           from: from,
-                                                                           to: to))
-                
-            case .failure:
-                self?.presenter?.presentError(actionResponse: .init(error: ExchangeErrors.quoteFail))
-            }
-            
-            group.leave()
-        }
-        
-        guard let baseCurrency = from.coinGeckoId,
-              let termCurrency = to.coinGeckoId else {
-            presenter?.presentError(actionResponse: .init(error: ExchangeErrors.noQuote(from: from.code, to: to.code)))
-            return
-        }
-        
-        group.enter()
         let coinGeckoIds = [baseCurrency, termCurrency]
         let vsCurrency = C.usdCurrencyCode.lowercased()
         let resource = Resources.simplePrice(ids: coinGeckoIds,
@@ -104,24 +78,20 @@ class SwapInteractor: NSObject, Interactor, SwapViewActions {
                 self?.dataStore?.fromRate = Decimal(data.first(where: { $0.id == baseCurrency })?.price ?? 0)
                 self?.dataStore?.toRate = Decimal(data.first(where: { $0.id == termCurrency })?.price ?? 0)
                 
+                guard viewAction.getFees else {
+                    self?.setAmountSuccess()
+                    
+                    return
+                }
+                
+                self?.getFees(viewAction: .init())
+                
             case .failure(let error):
                 self?.presenter?.presentError(actionResponse: .init(error: error))
             }
-            group.leave()
         }
         CoinGeckoClient().load(resource)
-        
         _ = generateSender()
-        
-        group.notify(queue: .main) { [weak self] in
-            guard viewAction.getFees else {
-                self?.setAmountSuccess()
-                
-                return
-            }
-            
-            self?.getFees(viewAction: .init())
-        }
     }
     
     func switchPlaces(viewAction: SwapModels.SwitchPlaces.ViewAction) {

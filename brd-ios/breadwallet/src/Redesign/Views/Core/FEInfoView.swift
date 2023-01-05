@@ -293,7 +293,7 @@ class FEInfoView: FEView<InfoViewConfiguration, InfoViewModel> {
     }
     
     private func toggleVisibility(isShown: Bool) {
-        Self.animate(withDuration: Presets.Animation.duration) { [weak self] in
+        Self.animate(withDuration: Presets.Animation.short.rawValue) { [weak self] in
             self?.alpha = isShown ? 1.0 : 0.0
         }
     }

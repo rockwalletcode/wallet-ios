@@ -29,8 +29,8 @@ class FESegmentControl: UISegmentedControl, ViewProtocol {
     
     convenience init() {
         let items = [
-            L10n.Buy.buyWithCard.uppercased(),
-            L10n.Buy.fundWithAch.uppercased()
+            L10n.Buy.buyWithCard,
+            L10n.Buy.fundWithAch
         ]
         
         self.init(items: items)

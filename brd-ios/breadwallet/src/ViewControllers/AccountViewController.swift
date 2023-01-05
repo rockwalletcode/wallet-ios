@@ -53,7 +53,7 @@ class AccountViewController: UIViewController, Subscriber {
     private var shouldShowStatusBar = true {
         didSet {
             if oldValue != shouldShowStatusBar {
-                UIView.animate(withDuration: Presets.Animation.duration) {
+                UIView.animate(withDuration: Presets.Animation.short.rawValue) {
                     self.setNeedsStatusBarAppearanceUpdate()
                 }
             }
@@ -260,7 +260,7 @@ class AccountViewController: UIViewController, Subscriber {
             
             present(transactionDetails, animated: true)
             
-        case .swapTransaction, .buyTransaction, .buyAchTransaction:
+        default:
             let vc = ExchangeDetailsViewController()
             vc.isModalDismissable = false
             vc.dataStore?.itemId = String(transaction.tx?.swapOrderId ?? transaction.swap?.orderId ?? -1)
@@ -277,13 +277,13 @@ class AccountViewController: UIViewController, Subscriber {
     private func showSearchHeaderView() {
         navigationController?.setNavigationBarHidden(true, animated: false)
         headerView.stopHeightConstraint()
-        UIView.animate(withDuration: Presets.Animation.duration, animations: { [weak self] in
+        UIView.animate(withDuration: Presets.Animation.short.rawValue, animations: { [weak self] in
             self?.view.layoutIfNeeded()
         })
         
         UIView.transition(from: headerView,
                           to: searchHeaderview,
-                          duration: Presets.Animation.duration,
+                          duration: Presets.Animation.short.rawValue,
                           options: [.transitionFlipFromBottom, .showHideTransitionViews, .curveEaseOut],
                           completion: { [weak self] _ in
             self?.searchHeaderview.triggerUpdate()
@@ -294,13 +294,13 @@ class AccountViewController: UIViewController, Subscriber {
     private func hideSearchHeaderView() {
         navigationController?.setNavigationBarHidden(false, animated: false)
         headerView.resumeHeightConstraint()
-        UIView.animate(withDuration: Presets.Animation.duration, animations: {
+        UIView.animate(withDuration: Presets.Animation.short.rawValue, animations: {
             self.view.layoutIfNeeded()
         })
         
         UIView.transition(from: searchHeaderview,
                           to: headerView,
-                          duration: Presets.Animation.duration,
+                          duration: Presets.Animation.short.rawValue,
                           options: [.transitionFlipFromTop, .showHideTransitionViews, .curveEaseOut],
                           completion: { [weak self] _ in
             self?.setNeedsStatusBarAppearanceUpdate()

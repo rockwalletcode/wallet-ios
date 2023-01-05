@@ -37,7 +37,7 @@ enum BRTarType {
             self = .nullBlock
         case CChar(120): // "x"
             self = .headerBlock
-        case CChar(49), CChar(50), CChar(51), CChar(52), CChar(53), CChar(54), CChar(55), CChar(103):
+        case CChar(49), CChar(50), CChar(51), CChar(52), CChar(54), CChar(55), CChar(103):
             // "1, 2, 3, 4, 5, 6, 7, g"
             self = .unsupported
         default:

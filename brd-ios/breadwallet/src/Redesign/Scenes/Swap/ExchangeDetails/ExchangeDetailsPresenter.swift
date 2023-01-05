@@ -34,7 +34,7 @@ final class ExchangeDetailsPresenter: NSObject, Presenter, ExchangeDetailsAction
                 Models.Section.transactionTo
             ]
             
-        case .buyTransaction, .buyAchTransaction:
+        case .buyTransaction, .buyAchTransaction, .sellTransaction:
             sections = [
                 Models.Section.header,
                 Models.Section.toCurrency,
@@ -57,7 +57,6 @@ final class ExchangeDetailsPresenter: NSObject, Presenter, ExchangeDetailsAction
         
         let formattedUsdAmountString = ExchangeFormatter.fiat.string(for: detail.source.usdAmount) ?? ""
         let formattedCurrencyAmountString = ExchangeFormatter.crypto.string(for: detail.source.currencyAmount) ?? ""
-        let infoImage = Asset.help.image.withRenderingMode(.alwaysOriginal)
         let formattedCurrencyAmountDestination = ExchangeFormatter.crypto.string(for: detail.destination.currencyAmount) ?? ""
         
         let timestamp = TimeInterval(detail.timestamp) / 1000
@@ -66,25 +65,10 @@ final class ExchangeDetailsPresenter: NSObject, Presenter, ExchangeDetailsAction
         formatter.dateFormat = "dd MMM YYYY, H:mm a"
         let dateString = formatter.string(from: date)
         
-        let currencyFormat = "%@ %@"
-        let rate = String(format: "1 %@ = %@ %@", detail.destination.currency, RWFormatter().string(for: 1 / detail.rate) ?? "",
-                          currencyCode)
-        let totalText = String(format: currencyFormat, ExchangeFormatter.fiat.string(for: detail.source.currencyAmount) ?? "",
-                               currencyCode)
-        let amountValue = detail.source.currencyAmount - detail.source.usdFee - detail.destination.usdFee
-        let amountText = String(format: currencyFormat, ExchangeFormatter.fiat.string(for: amountValue) ?? "",
-                                currencyCode)
-        let cardFeeText = String(format: currencyFormat, ExchangeFormatter.fiat.string(for: detail.source.usdFee) ?? "",
-                                 currencyCode)
-        let networkFeeText = String(format: currencyFormat, ExchangeFormatter.fiat.string(for: detail.destination.usdFee) ?? "",
-                                    currencyCode)
-        
         let orderValue = "\(detail.orderId)"
         let transactionFromValue = String(describing: detail.source.transactionId ?? "")
         let transactionToValue = String(describing: detail.destination.transactionId ?? detail.status.rawValue.localizedCapitalized)
         let transactionToValueIsCopyable = detail.destination.transactionId != nil
-        let displayFeeTitle = detail.source.paymentInstrument.type == .buyCard ? L10n.Swap.cardFee :
-        L10n.Buy.achFee("$\(String(format: "%.2f", detail.destination.feeFixedRate?.doubleValue ?? 0.0)) + \(detail.destination.feeRate ?? 0)%")
         
         var toCurrencyAssetViewModel = AssetViewModel()
         
@@ -94,11 +78,11 @@ final class ExchangeDetailsPresenter: NSObject, Presenter, ExchangeDetailsAction
                                                       title: "\(L10n.TransactionDetails.addressToHeader) \(detail.destination.currency)",
                                                       topRightText: "\(formattedCurrencyAmountDestination) \(detail.destination.currency)")
             
-        case .buyTransaction, .buyAchTransaction:
+        case .buyTransaction, .buyAchTransaction, .sellTransaction:
             toCurrencyAssetViewModel = AssetViewModel(icon: toImage,
                                                       title: "\(formattedCurrencyAmountDestination) \(detail.destination.currency)",
                                                       topRightText: nil)
-            
+        
         default:
             break
         }
@@ -111,20 +95,7 @@ final class ExchangeDetailsPresenter: NSObject, Presenter, ExchangeDetailsAction
                                isCopyable: true)
             ],
             Models.Section.buyOrder: [
-                BuyOrderViewModel(rateValue: .init(title: .text(L10n.Swap.rateValue), value: .text(rate), infoImage: nil),
-                                  amount: .init(title: .text("\(L10n.Swap.amountPurchased)"), value: .text(amountText), infoImage: nil),
-                                  cardFee: .init(title: .text(displayFeeTitle),
-                                                 value: .text(cardFeeText),
-                                                 infoImage: nil),
-                                  networkFee: .init(title: .text(L10n.Swap.miningNetworkFee), value: .text(networkFeeText), infoImage: .image(infoImage)),
-                                  totalCost: .init(title: .text(L10n.Swap.total), value: .text(totalText)),
-                                  paymentMethod: .init(methodTitle: .text(L10n.Swap.paidWith),
-                                                       logo: detail.source.paymentInstrument.displayImage,
-                                                       type: detail.source.paymentInstrument.type,
-                                                       cardNumber: .text(detail.source.paymentInstrument.displayName),
-                                                       expiration: .text(CardDetailsFormatter.formatExpirationDate(month: detail.source.paymentInstrument.expiryMonth,
-                                                                                                                   year: detail.source.paymentInstrument.expiryYear)),
-                                                       cvvTitle: nil, cvv: nil))
+                prepareOrderViewModel(detail, for: type)
             ],
             Models.Section.fromCurrency: [
                 AssetViewModel(icon: fromImage,
@@ -195,5 +166,63 @@ final class ExchangeDetailsPresenter: NSObject, Presenter, ExchangeDetailsAction
         guard let currency = Store.state.currencies.first(where: { $0.code == currencyCode }) else { return nil }
         
         return currency.imageSquareBackground
+    }
+    
+    private func prepareOrderViewModel(_ detail: SwapDetail, for type: TransactionType) -> BuyOrderViewModel {
+        let currencyCode = C.usdCurrencyCode
+        let card = detail.destination.paymentInstrument
+        let infoImage = Asset.help.image.withRenderingMode(.alwaysOriginal)
+        
+        let currencyFormat = "%@ %@"
+        let rate = String(format: "1 %@ = %@ %@", detail.destination.currency, RWFormatter().string(for: 1 / detail.rate) ?? "",
+                          currencyCode)
+        let totalText = String(format: currencyFormat, ExchangeFormatter.fiat.string(for: detail.source.currencyAmount) ?? "",
+                               currencyCode)
+        let amountValue = detail.source.currencyAmount - detail.source.usdFee - detail.destination.usdFee
+        let amountText = String(format: currencyFormat, ExchangeFormatter.fiat.string(for: amountValue) ?? "",
+                                currencyCode)
+        let cardFeeText = String(format: currencyFormat, ExchangeFormatter.fiat.string(for: detail.source.usdFee) ?? "",
+                                 currencyCode)
+        let networkFeeText = String(format: currencyFormat, ExchangeFormatter.fiat.string(for: detail.destination.usdFee) ?? "",
+                                    currencyCode)
+        let displayFeeTitle = detail.source.paymentInstrument.type == .card ? L10n.Swap.cardFee :
+        L10n.Buy.achFee("$\(String(format: "%.2f", detail.destination.feeFixedRate?.doubleValue ?? 0.0)) + \(detail.destination.feeRate ?? 0)%")
+        
+        let method = PaymentMethodViewModel(methodTitle: .text(L10n.Buy.paymentMethod),
+                                            logo: card.displayImage,
+                                            type: card.type,
+                                            previewFor: .sell,
+                                            cardNumber: .text(card.displayName),
+                                            expiration: .text(CardDetailsFormatter.formatExpirationDate(month: card.expiryMonth, year: card.expiryYear)))
+        
+        let model: BuyOrderViewModel
+        switch type {
+        case .sellTransaction:
+            model = BuyOrderViewModel(rateValue: .init(title: .text(L10n.Sell.rate), value: .text(rate), infoImage: nil),
+                                      amount: .init(title: .text("\(L10n.Sell.subtotal)"), value: .text(amountText), infoImage: nil),
+                                      cardFee: .init(title: .text(displayFeeTitle),
+                                                     value: .text(cardFeeText),
+                                                     infoImage: nil),
+                                      networkFee: .init(title: .text(""), value: .text("")),
+                                      totalCost: .init(title: .text(L10n.Sell.youWillReceive), value: .text(totalText)),
+                                      paymentMethod: method)
+            
+        default:
+            model = BuyOrderViewModel(rateValue: .init(title: .text(L10n.Swap.rateValue), value: .text(rate), infoImage: nil),
+                                      amount: .init(title: .text("\(L10n.Swap.amountPurchased)"), value: .text(amountText), infoImage: nil),
+                                      cardFee: .init(title: .text(displayFeeTitle),
+                                                     value: .text(cardFeeText),
+                                                     infoImage: nil),
+                                      networkFee: .init(title: .text(L10n.Swap.miningNetworkFee), value: .text(networkFeeText), infoImage: .image(infoImage)),
+                                      totalCost: .init(title: .text(L10n.Swap.total), value: .text(totalText)),
+                                      paymentMethod: .init(methodTitle: .text(L10n.Swap.paidWith),
+                                                           logo: detail.source.paymentInstrument.displayImage,
+                                                           type: detail.source.paymentInstrument.type,
+                                                           cardNumber: .text(detail.source.paymentInstrument.displayName),
+                                                           expiration: .text(CardDetailsFormatter.formatExpirationDate(month: detail.source.paymentInstrument.expiryMonth,
+                                                                                                                       year: detail.source.paymentInstrument.expiryYear)),
+                                                           cvvTitle: nil, cvv: nil))
+        }
+        return model
     }
 }

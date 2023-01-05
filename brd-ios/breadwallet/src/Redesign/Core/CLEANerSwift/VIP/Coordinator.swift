@@ -93,7 +93,9 @@ class BaseCoordinator: NSObject,
                 guard showPopup else { return }
                 
                 if UserManager.shared.profile?.canSwap == false {
-                    self?.openModally(coordinator: SwapCoordinator.self, scene: Scenes.ComingSoon)
+                    self?.openModally(coordinator: SwapCoordinator.self, scene: Scenes.ComingSoon) { vc in
+                        vc?.reason = .swapAndBuyCard
+                    }
                     return
                 }
 
@@ -107,19 +109,54 @@ class BaseCoordinator: NSObject,
         }
     }
     
-    func showBuy(coreSystem: CoreSystem?, keyStore: KeyStore?) {
+    func showBuy(type: PaymentCard.PaymentType = .card, coreSystem: CoreSystem?, keyStore: KeyStore?) {
         ExchangeCurrencyHelper.setUSDifNeeded { [weak self] in
             upgradeAccountOrShowPopup(flow: .buy, role: .kyc2) { showPopup in
                 guard showPopup else { return }
                 
-                if UserManager.shared.profile?.canBuy == false {
-                    self?.openModally(coordinator: BuyCoordinator.self, scene: Scenes.ComingSoon)
+                if UserManager.shared.profile?.canBuy == false, type == .card {
+                    self?.openModally(coordinator: BuyCoordinator.self, scene: Scenes.ComingSoon) { vc in
+                        vc?.reason = .swapAndBuyCard
+                    }
+                    return
+                }
+                
+                if UserManager.shared.profile?.canUseAch == false, type == .ach {
+                    self?.openModally(coordinator: BuyCoordinator.self, scene: Scenes.ComingSoon) { vc in
+                        vc?.reason = .buyAch
+                        vc?.dataStore?.coreSystem = coreSystem
+                        vc?.dataStore?.keyStore = keyStore
+                    }
                     return
                 }
                 
                 self?.openModally(coordinator: BuyCoordinator.self, scene: Scenes.Buy) { vc in
+                    vc?.dataStore?.paymentMethod = type
                     vc?.dataStore?.coreSystem = coreSystem
                     vc?.dataStore?.keyStore = keyStore
+                    vc?.prepareData()
+                }
+            }
+        }
+    }
+    
+    func showSell(for currency: Currency, coreSystem: CoreSystem?, keyStore: KeyStore?) {
+        ExchangeCurrencyHelper.setUSDifNeeded { [weak self] in
+            upgradeAccountOrShowPopup(flow: .buy, role: .kyc2) { showPopup in
+                guard showPopup else { return }
+                
+                if UserManager.shared.profile?.canUseAch == false {
+                    self?.openModally(coordinator: SellCoordinator.self, scene: Scenes.ComingSoon) { vc in
+                        vc?.reason = .sell
+                    }
+                    return
+                }
+                
+                self?.openModally(coordinator: SellCoordinator.self, scene: Scenes.Sell) { vc in
+                    vc?.dataStore?.currency = currency
+                    vc?.dataStore?.coreSystem = coreSystem
+                    vc?.dataStore?.keyStore = keyStore
+                    vc?.prepareData()
                 }
             }
         }
@@ -165,7 +202,7 @@ class BaseCoordinator: NSObject,
         // More hint: deleteAccountCallback inside ModalPresenter.
     }
     
-    func showExchangeDetails(with exchangeId: String?, type: Transaction.TransactionType) {
+    func showExchangeDetails(with exchangeId: String?, type: TransactionType) {
         open(scene: ExchangeDetailsViewController.self) { vc in
             vc.navigationItem.hidesBackButton = true
             vc.dataStore?.itemId = exchangeId
@@ -204,6 +241,17 @@ class BaseCoordinator: NSObject,
         guard let vc = navigationController.viewControllers.first as? BuyViewController else {
             return
         }
+        navigationController.popToViewController(vc, animated: true)
+    }
+    
+    func showBuyWithDifferentPayment(paymentMethod: PaymentCard.PaymentType?) {
+        guard let vc = navigationController.viewControllers.first as? BuyViewController else {
+            return
+        }
+        
+        vc.dataStore?.paymentMethod = paymentMethod
+        vc.updatePaymentMethod()
+        
         navigationController.popToViewController(vc, animated: true)
     }
     
@@ -381,6 +429,17 @@ class BaseCoordinator: NSObject,
                                               onTapCallback: onTapCallback)
     }
     
+    func hideMessage() {
+        guard let superview = UIApplication.shared.activeWindow,
+              let view = superview.subviews.first(where: { $0 is FEInfoView }) else { return }
+        
+        UIView.animate(withDuration: Presets.Animation.short.rawValue) {
+            view.alpha = 0
+        } completion: { _ in
+            view.removeFromSuperview()
+        }
+    }
+    
     func showUnderConstruction(_ feat: String) {
         showPopup(on: navigationController.topViewController,
                   with: .init(title: .text("Under construction"),
@@ -430,7 +489,7 @@ class BaseCoordinator: NSObject,
         view.layoutIfNeeded()
         view.alpha = 0
             
-        UIView.animate(withDuration: Presets.Animation.duration) {
+        UIView.animate(withDuration: Presets.Animation.short.rawValue) {
             view.alpha = 1
         }
         

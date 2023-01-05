@@ -124,7 +124,7 @@ class TransparentView: FEView<TransparentViewConfiguration, TransparentViewModel
     
     func show() {
         alpha = 0
-        Self.animate(withDuration: Presets.Animation.duration) { [weak self] in
+        Self.animate(withDuration: Presets.Animation.short.rawValue) { [weak self] in
             self?.alpha = 1
         }
         
@@ -137,7 +137,7 @@ class TransparentView: FEView<TransparentViewConfiguration, TransparentViewModel
     }
     
     func hide() {
-        Self.animate(withDuration: Presets.Animation.duration, animations: { [weak self] in
+        Self.animate(withDuration: Presets.Animation.short.rawValue, animations: { [weak self] in
             self?.alpha = 0
         }, completion: { [weak self] _ in
             self?.removeFromSuperview()

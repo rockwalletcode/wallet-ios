@@ -87,11 +87,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // If there is already content at C.logFilePath from the previous run of the app,
         // store that content in C.previousLogFilePath so that we can upload both the previous
         // and current log from Menu / Developer / Send Logs.
-        if FileManager.default.fileExists(atPath: logFilePath.path) {
+        if FileManager.default.fileExists(atPath: logFilePath.path),
+           let logData = try? Data(contentsOf: logFilePath) {
             // save the logging data from the previous run of the app
-            if let logData = try? Data(contentsOf: C.logFilePath) {
-                try? logData.write(to: previousLogFilePath, options: Data.WritingOptions.atomic)
-            }
+            try? logData.write(to: previousLogFilePath, options: Data.WritingOptions.atomic)
         }
         
         C.logFilePath.withUnsafeFileSystemRepresentation {

@@ -23,8 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/checkout/frames-ios.git",
       "state" : {
-        "revision" : "659b4c58b0987fc68d197e21dcb0ec90e55a4fc0",
-        "version" : "3.5.3"
+        "revision" : "431a2bcc1792bfdc30906d8277e28b802285122d",
+        "version" : "4.0.3"
       }
     },
     {
@@ -34,6 +34,15 @@
       "state" : {
         "revision" : "474f849accae40fe61b5302d9b057dd48ee073ba",
         "version" : "6.5.9"
+      }
+    },
+    {
+      "identity" : "lottie-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/airbnb/lottie-ios.git",
+      "state" : {
+        "revision" : "b4bd0604ded9574807f41b4004b57dd1226a30a4",
+        "version" : "3.5.0"
       }
     },
     {

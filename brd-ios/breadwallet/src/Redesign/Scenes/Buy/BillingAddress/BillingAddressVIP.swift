@@ -53,7 +53,11 @@ protocol BillingAddressDataStore: BaseDataStore, FetchDataStore {
     var address: String? { get set }
     var paymentReference: String? { get set }
     var paymentstatus: AddCard.Status? { get set }
-    var checkoutToken: CkoCardTokenResponse? { get set }
+    
+    var cardNumber: String? { get set }
+    var expMonth: String? { get set }
+    var expYear: String? { get set }
+    var cvv: String? { get set }
 }
 
 protocol BillingAddressDataPassing {

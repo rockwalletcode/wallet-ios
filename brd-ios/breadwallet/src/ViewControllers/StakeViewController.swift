@@ -10,8 +10,6 @@
 
 import UIKit
 
-// swiftlint:disable type_body_length
-
 class StakeViewController: UIViewController, Subscriber, ModalPresentable {
     fileprivate let midContentHeight: CGFloat = 90.0
     fileprivate let bakerContentHeight: CGFloat = 40.0

@@ -260,7 +260,7 @@ class AccountHeaderView: UIView, GradientDrawable, Subscriber {
                             return oldState[self.currency]?.currentRate != newState[self.currency]?.currentRate },
                         callback: { [weak self] in
                             guard let self = self, let rate = $0[self.currency]?.currentRate, !self.isScrubbing else { return }
-                            self.exchangeRateLabel.text = rate.localString(forCurrency: self.currency)
+            self.exchangeRateLabel.text = rate.localString(forCurrency: self.currency, usesCustomFormat: true)
         })
         setGraphViewScrubbingCallbacks()
         chartView.shouldHideChart = { [weak self] in
@@ -283,7 +283,7 @@ class AccountHeaderView: UIView, GradientDrawable, Subscriber {
         }
         chartView.scrubberDidEnd = { [unowned self] in
             self.isScrubbing = false
-            UIView.animate(withDuration: Presets.Animation.duration, animations: {
+            UIView.animate(withDuration: Presets.Animation.short.rawValue, animations: {
                 self.priceChangeView.alpha = 1.0
                 self.priceChangeView.isHidden = false
                 self.priceDateLabel.alpha = 0.0
@@ -293,7 +293,7 @@ class AccountHeaderView: UIView, GradientDrawable, Subscriber {
         
         chartView.scrubberDidBegin = { [unowned self] in
             self.isScrubbing = true
-            UIView.animate(withDuration: Presets.Animation.duration, animations: {
+            UIView.animate(withDuration: Presets.Animation.short.rawValue, animations: {
                 self.priceChangeView.alpha = 0.0
                 self.priceChangeView.isHidden = true
                 self.priceDateLabel.alpha = 1.0
@@ -306,7 +306,7 @@ class AccountHeaderView: UIView, GradientDrawable, Subscriber {
     private func showChart() {
         isChartHidden = false
         
-        UIView.animate(withDuration: Presets.Animation.duration, animations: {
+        UIView.animate(withDuration: Presets.Animation.short.rawValue, animations: {
             self.chartView.alpha = 1.0
             self.exchangeRateLabel.alpha = 1.0
             self.priceChangeView.alpha = 1.0
@@ -320,7 +320,7 @@ class AccountHeaderView: UIView, GradientDrawable, Subscriber {
         isChartHidden = true
         
         if animated {
-            UIView.animate(withDuration: Presets.Animation.duration, animations: {
+            UIView.animate(withDuration: Presets.Animation.short.rawValue, animations: {
                 self.setChartTransparent()
             })
         } else {
@@ -373,7 +373,7 @@ class AccountHeaderView: UIView, GradientDrawable, Subscriber {
     
     private func expandHeader() {
         headerHeight?.constant = AccountHeaderView.headerViewMaxHeight
-        UIView.animate(withDuration: Presets.Animation.duration, animations: {
+        UIView.animate(withDuration: Presets.Animation.short.rawValue, animations: {
             self.superview?.superview?.layoutIfNeeded()
         }, completion: { _ in
             self.showChart()
@@ -385,7 +385,7 @@ class AccountHeaderView: UIView, GradientDrawable, Subscriber {
     func collapseHeader(animated: Bool = true) {
         headerHeight?.constant = AccountHeaderView.headerViewMinHeight
         if animated {
-           UIView.animate(withDuration: Presets.Animation.duration, animations: {
+           UIView.animate(withDuration: Presets.Animation.short.rawValue, animations: {
                self.superview?.superview?.layoutIfNeeded()
            }, completion: { _ in
                self.hideChart()
@@ -406,7 +406,7 @@ class AccountHeaderView: UIView, GradientDrawable, Subscriber {
     }
     
     private func updateHistoryPeriodPillPosition(button: UIButton) {
-        UIView.spring(Presets.Animation.duration, animations: {
+        UIView.spring(Presets.Animation.short.rawValue, animations: {
             self.historyPeriodPillX?.isActive = false
             self.historyPeriodPillY?.isActive = false
             self.historyPeriodPillX = self.historyPeriodPill.centerXAnchor.constraint(equalTo: button.centerXAnchor)

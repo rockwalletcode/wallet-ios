@@ -19,9 +19,15 @@ class OrderPreviewInteractor: NSObject, Interactor, OrderPreviewViewActions {
     // MARK: - OrderPreviewViewActions
     
     func getData(viewAction: FetchModels.Get.ViewAction) {
+        guard dataStore?.type != nil else { return }
         guard let reference = dataStore?.paymentReference else {
-            let item: Models.Item = (to: dataStore?.to, from: dataStore?.from, quote: dataStore?.quote, networkFee: dataStore?.networkFee,
-                                     card: dataStore?.card, isAchAccount: dataStore?.isAchAccount)
+            let item: Models.Item = (type: dataStore?.type,
+                                     to: dataStore?.to,
+                                     from: dataStore?.from,
+                                     quote: dataStore?.quote,
+                                     networkFee: dataStore?.networkFee,
+                                     card: dataStore?.card,
+                                     isAchAccount: dataStore?.isAchAccount)
             presenter?.presentData(actionResponse: .init(item: item))
             return
         }
@@ -32,14 +38,16 @@ class OrderPreviewInteractor: NSObject, Interactor, OrderPreviewViewActions {
             case .success(let data):
                 self?.dataStore?.paymentstatus = data?.status
                 guard data?.status.isSuccesful == true || data?.status.achPending == true else {
-                    guard data?.status == .declined, let errorMessage = data?.responseCode?.errorMessage else {
-                        self?.presenter?.presentError(actionResponse: .init(error: GeneralError(errorMessage: L10n.Buy.paymentFailed)))
-                        return
-                    }
-                    self?.presenter?.presentError(actionResponse: .init(error: GeneralError(errorMessage: errorMessage)))
+                    self?.presenter?.presentSubmit(actionResponse: .init(paymentReference: self?.dataStore?.paymentReference,
+                                                                         previewType: self?.dataStore?.type,
+                                                                         isAch: self?.dataStore?.isAchAccount,
+                                                                         failed: true))
                     return
                 }
-                self?.presenter?.presentSubmit(actionResponse: .init(paymentReference: self?.dataStore?.paymentReference ?? ""))
+                self?.presenter?.presentSubmit(actionResponse: .init(paymentReference: self?.dataStore?.paymentReference,
+                                                                     previewType: self?.dataStore?.type,
+                                                                     isAch: self?.dataStore?.isAchAccount,
+                                                                     failed: false))
                 
             case .failure(let error):
                 self?.presenter?.presentError(actionResponse: .init(error: error))

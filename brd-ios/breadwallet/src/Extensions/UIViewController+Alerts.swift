@@ -51,7 +51,7 @@ extension UIViewController {
         notification.setup(with: model)
         notification.layoutIfNeeded()
         
-        UIView.animate(withDuration: Presets.Animation.duration) {
+        UIView.animate(withDuration: Presets.Animation.short.rawValue) {
             notification.alpha = 1
         }
     }
@@ -60,7 +60,7 @@ extension UIViewController {
         guard let superview = UIApplication.shared.activeWindow,
               let view = superview.subviews.first(where: { $0 is FEInfoView }) else { return }
         
-        UIView.animate(withDuration: Presets.Animation.duration) {
+        UIView.animate(withDuration: Presets.Animation.short.rawValue) {
             view.alpha = 0
         } completion: { _ in
             view.removeFromSuperview()
@@ -100,7 +100,7 @@ extension UIViewController {
             self?.hidePopup()
         }
         
-        UIView.animate(withDuration: Presets.Animation.duration,
+        UIView.animate(withDuration: Presets.Animation.short.rawValue,
                        delay: 0,
                        options: .transitionFlipFromBottom) {
             blurView.effect = UIBlurEffect(style: .regular)
@@ -113,7 +113,7 @@ extension UIViewController {
         else { return }
         let blur = view.subviews.first(where: { $0 is UIVisualEffectView })
         
-        UIView.animate(withDuration: Presets.Animation.duration) {
+        UIView.animate(withDuration: Presets.Animation.short.rawValue) {
             popup.alpha = 0
             blur?.alpha = 0
         } completion: { _ in

@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import SnapKit
+import Lottie
 
 class HomeScreenViewController: UIViewController, UITabBarDelegate, Subscriber {
     private let walletAuthenticator: WalletAuthenticator
@@ -25,6 +27,7 @@ class HomeScreenViewController: UIViewController, UITabBarDelegate, Subscriber {
         view.layer.masksToBounds = true
         view.layer.cornerRadius = CornerRadius.large.rawValue
         view.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
+        view.backgroundColor = LightColors.Background.cards
         return view
     }()
     
@@ -32,8 +35,11 @@ class HomeScreenViewController: UIViewController, UITabBarDelegate, Subscriber {
         let view = UITabBar()
         view.delegate = self
         view.isTranslucent = false
-        view.barTintColor = LightColors.Background.cards
-        view.tintColor = LightColors.Text.two
+        let appearance = view.standardAppearance
+        appearance.shadowImage = nil
+        appearance.shadowColor = nil
+        appearance.backgroundColor = LightColors.Background.cards
+        view.standardAppearance = appearance
         view.unselectedItemTintColor = LightColors.Text.two
         return view
     }()
@@ -66,9 +72,15 @@ class HomeScreenViewController: UIViewController, UITabBarDelegate, Subscriber {
         return view
     }()
     
+    private lazy var drawer: RWDrawer = {
+        let view = RWDrawer()
+        return view
+    }()
+    
     var didSelectCurrency: ((Currency) -> Void)?
     var didTapManageWallets: (() -> Void)?
-    var didTapBuy: (() -> Void)?
+    var didTapBuy: ((PaymentCard.PaymentType) -> Void)?
+    var didTapSell: (() -> Void)?
     var didTapTrade: (() -> Void)?
     var didTapProfile: (() -> Void)?
     var didTapProfileFromPrompt: ((Result<Profile?, Error>?) -> Void)?
@@ -96,10 +108,15 @@ class HomeScreenViewController: UIViewController, UITabBarDelegate, Subscriber {
     
     private let tabBarButtons = [(L10n.Button.home, Asset.home.image as UIImage, #selector(showHome)),
                                  (L10n.HomeScreen.trade, Asset.trade.image as UIImage, #selector(trade)),
-                                 (L10n.HomeScreen.buy, Asset.buy.image as UIImage, #selector(buy)),
+                                 (L10n.Drawer.title, nil, #selector(buy)),
                                  (L10n.Button.profile, Asset.user.image as UIImage, #selector(profile)),
                                  (L10n.HomeScreen.menu, Asset.more.image as UIImage, #selector(menu))]
     
+    let animationView: LottieAnimationView = {
+        let view = LottieAnimationView(animation: Animations.buyAndSell.animation)
+        return view
+    }()
+
     // MARK: - Lifecycle
     
     init(walletAuthenticator: WalletAuthenticator, coreSystem: CoreSystem) {
@@ -229,6 +246,12 @@ class HomeScreenViewController: UIViewController, UITabBarDelegate, Subscriber {
                 assetListTableView.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)])
         })
         
+        view.addSubview(drawer)
+        drawer.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(-ViewSizes.extraExtraHuge.rawValue)
+            make.leading.trailing.bottom.equalToSuperview()
+        }
+        
         view.addSubview(tabBarContainerView)
         tabBarContainerView.addSubview(tabBar)
         
@@ -236,10 +259,17 @@ class HomeScreenViewController: UIViewController, UITabBarDelegate, Subscriber {
             tabBarContainerView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             tabBarContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tabBarContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tabBarContainerView.heightAnchor.constraint(equalToConstant: 84.0)])
+            tabBarContainerView.heightAnchor.constraint(equalToConstant: 84)])
         
         tabBar.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.top.equalToSuperview().offset(Margins.large.rawValue)
+            make.leading.trailing.equalToSuperview()
+        }
+        
+        view.addSubview(animationView)
+        animationView.snp.makeConstraints { make in
+            make.centerX.equalTo(tabBar.snp.centerX)
+            make.top.equalTo(tabBarContainerView.snp.top).offset(-Margins.small.rawValue)
         }
     }
     
@@ -249,7 +279,30 @@ class HomeScreenViewController: UIViewController, UITabBarDelegate, Subscriber {
         navigationItem.titleView = UIView()
         
         setupToolbar()
+        setupDrawer()
         updateTotalAssets()
+        setupAnimationView()
+    }
+    
+    func setupDrawer() {
+        drawer.callbacks = [ { [weak self] in
+            self?.didTapDrawerButton(.card)
+        }, { [weak self] in
+            self?.didTapDrawerButton(.ach)
+        }, { [weak self]
+            in self?.didTapDrawerButton()
+        }]
+        drawer.configure(with: DrawerConfiguration())
+        drawer.setup(with: DrawerViewModel(drawerBottomOffset: 84))
+    }
+    
+    private func didTapDrawerButton(_ type: PaymentCard.PaymentType? = nil) {
+        if let type = type {
+            didTapBuy?(type)
+        } else {
+            didTapSell?()
+        }
+        animationView.play(fromProgress: 1, toProgress: 0)
     }
     
     private func setupToolbar() {
@@ -258,10 +311,19 @@ class HomeScreenViewController: UIViewController, UITabBarDelegate, Subscriber {
         tabBarButtons.forEach { title, image, _ in
             let button = UITabBarItem(title: title, image: image, selectedImage: image)
             button.setTitleTextAttributes([NSAttributedString.Key.font: Fonts.button], for: .normal)
+            var insets = button.imageInsets
+            insets.bottom = Margins.extraSmall.rawValue
+            insets.top = -Margins.extraSmall.rawValue
+            button.imageInsets = insets
             buttons.append(button)
         }
         
         tabBar.items = buttons
+    }
+    
+    private func setupAnimationView() {
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(buy))
+        animationView.addGestureRecognizer(gesture)
     }
     
     func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
@@ -353,21 +415,38 @@ class HomeScreenViewController: UIViewController, UITabBarDelegate, Subscriber {
     
     // MARK: Actions
     
-    @objc private func showHome() {}
+    @objc private func showHome() {
+        drawer.hide()
+    }
+    
+    private func commotTapAction() {
+        guard drawer.isShown else { return }
+        
+        animationView.play(fromProgress: 1, toProgress: 0)
+        drawer.toggle()
+    }
     
     @objc private func buy() {
-        didTapBuy?()
+        if drawer.isShown {
+            animationView.play(fromProgress: 1, toProgress: 0)
+        } else {
+            animationView.play()
+        }
+        drawer.toggle()
     }
     
     @objc private func trade() {
+        commotTapAction()
         didTapTrade?()
     }
     
     @objc private func profile() {
+        commotTapAction()
         didTapProfile?()
     }
     
     @objc private func menu() {
+        commotTapAction()
         didTapMenu?()
     }
     
@@ -429,7 +508,7 @@ class HomeScreenViewController: UIViewController, UITabBarDelegate, Subscriber {
         let next = promptContainerStack.arrangedSubviews.dropFirst().first
         next?.transform = .init(translationX: -UIScreen.main.bounds.width, y: 0)
         
-        UIView.animate(withDuration: Presets.Animation.duration, delay: 0, options: .curveLinear) {
+        UIView.animate(withDuration: Presets.Animation.short.rawValue, delay: 0, options: .curveLinear) {
             prompt.transform = .init(translationX: UIScreen.main.bounds.width, y: 0)
             prompt.isHidden = true
             
@@ -450,7 +529,7 @@ class HomeScreenViewController: UIViewController, UITabBarDelegate, Subscriber {
         prompt.transform = .init(translationX: -UIScreen.main.bounds.width, y: 0)
         promptContainerStack.insertArrangedSubview(prompt, at: 0)
         
-        UIView.animate(withDuration: Presets.Animation.duration, delay: 0, options: .curveLinear) { [weak self] in
+        UIView.animate(withDuration: Presets.Animation.short.rawValue, delay: 0, options: .curveLinear) { [weak self] in
             self?.promptContainerStack.arrangedSubviews.dropFirst().forEach({ $0.isHidden = true })
             prompt.transform = .identity
         } completion: { [weak self] _ in

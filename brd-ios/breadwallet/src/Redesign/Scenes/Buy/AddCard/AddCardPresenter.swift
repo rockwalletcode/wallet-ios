@@ -62,7 +62,7 @@ final class AddCardPresenter: NSObject, Presenter, AddCardActionResponses {
     }
     
     func presentSubmit(actionResponse: AddCardModels.Submit.ActionResponse) {
-        viewController?.displaySubmit(responseDisplay: .init(checkoutToken: actionResponse.checkoutToken))
+        viewController?.displaySubmit(responseDisplay: .init())
     }
     
     func presentCvvInfoPopup(actionResponse: AddCardModels.CvvInfoPopup.ActionResponse) {

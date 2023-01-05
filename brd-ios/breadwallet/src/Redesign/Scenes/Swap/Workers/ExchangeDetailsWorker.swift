@@ -51,7 +51,7 @@ struct SwapDetail: Model, Hashable {
     var destination: SourceDestination
     var rate: Decimal
     var timestamp: Int
-    var type: Transaction.TransactionType
+    var type: TransactionType
 }
 
 class ExchangeDetailsMapper: ModelMapper<ExchangeDetailsResponseData, SwapDetail> {
@@ -65,14 +65,16 @@ class ExchangeDetailsMapper: ModelMapper<ExchangeDetailsResponseData, SwapDetail
                                                       usdAmount: source?.usdAmount ?? 0,
                                                       transactionId: source?.transactionId,
                                                       usdFee: source?.usdFee ?? 0,
-                                                      paymentInstrument: PaymentCard(type: PaymentCard.PaymentType(rawValue: sourceCard?.type ?? "") ?? .buyCard,
+                                                      paymentInstrument: PaymentCard(type: PaymentCard.PaymentType(rawValue: sourceCard?.type ?? "") ?? .card,
                                                                                      id: sourceCard?.id ?? "",
                                                                                      fingerprint: sourceCard?.fingerprint ?? "",
                                                                                      expiryMonth: sourceCard?.expiryMonth ?? 0,
                                                                                      expiryYear: sourceCard?.expiryYear ?? 0,
                                                                                      scheme: PaymentCard.Scheme(rawValue: sourceCard?.scheme ?? "") ?? .none,
                                                                                      last4: sourceCard?.last4 ?? "",
-                                                                                     accountName: sourceCard?.accountName ?? ""),
+                                                                                     accountName: sourceCard?.accountName ?? "",
+                                                                                     status: PaymentCard.Status(rawValue: sourceCard?.status ?? "") ?? .none,
+                                                                                     cardType: PaymentCard.CardType(rawValue: sourceCard?.cardType ?? "") ?? .none),
                                                       feeRate: source?.feeRate,
                                                       feeFixedRate: source?.feeFixedRate)
         let destinationData = SwapDetail.SourceDestination(currency: destination?.currency?.uppercased() ?? "",
@@ -80,14 +82,16 @@ class ExchangeDetailsMapper: ModelMapper<ExchangeDetailsResponseData, SwapDetail
                                                            usdAmount: destination?.usdAmount ?? 0,
                                                            transactionId: destination?.transactionId,
                                                            usdFee: destination?.usdFee ?? 0,
-                                                           paymentInstrument: PaymentCard(type: PaymentCard.PaymentType(rawValue: sourceCard?.type ?? "") ?? .buyCard,
+                                                           paymentInstrument: PaymentCard(type: PaymentCard.PaymentType(rawValue: sourceCard?.type ?? "") ?? .card,
                                                                                           id: destinationCard?.id ?? "",
                                                                                           fingerprint: destinationCard?.fingerprint ?? "",
                                                                                           expiryMonth: destinationCard?.expiryMonth ?? 0,
                                                                                           expiryYear: destinationCard?.expiryYear ?? 0,
                                                                                           scheme: PaymentCard.Scheme(rawValue: destinationCard?.scheme ?? "") ?? .none,
                                                                                           last4: destinationCard?.last4 ?? "",
-                                                                                          accountName: sourceCard?.accountName ?? ""),
+                                                                                          accountName: sourceCard?.accountName ?? "",
+                                                                                          status: PaymentCard.Status(rawValue: sourceCard?.status ?? "") ?? .none,
+                                                                                          cardType: PaymentCard.CardType(rawValue: sourceCard?.cardType ?? "") ?? .none),
                                                            feeRate: source?.feeRate,
                                                            feeFixedRate: source?.feeFixedRate)
 
@@ -98,7 +102,7 @@ class ExchangeDetailsMapper: ModelMapper<ExchangeDetailsResponseData, SwapDetail
                           destination: destinationData,
                           rate: response?.rate ?? 0,
                           timestamp: Int(response?.timestamp ?? 0),
-                          type: Transaction.TransactionType(rawValue: response?.type ?? "") ?? .defaultTransaction)
+                          type: TransactionType(rawValue: response?.type ?? "") ?? .defaultTransaction)
     }
 }
 

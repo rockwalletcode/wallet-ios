@@ -281,9 +281,11 @@ class SendViewController: UIViewController, Subscriber, ModalPresentable {
             self?.isSendingMax = true
             
             if max.currency.network.name == Currencies.shared.eth?.name {
-                let adjustTokenVal = max.tokenValue * 0.15 // Reduce amount for ETH estimate fee API call
-                let adjustAmount = Amount(tokenString: "\(adjustTokenVal)", currency: max.currency)
-                max = max - adjustAmount
+                if max.currency.isEthereum { // Only adjust maximum for ETH
+                    let adjustTokenVal = max.tokenValue * 0.15 // Reduce amount for ETH estimate fee API call
+                    let adjustAmount = Amount(tokenString: "\(adjustTokenVal)", currency: max.currency)
+                    max = max - adjustAmount
+                }
                 self?.amountView.forceUpdateAmount(amount: max)
             } else {
                 self?.amountView.forceUpdateAmount(amount: max)
@@ -457,7 +459,7 @@ class SendViewController: UIViewController, Subscriber, ModalPresentable {
     }
     
     private func hideDestinationTag() {
-        UIView.animate(withDuration: Presets.Animation.duration, animations: {
+        UIView.animate(withDuration: Presets.Animation.short.rawValue, animations: {
             self.attributeCellHeight?.constant = 0.0
             self.attributeCell?.alpha = 0.0
         }, completion: { _ in

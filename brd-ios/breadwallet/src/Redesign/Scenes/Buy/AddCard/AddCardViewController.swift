@@ -20,7 +20,6 @@ class AddCardViewController: BaseTableViewController<ItemSelectionCoordinator,
     override var sceneTitle: String? {
         return L10n.Buy.addCard
     }
-    private var isValid = false
 
     // MARK: - Overrides
     
@@ -86,13 +85,11 @@ class AddCardViewController: BaseTableViewController<ItemSelectionCoordinator,
     
     override func tableView(_ tableView: UITableView, buttonCellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let section = sections[indexPath.section]
-        guard var model = sectionRows[section]?[indexPath.row] as? ButtonViewModel,
+        guard let model = sectionRows[section]?[indexPath.row] as? ButtonViewModel,
               let cell: WrapperTableViewCell<FEButton> = tableView.dequeueReusableCell(for: indexPath)
         else {
             return super.tableView(tableView, cellForRowAt: indexPath)
         }
-        
-        model.enabled = isValid
         cell.setup { view in
             view.configure(with: Presets.Button.primary)
             view.setup(with: model)
@@ -127,16 +124,18 @@ class AddCardViewController: BaseTableViewController<ItemSelectionCoordinator,
     
     func displayValidate(responseDisplay: AddCardModels.Validate.ResponseDisplay) {
         guard let section = sections.firstIndex(of: Models.Section.confirm),
-              let cell = tableView.cellForRow(at: .init(row: 0, section: section)) as? WrapperTableViewCell<FEButton> else { return }
+              var model = sectionRows[Models.Section.confirm]?.first as? ButtonViewModel else { return }
         
-        isValid = responseDisplay.isValid
-        cell.wrappedView.isEnabled = isValid
+        model.enabled = responseDisplay.isValid
+        sectionRows[Models.Section.confirm] = [model]
+        tableView.reloadSections([section], with: .none)
     }
     
     func displaySubmit(responseDisplay: AddCardModels.Submit.ResponseDisplay) {
+        guard let store = dataStore else { return }
         LoadingView.show()
         
-        coordinator?.showBillingAddress(checkoutToken: responseDisplay.checkoutToken)
+        coordinator?.showBillingAddress(store)
     }
     
     func displayCvvInfoPopup(responseDisplay: AddCardModels.CvvInfoPopup.ResponseDisplay) {

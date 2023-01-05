@@ -20,6 +20,8 @@ struct SwapCurrencyConfiguration: Configurable {
 
 struct SwapCurrencyViewModel: ViewModel {
     var amount: Amount?
+    var currencyCode: String?
+    var currencyImage: UIImage?
     var formattedFiatString: NSMutableAttributedString?
     var formattedTokenString: NSMutableAttributedString?
     var fee: Amount?
@@ -27,7 +29,6 @@ struct SwapCurrencyViewModel: ViewModel {
     var title: LabelViewModel?
     var feeDescription: LabelViewModel?
     var selectionDisabled = false
-    var shouldShowFiatField: Bool
 }
 
 class SwapCurrencyView: FEView<SwapCurrencyConfiguration, SwapCurrencyViewModel>, UITextFieldDelegate {
@@ -307,20 +308,22 @@ class SwapCurrencyView: FEView<SwapCurrencyConfiguration, SwapCurrencyViewModel>
         
         titleLabel.setup(with: viewModel.title)
         
-        fiatStack.isHidden = !viewModel.shouldShowFiatField
-        
         if !fiatAmountField.isFirstResponder {
             fiatAmountField.attributedText = viewModel.formattedFiatString
         }
+        fiatStack.isHidden = viewModel.formattedFiatString == nil
         
         if !cryptoAmountField.isFirstResponder {
             cryptoAmountField.attributedText = viewModel.formattedTokenString
         }
         
-        codeLabel.text = viewModel.amount?.currency.code
+        codeLabel.text = viewModel.amount?.currency.code ?? viewModel.currencyCode
         codeLabel.sizeToFit()
-        
-        currencyIconImageView.wrappedView.setup(with: .image(viewModel.amount?.currency.imageSquareBackground))
+
+        currencyIconImageView.wrappedView.setup(with: .image(viewModel.amount?.currency.imageSquareBackground ?? viewModel.currencyImage))
+        if viewModel.amount == nil {
+            currencyIconImageView.wrappedView.contentMode = .scaleAspectFill
+        }
         
         if let tokenFee = viewModel.formattedTokenFeeString {
             feeAmountLabel.text = "\(tokenFee)"
@@ -354,7 +357,8 @@ class SwapCurrencyView: FEView<SwapCurrencyConfiguration, SwapCurrencyViewModel>
         didTapSelectAsset?()
     }
     
-    private func setPlaceholder(for field: UITextField, isActive: Bool) {
+    private func setPlaceholder(for field: UITextField) {
+        let isActive = field.isFirstResponder && field.text?.isEmpty == true
         if let textColor = field.textColor,
            let lineViewColor = fiatLineView.backgroundColor,
            let font = field.font {
@@ -366,9 +370,8 @@ class SwapCurrencyView: FEView<SwapCurrencyConfiguration, SwapCurrencyViewModel>
     }
     
     private func decidePlaceholder() {
-        [fiatAmountField, cryptoAmountField].forEach { field in
-            setPlaceholder(for: field, isActive: field.text?.isEmpty == true && field.isFirstResponder)
-        }
+        setPlaceholder(for: fiatAmountField)
+        setPlaceholder(for: cryptoAmountField)
     }
     
     func setAlphaToLabels(alpha value: Double) {

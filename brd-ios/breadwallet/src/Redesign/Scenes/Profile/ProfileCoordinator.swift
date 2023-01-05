@@ -71,7 +71,7 @@ extension BaseCoordinator {
             closeButtonCallback?()
         }
         
-        UIView.animate(withDuration: Presets.Animation.duration) {
+        UIView.animate(withDuration: Presets.Animation.short.rawValue) {
             popup.alpha = 1.0
             blurView.alpha = blurred ? 0.88 : 0.70
         }
@@ -83,7 +83,7 @@ extension BaseCoordinator {
               let popup = view.subviews.first(where: { $0 is FEPopupView }) else { return }
         let blur = view.subviews.first(where: { $0 is UIVisualEffectView })
         
-        UIView.animate(withDuration: Presets.Animation.duration) {
+        UIView.animate(withDuration: Presets.Animation.short.rawValue) {
             popup.alpha = 0
             blur?.alpha = 0
         } completion: { _ in

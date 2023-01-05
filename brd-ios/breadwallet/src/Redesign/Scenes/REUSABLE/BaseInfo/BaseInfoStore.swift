@@ -11,6 +11,8 @@ import UIKit
 class BaseInfoStore: NSObject, BaseDataStore, BaseInfoDataStore {
     
     var itemId: String?
+    var coreSystem: CoreSystem?
+    var keyStore: KeyStore?
     
     // MARK: - BaseInfoDataStore
     var item: Any?

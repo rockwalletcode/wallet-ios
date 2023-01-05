@@ -43,7 +43,7 @@ extension UILabel {
             CAMediaTimingFunctionName.easeInEaseOut)
         animation.type = CATransitionType.push
         animation.subtype = CATransitionSubtype.fromTop
-        animation.duration = Presets.Animation.duration
+        animation.duration = Presets.Animation.short.rawValue
         layer.add(animation, forKey: CATransitionType.push.rawValue)
         text = newText
     }

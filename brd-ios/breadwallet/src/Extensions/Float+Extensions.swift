@@ -13,6 +13,7 @@ import Foundation
 extension Decimal {
     func round(to places: Int) -> Decimal {
         let divisor = pow(10.0, Double(places))
-        return Decimal(floatLiteral: (doubleValue * divisor).rounded() / divisor)
+        let result = (doubleValue * divisor).rounded() / divisor
+        return NSDecimalNumber(value: result).decimalValue
     }
 }

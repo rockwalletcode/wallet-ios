@@ -74,22 +74,23 @@ class UpdatePinViewController: UIViewController, Subscriber {
             switch step {
             case .verify:
                 instruction.text = isCreatingPin ? L10n.UpdatePin.createInstruction : L10n.UpdatePin.enterCurrent
-                caption.isHidden = true
+                
             case .new:
                 let instructionText = isCreatingPin ? L10n.UpdatePin.createInstruction : L10n.UpdatePin.enterNew
                 header.text = isCreatingPin ? L10n.UpdatePin.setNewPinTitle : L10n.UpdatePin.createTitle
                 if instruction.text != instructionText {
                     instruction.pushNewText(instructionText)
                 }
-                caption.isHidden = false
+                
             case .confirmNew:
-                caption.isHidden = true
                 if isCreatingPin {
                     header.text = L10n.UpdatePin.createTitleConfirm
                 } else {
                     instruction.pushNewText(L10n.UpdatePin.reEnterNew)
                 }
             }
+            
+            caption.isHidden = step == .verify
         }
     }
     private var currentPin: String?

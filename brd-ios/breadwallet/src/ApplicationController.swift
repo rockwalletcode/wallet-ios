@@ -117,6 +117,11 @@ class ApplicationController: Subscriber {
     }
     
     private func decideFlow() {
+        // overdie point for direct VC opening (Dev helper)
+//        guardProtected {
+//            self.coordinator?.openModally(coordinator: COORDINATOR_NAME.self, scene: Scenes.SCENE_NAME) { vc in CONFIGURE }
+//
+//        return ()
         if keyStore.noWallet {
             enterOnboarding()
         } else {
@@ -164,6 +169,9 @@ class ApplicationController: Subscriber {
     /// Prompts for login if account needs to be recreated from seed
     private func unlockExistingAccount() {
         guardProtected {
+//                self.coordinator?.open(scene: Scenes.Demo)
+//
+//                return ()
             guard let startFlowController = self.startFlowController, !self.keyStore.noWallet else { return assertionFailure() }
             Store.perform(action: PinLength.Set(self.keyStore.pinLength))
             startFlowController.startLogin { [unowned self] account in
@@ -342,7 +350,6 @@ class ApplicationController: Subscriber {
     private func setupRootViewController() {
         let navigationController = RootNavigationController()
         window.rootViewController = navigationController
-        
         startFlowController = StartFlowPresenter(keyMaster: keyStore,
                                                  rootViewController: navigationController,
                                                  shouldDisableBiometrics: shouldDisableBiometrics,
@@ -393,13 +400,25 @@ class ApplicationController: Subscriber {
             navigationController.pushViewController(accountViewController, animated: true)
         }
         
-        homeScreen.didTapBuy = { [weak self] in
+        homeScreen.didTapBuy = { [weak self] type in
             guard let self = self else { return }
             
             self.homeScreenViewController?.isInExchangeFlow = true
             
-            self.coordinator?.showBuy(coreSystem: self.coreSystem,
+            self.coordinator?.showBuy(type: type,
+                                      coreSystem: self.coreSystem,
                                       keyStore: self.keyStore)
+        }
+        
+        homeScreen.didTapSell = { [weak self] in
+            guard let self = self,
+                  let token = Store.state.currencies.first(where: { $0.code == C.USDC })
+            else { return }
+            
+            self.homeScreenViewController?.isInExchangeFlow = true
+            self.coordinator?.showSell(for: token,
+                                       coreSystem: self.coreSystem,
+                                       keyStore: self.keyStore)
         }
         
         homeScreen.didTapTrade = { [weak self] in

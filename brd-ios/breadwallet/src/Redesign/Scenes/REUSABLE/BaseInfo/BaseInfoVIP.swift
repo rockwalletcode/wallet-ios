@@ -23,6 +23,8 @@ protocol BaseInfoResponseDisplays: AnyObject, BaseResponseDisplays, FetchRespons
 
 protocol BaseInfoDataStore: BaseDataStore, FetchDataStore {
     var item: Any? { get set }
+    var coreSystem: CoreSystem? { get set }
+    var keyStore: KeyStore? { get set }
 }
 
 protocol BaseInfoDataPassing {

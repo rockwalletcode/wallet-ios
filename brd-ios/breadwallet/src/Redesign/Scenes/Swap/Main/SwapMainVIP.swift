@@ -15,9 +15,8 @@ extension Scenes {
     static let Swap = SwapViewController.self
 }
 
-protocol SwapViewActions: BaseViewActions, FetchViewActions, FeeFetchable {
+protocol SwapViewActions: BaseViewActions, FetchViewActions, FeeFetchable, ExchangeRateViewActions {
     func setAmount(viewAction: SwapModels.Amounts.ViewAction)
-    func getExchangeRate(viewAction: SwapModels.Rate.ViewAction)
     func switchPlaces(viewAction: SwapModels.SwitchPlaces.ViewAction)
     func selectAsset(viewAction: SwapModels.Assets.ViewAction)
     func showConfirmation(viewAction: SwapModels.ShowConfirmDialog.ViewAction)
@@ -25,18 +24,16 @@ protocol SwapViewActions: BaseViewActions, FetchViewActions, FeeFetchable {
     func showAssetInfoPopup(viewAction: SwapModels.AssetInfoPopup.ViewAction)
 }
 
-protocol SwapActionResponses: BaseActionResponses, FetchActionResponses {
+protocol SwapActionResponses: BaseActionResponses, FetchActionResponses, ExchangeRateActionResponses {
     func presentAmount(actionResponse: SwapModels.Amounts.ActionResponse)
-    func presentExchangeRate(actionResponse: SwapModels.Rate.ActionResponse)
     func presentSelectAsset(actionResponse: SwapModels.Assets.ActionResponse)
     func presentConfirmation(actionResponse: SwapModels.ShowConfirmDialog.ActionResponse)
     func presentConfirm(actionResponse: SwapModels.Confirm.ActionResponse)
     func presentAssetInfoPopup(actionResponse: SwapModels.AssetInfoPopup.ActionResponse)
 }
 
-protocol SwapResponseDisplays: AnyObject, BaseResponseDisplays, FetchResponseDisplays {
+protocol SwapResponseDisplays: AnyObject, BaseResponseDisplays, FetchResponseDisplays, ExchangeRateResponseDisplays {
     func displayAmount(responseDisplay: SwapModels.Amounts.ResponseDisplay)
-    func displayExchangeRate(responseDisplay: SwapModels.Rate.ResponseDisplay)
     func displaySelectAsset(responseDisplay: SwapModels.Assets.ResponseDisplay)
     func displayConfirmation(responseDisplay: SwapModels.ShowConfirmDialog.ResponseDisplay)
     func displayConfirm(responseDisplay: SwapModels.Confirm.ResponseDisplay)
@@ -44,7 +41,7 @@ protocol SwapResponseDisplays: AnyObject, BaseResponseDisplays, FetchResponseDis
     func displayError(responseDisplay: SwapModels.ErrorPopup.ResponseDisplay)
 }
 
-protocol SwapDataStore: BaseDataStore, FetchDataStore {
+protocol SwapDataStore: BaseDataStore, FetchDataStore, ExchangeDataStore {
     var from: Amount? { get set }
     var to: Amount? { get set }
     

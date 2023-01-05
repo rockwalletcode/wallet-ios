@@ -11,14 +11,13 @@
 import Foundation
 
 struct PlaidErrorRequestData: RequestModelData {
-    let error: String
+    let error: String?
     
     func getParameters() -> [String: Any] {
-        return [
-            "plaid_link_error": [
-                "name": error
-            ]
+        let params = [
+            "plaid_link_error": error
         ]
+        return params.compactMapValues { $0 }
     }
 }
 

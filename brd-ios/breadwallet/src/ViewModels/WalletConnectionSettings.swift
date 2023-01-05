@@ -30,12 +30,7 @@ class WalletConnectionSettings {
     static func defaultMode(for currency: Currency) -> WalletConnectionMode {
         assert(currency.tokenType == .native)
         switch currency.uid {
-        case Currencies.shared.btc?.uid:
-            return .api_only
-        case Currencies.shared.bch?.uid:
-            return .api_only
-        case Currencies.shared.eth?.uid:
-            return .api_only
+            // Currently we use .api_only mode. Could change in the future
         default:
             return .api_only
         }

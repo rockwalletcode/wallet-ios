@@ -40,7 +40,7 @@ class ProfileInteractor: NSObject, Interactor, ProfileViewActions {
             
             switch result {
             case .success:
-                let paymentCards = self.dataStore?.allPaymentCards?.filter { $0.type == .buyCard }
+                let paymentCards = self.dataStore?.allPaymentCards?.filter { $0.type == .card }
                 self.presenter?.presentPaymentCards(actionResponse: .init(allPaymentCards: paymentCards ?? []))
                 
             case .failure(let error):

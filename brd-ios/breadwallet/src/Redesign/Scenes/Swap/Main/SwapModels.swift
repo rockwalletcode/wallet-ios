@@ -86,23 +86,6 @@ enum SwapModels {
         }
     }
     
-    struct Rate {
-        struct ViewAction {
-            var getFees: Bool
-        }
-        
-        struct ActionResponse {
-            var quote: Quote?
-            var from: Currency?
-            var to: Currency?
-        }
-        
-        struct ResponseDisplay {
-            var rateAndTimer: ExchangeRateViewModel
-            var accountLimits: LabelViewModel?
-        }
-    }
-    
     struct Fee {
         struct ViewAction {}
         

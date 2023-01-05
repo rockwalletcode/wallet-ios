@@ -410,7 +410,7 @@ class KYCCameraViewController: UIViewController, ViewProtocol, UIPickerViewDeleg
                 // Flash the screen to signal that KYCCamera took a photo.
                 DispatchQueue.main.async {
                     self.previewView.videoPreviewLayer.opacity = 0
-                    UIView.animate(withDuration: Presets.Animation.duration) {
+                    UIView.animate(withDuration: Presets.Animation.short.rawValue) {
                         self.previewView.videoPreviewLayer.opacity = 1
                     }
                 }
@@ -549,7 +549,7 @@ class KYCCameraViewController: UIViewController, ViewProtocol, UIPickerViewDeleg
                 // Fade-in a label to inform the user that the camera is unavailable.
                 cameraUnavailableLabel.alpha = 0
                 cameraUnavailableLabel.isHidden = false
-                UIView.animate(withDuration: Presets.Animation.duration) {
+                UIView.animate(withDuration: Presets.Animation.short.rawValue) {
                     self.cameraUnavailableLabel.alpha = 1
                 }
             } else if reason == .videoDeviceNotAvailableDueToSystemPressure {
@@ -563,7 +563,7 @@ class KYCCameraViewController: UIViewController, ViewProtocol, UIPickerViewDeleg
         print("Capture session interruption ended")
         
         if !cameraUnavailableLabel.isHidden {
-            UIView.animate(withDuration: Presets.Animation.duration,
+            UIView.animate(withDuration: Presets.Animation.short.rawValue,
                            animations: {
                             self.cameraUnavailableLabel.alpha = 0
             }, completion: { _ in

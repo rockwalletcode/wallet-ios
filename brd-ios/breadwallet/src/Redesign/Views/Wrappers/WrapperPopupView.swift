@@ -264,7 +264,7 @@ class WrapperPopupView<T: ViewProtocol & UIView>: UIView,
     }
     
     private func hide() {
-        UIView.animate(withDuration: Presets.Animation.duration, animations: { [weak self] in
+        UIView.animate(withDuration: Presets.Animation.short.rawValue, animations: { [weak self] in
             self?.alpha = 0
         }, completion: { [weak self] _ in
             self?.removeFromSuperview()

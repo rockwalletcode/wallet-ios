@@ -18,7 +18,7 @@ protocol TxViewModel: Hashable {
     var blockHeight: String { get }
     var longTimestamp: String { get }
     var status: TransactionStatus { get }
-    var transactionType: Transaction.TransactionType { get }
+    var transactionType: TransactionType { get }
     var direction: TransferDirection { get }
     var displayAddress: String { get }
     var comment: String? { get }
@@ -57,7 +57,7 @@ extension TxViewModel {
         return .invalid
     }
     
-    var transactionType: Transaction.TransactionType {
+    var transactionType: TransactionType {
         if let tx = tx {
             return tx.transactionType
         } else if let swap = swap {
@@ -159,9 +159,9 @@ extension TxViewModel {
                            direction: tx?.direction ?? direction)
     }
     
-    private func iconDecider(transactionType: Transaction.TransactionType, status: TransactionStatus, direction: TransferDirection) -> UIImage? {
+    private func iconDecider(transactionType: TransactionType, status: TransactionStatus, direction: TransferDirection) -> UIImage? {
         switch transactionType {
-        case .buyTransaction, .buyAchTransaction:
+        case .buyTransaction, .buyAchTransaction, .sellTransaction:
             switch status {
             case .confirmed, .complete, .manuallySettled, .pending:
                 return direction == .received ? Asset.receive.image : Asset.send.image

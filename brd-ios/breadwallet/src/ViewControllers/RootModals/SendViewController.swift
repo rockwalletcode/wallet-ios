@@ -288,7 +288,7 @@ class SendViewController: UIViewController, Subscriber, ModalPresentable {
                 }
                 self?.amountView.forceUpdateAmount(amount: max)
             } else {
-                self?.amountView.forceUpdateAmount(amount: max)
+//                self?.amountView.forceUpdateAmount(amount: max)
                 self?.updateFeesMax()
             }
         }
@@ -304,7 +304,7 @@ class SendViewController: UIViewController, Subscriber, ModalPresentable {
                 case .success(let fee):
                     self?.currentFeeBasis = fee
                     self?.sendButton.isEnabled = true
-                    
+                        
                 case .failure(let error):
                     self?.handleEstimateFeeError(error: error)
                 }
@@ -315,9 +315,47 @@ class SendViewController: UIViewController, Subscriber, ModalPresentable {
     }
     
     @objc private func updateFeesMax() {
-        guard let amount = amount else { return }
+        guard let maximum = maximum else { return }
         guard let address = address, !address.isEmpty else { return _ = handleValidationResult(.invalidAddress) }
         
+        sender.estimateFee(address: address, amount: maximum, tier: feeLevel, isStake: false) { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let fee):
+                    self?.currentFeeBasis = fee
+                    self?.sendButton.isEnabled = true
+                    
+                    guard let feeBasis = self?.currentFeeBasis,
+                          let feeCurrency = self?.sender.wallet.feeCurrency,
+                          let maximum = self?.maximum else {
+                        return
+                    }
+                    let fee = Amount(cryptoAmount: feeBasis.fee, currency: feeCurrency)
+                    
+                    var value = maximum
+                    if maximum.currency == fee.currency {
+                        value = maximum > fee ? maximum - fee : maximum
+                    }
+                    
+                    print("UpdateFeesMax maximum: \(maximum.fiatValue)")
+                    print("UpdateFeesMax fee: \(fee.fiatValue)")
+                    print("UpdateFeesMax value: \(value.fiatValue)")
+
+                    self?.amountView.forceUpdateAmount(amount: value)
+                    self?.updateFeesAmount()
+                    
+                case .failure(let error):
+                    self?.handleEstimateFeeError(error: error)
+                }
+                
+                self?.amountView.updateBalanceLabel()
+            }
+        }
+    }
+    
+    @objc private func updateFeesAmount() {
+        guard let amount = amount else { return }
+        guard let address = address, !address.isEmpty else { return _ = handleValidationResult(.invalidAddress) }
         sender.estimateFee(address: address, amount: amount, tier: feeLevel, isStake: false) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
@@ -326,16 +364,22 @@ class SendViewController: UIViewController, Subscriber, ModalPresentable {
                     self?.sendButton.isEnabled = true
                     
                     guard let feeBasis = self?.currentFeeBasis,
-                          let feeCurrency = self?.sender.wallet.feeCurrency else {
+                          let feeCurrency = self?.sender.wallet.feeCurrency,
+                          let maximum = self?.maximum else {
                         return
                     }
                     let fee = Amount(cryptoAmount: feeBasis.fee, currency: feeCurrency)
                     
                     var value = amount
-                    if amount.currency == fee.currency {
-                        value = amount > fee ? amount - fee : amount
+                    if amount.currency == fee.currency && (amount + fee) > maximum {
+                        value = maximum > fee ? maximum - fee : amount
                     }
-
+                    
+                    print("UpdateFeesAmount maximum: \(maximum.fiatValue)")
+                    print("UpdateFeesAmount fee: \(fee.fiatValue)")
+                    print("UpdateFeesAmount amount: \(amount.fiatValue)")
+                    print("UpdateFeesAmount value: \(value.fiatValue)")
+                    
                     if value != amount {
                         self?.amountView.forceUpdateAmount(amount: value)
                     }
@@ -362,7 +406,7 @@ class SendViewController: UIViewController, Subscriber, ModalPresentable {
             let feeText = feeAmount.description
             feeOutput = L10n.Send.fee(feeText)
         }
-        
+            
         let balanceLabelattributes: [NSAttributedString.Key: Any] = [
             NSAttributedString.Key.font: Fonts.Body.two,
             NSAttributedString.Key.foregroundColor: LightColors.Text.two

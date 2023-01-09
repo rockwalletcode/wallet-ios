@@ -10,7 +10,6 @@ import UIKit
 
 class SellStore: NSObject, BaseDataStore, SellDataStore {
     
-    
     // MARK: - SellDataStore
     
     // ExchangeRateDaatStore
@@ -42,8 +41,8 @@ class SellStore: NSObject, BaseDataStore, SellDataStore {
     var keyStore: KeyStore?
     var limits: String? {
         guard let quote = quote,
-              let minText = ExchangeFormatter.fiat.string(for: quote.minimumValue),
-              let maxText = ExchangeFormatter.fiat.string(for: quote.maximumValue),
+              let minText = ExchangeFormatter.fiat.string(for: quote.minimumUsd),
+              let maxText = ExchangeFormatter.fiat.string(for: quote.maximumUsd),
               let lifetimeLimit = ExchangeFormatter.fiat.string(for: UserManager.shared.profile?.achLifetimeRemainingLimit)
         else { return nil }
         

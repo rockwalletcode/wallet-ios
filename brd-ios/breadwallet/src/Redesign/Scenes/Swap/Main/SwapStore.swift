@@ -54,8 +54,8 @@ class SwapStore: NSObject, BaseDataStore, SwapDataStore {
     
     var limits: String? {
         guard let quote = quote,
-              let minText = ExchangeFormatter.fiat.string(for: quote.minimumValue),
-              let maxText = ExchangeFormatter.fiat.string(for: quote.maximumValue)
+              let minText = ExchangeFormatter.fiat.string(for: quote.minimumUsd),
+              let maxText = ExchangeFormatter.fiat.string(for: quote.maximumUsd)
         else { return nil }
         
         return L10n.Swap.swapLimits(minText, maxText)

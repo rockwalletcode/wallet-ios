@@ -46,7 +46,7 @@ class ConfirmRecoveryKeyViewController: BaseRecoveryKeyViewController {
     }
 
     private func confirmationWordLabel(_ index: Int) -> String {
-        return L10n.ConfirmPaperPhrase.word("\(index + 1)") // zero-based array, so add one
+        return L10n.ConfirmPaperPhrase.word(index + 1) // zero-based array, so add one
     }
     
     private var notificationObservers = [String: NSObjectProtocol]()

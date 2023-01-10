@@ -99,19 +99,21 @@ class RegistrationViewController: BaseTableViewController<RegistrationCoordinato
     
     override func buttonTapped() {
         super.buttonTapped()
-        
         interactor?.next(viewAction: .init())
     }
 
     // MARK: - RegistrationResponseDisplay
     
     func displayValidate(responseDisplay: RegistrationModels.Validate.ResponseDisplay) {
+        continueButton.isEnabled = responseDisplay.isValid
+        
         continueButton.viewModel?.enabled = responseDisplay.isValid
         verticalButtons.wrappedView.getButton(continueButton)?.setup(with: continueButton.viewModel)
     }
     
     func displayNext(responseDisplay: RegistrationModels.Next.ResponseDisplay) {
         coordinator?.showRegistrationConfirmation()
+        
     }
 
     // MARK: - Additional Helpers

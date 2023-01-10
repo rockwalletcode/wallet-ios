@@ -51,7 +51,7 @@ final class BuyPresenter: NSObject, Presenter, BuyActionResponses {
             .paymentMethod: [paymentMethodViewModel],
             .accountLimits: [
                 // dont ask
-                LabelViewModel.text("n\n\n\n\n")
+                LabelViewModel.text("\n\n\n\n")
             ]
         ]
         

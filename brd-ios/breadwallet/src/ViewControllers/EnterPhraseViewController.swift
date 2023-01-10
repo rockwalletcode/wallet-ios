@@ -97,6 +97,11 @@ class EnterPhraseViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        nextButton.isEnabled = true
+    }
+    
     @objc private func dismissFlow() {
         navigationController?.dismiss(animated: true)
     }
@@ -214,6 +219,7 @@ class EnterPhraseViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - User Interaction
     @objc func nextTapped(_ sender: UIButton?) {
         view.endEditing(true)
+        nextButton.isEnabled = false
         validatePhrase(phrase)
     }
     
@@ -239,7 +245,6 @@ class EnterPhraseViewController: UIViewController, UIScrollViewDelegate {
     private func validatePhrase(_ phrase: String) {
         guard keyMaster.isSeedPhraseValid(phrase) else {
             showErrorMessage()
-            
             return
         }
         
@@ -272,6 +277,7 @@ class EnterPhraseViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func showErrorMessage() {
+        nextButton.isEnabled = true
         let model: InfoViewModel = .init(description: .text(L10n.RecoverWallet.invalid), dismissType: .auto)
         showToastMessage(model: model, configuration: Presets.InfoView.error)
         

@@ -165,7 +165,7 @@ final class OrderPreviewPresenter: NSObject, Presenter, OrderPreviewActionRespon
         let toCryptoDisplayImage = item.to?.currency.imageSquareBackground
         let toCryptoDisplayName = item.to?.currency.displayName ?? ""
         let from = item.from ?? 0
-        let cardFee = from * (quote.buyFee ?? 0) / 100
+        let cardFee = from * (quote.buyFee ?? 0) / 100 + (quote.buyFeeUsd ?? 0)
         let networkFee = item.networkFee?.fiatValue ?? 0
         let fiatCurrency = (quote.fromFee?.currency ?? C.usdCurrencyCode).uppercased()
         

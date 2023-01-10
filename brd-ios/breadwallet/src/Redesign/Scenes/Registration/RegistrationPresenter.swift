@@ -51,8 +51,7 @@ final class RegistrationPresenter: NSObject, Presenter, RegistrationActionRespon
     }
     
     func presentValidate(actionResponse: RegistrationModels.Validate.ActionResponse) {
-        let item = actionResponse.item ?? ""
-        viewController?.displayValidate(responseDisplay: .init(isValid: item.isValidEmailAddress))
+        viewController?.displayValidate(responseDisplay: .init(isValid: actionResponse.isValid ?? false))
     }
     
     func presentNext(actionResponse: RegistrationModels.Next.ActionResponse) {

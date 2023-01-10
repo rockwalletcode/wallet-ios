@@ -22,8 +22,7 @@ class RegistrationInteractor: NSObject, Interactor, RegistrationViewActions {
     
     func validate(viewAction: RegistrationModels.Validate.ViewAction) {
         dataStore?.email = viewAction.item
-        
-        presenter?.presentValidate(actionResponse: .init(item: dataStore?.email))
+        presenter?.presentValidate(actionResponse: .init(isValid: dataStore?.isValid))
     }
     
     func toggleTickbox(viewAction: RegistrationModels.Tickbox.ViewAction) {
@@ -33,10 +32,14 @@ class RegistrationInteractor: NSObject, Interactor, RegistrationViewActions {
     func next(viewAction: RegistrationModels.Next.ViewAction) {
         guard let email = dataStore?.email, let token = UserDefaults.walletTokenValue else { return }
         
+        dataStore?.submitting = true
+        presenter?.presentValidate(actionResponse: .init(isValid: dataStore?.isValid))
+        
         let data = RegistrationRequestData(email: email,
                                            token: token,
                                            subscribe: dataStore?.subscribe)
         RegistrationWorker().execute(requestData: data) { [weak self] result in
+            self?.dataStore?.submitting = false
             switch result {
             case .success(let data):
                 guard let sessionKey = data?.sessionKey else { return }
@@ -50,6 +53,7 @@ class RegistrationInteractor: NSObject, Interactor, RegistrationViewActions {
                 
             case .failure(let error):
                 self?.presenter?.presentError(actionResponse: .init(error: error))
+                self?.presenter?.presentValidate(actionResponse: .init(isValid: self?.dataStore?.isValid))
             }
         }
     }

@@ -54,7 +54,7 @@ enum RegistrationModels {
         }
         
         struct ActionResponse {
-            var item: String?
+            var isValid: Bool?
         }
         
         struct ResponseDisplay {

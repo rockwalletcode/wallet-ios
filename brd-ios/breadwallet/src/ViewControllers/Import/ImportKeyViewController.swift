@@ -261,9 +261,8 @@ class ImportKeyViewController: UIViewController, Subscriber {
     }
     
     private func markAsReclaimed() {
-        guard let kvStore = Backend.kvStore else { return assertionFailure() }
-        guard let viewModel = viewModel else { return assertionFailure() }
-        guard let gift = viewModel.gift else { return assertionFailure() }
+        guard let kvStore = Backend.kvStore, let viewModel = viewModel, let gift = viewModel.gift else { return }
+        
         let newGift = Gift(shared: gift.shared,
                            claimed: gift.claimed,
                            reclaimed: true,
@@ -272,13 +271,14 @@ class ImportKeyViewController: UIViewController, Subscriber {
                            name: gift.name,
                            rate: gift.rate,
                            amount: gift.amount)
+        
         viewModel.tx?.updateGiftStatus(gift: newGift, kvStore: kvStore)
+        
         if let hash = newGift.txnHash {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                 Store.trigger(name: .txMetaDataUpdated(hash))
             }
         }
-        
     }
     
     private func handleError(_ error: WalletSweeperError) {
